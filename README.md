@@ -1,7 +1,7 @@
 # Миры Утопии
 ## Современный веб-движок для MUD
 
-[Обсуждение проекта доступно по данной ссылке](https://drive.google.com/folderview?id=0B4iRVGZoxmySTm5oZHhLZHVPYWs&usp=sharing)
+[Ссылка на GoogleDocs](https://drive.google.com/folderview?id=0B4iRVGZoxmySTm5oZHhLZHVPYWs&usp=sharing)
 
 > MUD (Multi User Dungeon) — текстовая многопользовательская компьютерная игра, в которой присутствуют элементы ролевой игры, приключений, боевой системы и обязательно чат, как правило разделённый на каналы. Традиционно для передачи сообщений используется протокол telnet.
 
