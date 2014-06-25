@@ -1,0 +1,94 @@
+html, body {height:100%;overflow-y:hidden;overflow-x:hidden;}
+body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;margin-bottom:0px;outline:none;}
+
+/* Скроллбар */
+
+::-webkit-scrollbar {  
+    width: 8px;  
+}  
+::-webkit-scrollbar-track {  
+    background-color: black;
+}  
+::-webkit-scrollbar-thumb {  
+    background-color: #808080;  
+}  
+::-webkit-scrollbar-thumb:hover {  
+    background-color: #aaa;  
+}  
+
+/* Оформление */
+
+#header {
+	background-color:#191919;
+	opacity:1;
+	position:absolute;
+	height: 30px;
+	right:0;
+	left:0;
+	top:0;
+	text-align:center;
+	font-size:18pt;
+	line-height:20pt;
+	color:#FFFFFF;
+}
+
+#game {
+	background-color:black;
+	position:absolute;
+	padding:10px;
+	right:0;
+	left:0;
+	top:30px;
+	bottom:30px;
+	text-align:left;
+	font-size:12pt;
+	color:#FFFFFF;
+	font-family: "Courier New", monospace;
+	/*font-family: monospace;*/
+	overflow: auto;
+}
+
+#chat {
+	background-color:black;
+	position:absolute;
+	height: 30px;
+	padding:5px;
+	right:0;
+	left:0;
+	bottom:0;
+	/*text-align:center;*/
+	font-size:18pt;
+	line-height:20pt;
+	color:#FFFFFF;
+}
+
+#chatinput {
+	position:relative;display:inline;width:100%;border:1px double #333333;background-color:#CCCCCC;
+}
+
+/*Оформление локаций*/
+.roomname {
+	color:#42dd9e;
+	font-weight: bold;
+}
+
+.command {
+	color:#8d654a;
+}
+
+.roomdesc {
+	color:#c1c1c1;
+}
+
+.plaintext {
+	color:#c1c1c1;
+}
+
+.roomexits {
+	/*color:#af7e28;*/
+	color:#808080;
+}
+
+.mobshow {
+	color:#ffa10a;
+}

@@ -1,39 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
-    <meta name="description" content="Описание">
-    <meta name="keywords" content="ключевые, слова.">
-    <link rel="stylesheet" href="style.css" type="text/css">
-    <title>Миры Утопии</title>
-    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-    <script src="http://malsup.github.com/jquery.form.js"></script>
-</head>
-<body>
+{% extends 'RottenwoodUtopiaMudBundle:Default:layout.html.twig' %}
 
-<div id="header"></div>
-<div id="game">
-    <!-- <span class="roomname">Центр Мироздания</span><br>
-    <span class="roomdesc">Начальная точка отсчета нашего мира, а так же и последняя его граница.</span><br>
-    <span id="roomtest"></span> -->
+{% block content %}
+    <div id="header"></div>
+    <div id="game">
+        <!-- <span class="roomname">Центр Мироздания</span><br>
+        <span class="roomdesc">Начальная точка отсчета нашего мира, а так же и последняя его граница.</span><br>
+        <span id="roomtest"></span> -->
 
-    <script type="text/javascript">
-        $('#game').append("<br><span class='plaintext'>Добро пожаловать в Миры Утопии!</span><br>");
-        $.post("chatform.php", { chat: "look" },
-                function(data){
-                    processJson(data);
-                }, "json");
-    </script>
+        <script type="text/javascript">
+            $('#game').append("<br><span class='plaintext'>Добро пожаловать в Миры Утопии!</span><br>");
+            $.post("chatform.php", { chat: "look" },
+                    function(data){
+                        processJson(data);
+                    }, "json");
+        </script>
 
-</div>
-<div id="chat">
-    <form id="chatform" action="chatform.php" method="post">
-        <input id="chatinput" autocomplete="off" name="chat" type="text">
-    </form>
-</div>
-
-
-</body>
-</html>
+    </div>
+    <div id="chat">
+        <form id="chatform" action="chatform.php" method="post">
+            <input id="chatinput" autocomplete="off" name="chat" type="text">
+        </form>
+    </div>
+{% endblock content %}

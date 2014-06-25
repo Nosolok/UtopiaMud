@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <title>
+            {% block titlefull %}
+                {% block title %}Миры Утопии{% endblock title %}
+            {% endblock titlefull %}
+        </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        {# Favicon #}
+        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+        {# jQuery #}
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        {# Стили #}
+        <link type="text/css" href="{{ asset('assets/css/css-reset.css') }}" rel="stylesheet"/>
+        <link type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet"/>
+        <link type="text/css" href="{{ asset('assets/css/bootstrap-responsive.css') }}" rel="stylesheet"/>
+        <link type="text/css" href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+        {# Шрифты #}
+        <link type="text/css" href="{{ asset('assets/css/font-awesome.css') }}" rel="stylesheet"/>
+        {# Скрипты #}
+        <script type="text/javascript" src="{{ asset('assets/js/bootstrap.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/bootstrap-confirmation.js') }}"></script>
+    {% endblock head %}
+</head>
+<body>
+{% block body %}
+    {% block content %}
+    {% endblock content %}
+
+    {% block script %}
+    {% endblock script %}
+{% endblock body %}
+</body>
+</html>
