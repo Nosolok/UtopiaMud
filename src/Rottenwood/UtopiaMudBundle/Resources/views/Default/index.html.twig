@@ -9,7 +9,7 @@
 
         <script type="text/javascript">
             $('#game').append("<br><span class='plaintext'>Добро пожаловать в Миры Утопии!</span><br>");
-            $.post("chatform.php", { chat: "look" },
+            $.post("ajax", { chat: "look" },
                     function(data){
                         processJson(data);
                     }, "json");
@@ -17,7 +17,7 @@
 
     </div>
     <div id="chat">
-        <form id="chatform" action="chatform.php" method="post">
+        <form id="chatform" action="ajax" method="post">
             <input id="chatinput" autocomplete="off" name="chat" type="text">
         </form>
     </div>

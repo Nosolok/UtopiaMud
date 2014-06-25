@@ -1,3 +1,7 @@
 rottenwood_utopia_mud_homepage:
     path:     /
     defaults: { _controller: RottenwoodUtopiaMudBundle:Default:index }
+
+ajax:
+    path:     /ajax
+    defaults: { _controller: RottenwoodUtopiaMudBundle:Default:ajax }

@@ -1,82 +1,29 @@
 //#### Функции
 
-// Отображение выходов
-function showexits(data) {
-    $('#game').append("<span class='roomexits'>[ Выходы: ");
-    if (data['n']) {$('#game').append("<span class='roomexits'>север ");};
-    if (data['s']) {$('#game').append("<span class='roomexits'>юг ");};
-    if (data['w']) {$('#game').append("<span class='roomexits'>запад ");};
-    if (data['e']) {$('#game').append("<span class='roomexits'>восток ");};
-    $('#game').append("<span class='roomexits'>]<br><br>");
-}
-
 //#### Действия при загрузке страницы
-$(document).ready(function() { 
-    // Инициализация формы для обработки с помощью ajaxForm 
-    $('#chatform').ajaxForm({ 
-        dataType:  'json', 
+$(document).ready(function() {
+
+    // Инициализация формы для обработки с помощью ajaxForm
+    $('#chatform').ajaxForm({
+        dataType:  'json',
         success:   processJson,
-        beforeSubmit: validate 
+        beforeSubmit: validate
     });
 
-// Проверка данных перед отправкой на сервер
-function validate(formData, jqForm, options) { 
-    // fieldValue is a Form Plugin method that can be invoked to find the 
-    // current value of a field 
-    // 
-    // To validate, we can capture the values of both the username and password 
-    // fields and return true only if both evaluate to true 
- 
-    var usernameValue = $('input[name=chat]').fieldValue(); 
-    // var passwordValue = $('input[name=password]').fieldValue(); 
- 
-    // usernameValue and passwordValue are arrays but we can do simple 
-    // "not" tests to see if the arrays are empty 
-    // if (!usernameValue[0] || !passwordValue[0]) { 
-    	if (!usernameValue[0]) { 
-        // alert('Please enter a value for both Username and Password');
-        $('#game').append("<br><br>");
-        // скролл вниз DIV с чатом
-        var elem = document.getElementById('game');
-        elem.scrollTop = elem.scrollHeight;
-        
-        return false; 
-    } 
-    // alert('Both fields contain values.'); 
-}
-
-// Удержание фокуса на поле ввода
-var el = document.getElementById('game');
-var focusonchatfield = document.getElementById('chatinput');
-focusonchatfield.focus();
-el.onmouseup = function () {
-    setTimeout(function () {
-        focusonchatfield.focus();
-    });
-};
-
-// Функции
-
-
-// Хоткеи
-
-$(document).ready(function(){
-	$("body").keydown(function(key) {
-		if (key.which == 112) { // клавиша F1
-			event.preventDefault();
-            alert(key.which);
-			$.post("chatform.php", { chat: "n" },
-			  function(data){
-			    processJson(data);
-			  }, "json");
-		}
-	});
-});
+    // Удержание фокуса на поле ввода
+    var el = document.getElementById('game');
+    var focusonchatfield = document.getElementById('chatinput');
+    focusonchatfield.focus();
+    el.onmouseup = function () {
+        setTimeout(function () {
+            focusonchatfield.focus();
+        });
+    };
 
 });
 
 // Обработка пользовательского ввода и ответа от сервера
-function processJson(data) { 
+function processJson(data) {
     // 'data' is the json object returned from the server
     var lastcommand = $('#chatinput').val();
     // очистка чата
@@ -114,11 +61,37 @@ function processJson(data) {
         for (var index in mobs) {
             var mob = mobs[index];
             $('#game').append("<span class='mobshow'>" + mob['ldesc'] + ".</span><br>");
-            }
-            $('#game').append("<br>");
+        }
+        $('#game').append("<br>");
     };
 
     // скролл вниз DIV с чатом
-	var elem = document.getElementById('game');
-	elem.scrollTop = elem.scrollHeight;
+    var elem = document.getElementById('game');
+    elem.scrollTop = elem.scrollHeight;
+}
+
+// Проверка данных перед отправкой на сервер
+function validate(formData, jqForm, options) {
+    // fieldValue is a Form Plugin method that can be invoked to find the
+    // current value of a field
+    //
+    // To validate, we can capture the values of both the username and password
+    // fields and return true only if both evaluate to true
+
+    var usernameValue = $('input[name=chat]').fieldValue();
+    // var passwordValue = $('input[name=password]').fieldValue();
+
+    // usernameValue and passwordValue are arrays but we can do simple
+    // "not" tests to see if the arrays are empty
+    // if (!usernameValue[0] || !passwordValue[0]) {
+    if (!usernameValue[0]) {
+        // alert('Please enter a value for both Username and Password');
+        $('#game').append("<br><br>");
+        // скролл вниз DIV с чатом
+        var elem = document.getElementById('game');
+        elem.scrollTop = elem.scrollHeight;
+
+        return false;
+    }
+    // alert('Both fields contain values.');
 }
