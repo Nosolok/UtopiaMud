@@ -1,0 +1,4 @@
+rottenwood_utopia_mud:
+    resource: "@RottenwoodUtopiaMudBundle/Resources/config/routing.yml"
+    prefix:   /
+

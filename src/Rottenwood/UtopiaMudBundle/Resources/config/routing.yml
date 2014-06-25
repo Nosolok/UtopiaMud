@@ -1,0 +1,3 @@
+rottenwood_utopia_mud_homepage:
+    path:     /
+    defaults: { _controller: RottenwoodUtopiaMudBundle:Default:index }
