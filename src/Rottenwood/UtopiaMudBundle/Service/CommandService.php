@@ -3,27 +3,22 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class PersonService
+ * Сервис обработки введенных пользователем команд
  * @package Rottenwood\UtopiaMudBundle\Service
  */
 class CommandService {
 
-    /**
-     * Entity Manager
-     * @var
-     */
     protected $em;
     protected $kernel;
 
     /**
      * Конструктор
      * @param EntityManager $em
+     * @param Kernel        $kernel
      */
     public function __construct(EntityManager $em, Kernel $kernel) {
         $this->em = $em;
@@ -32,13 +27,41 @@ class CommandService {
 
     public function execute($command) {
         /**
-         * Путь к файлу списка игровых команд
+         * Парсинг файла со списком внутриигровых команд
          */
-        $yaml = new Parser();
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/config/commands.yml");
-        $value = $yaml->parse(file_get_contents($path));
+        $commands = Yaml::parse(file_get_contents($path));
 
-        return $value;
+        // проверка существования команды
+        if ($resultkey = $this->recursive_array_search($command, $commands["commands"])) {
+            $message = "yes";
+        } else {
+            $message = "0:1"; // команда не найдена
+        }
+
+        // подготовка результата
+        $result = array(
+            "key"     => $resultkey,
+            "message" => $message,
+        );
+
+        return $result;
+    }
+
+    /**
+     * Рекурсивный поиск по массиву (матрице)
+     * @param $needle
+     * @param $haystack
+     * @return bool|int|string
+     */
+    public function recursive_array_search($needle,$haystack) {
+        foreach($haystack as $key=>$value) {
+            $current_key=$key;
+            if($needle===$value OR (is_array($value) && $this->recursive_array_search($needle,$value) !== false)) {
+                return $current_key;
+            }
+        }
+        return false;
     }
 
 }

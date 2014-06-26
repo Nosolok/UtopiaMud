@@ -13,17 +13,14 @@ class DefaultController extends Controller {
         return $this->render('RottenwoodUtopiaMudBundle:Default:index.html.twig');
     }
 
+    /**
+     * Серверный ajax-приемник для клиентских команд
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function ajaxAction(Request $request) {
         $command = $request->request->get('chat');
-
         $result = $this->get('command')->execute($command);
-
-        $response = array(
-            "command" => $result,
-            //            "message" => $message,
-        );
-        return new JsonResponse($response);
-
-
+        return new JsonResponse($result);
     }
 }
