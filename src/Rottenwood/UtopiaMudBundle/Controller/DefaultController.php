@@ -16,20 +16,11 @@ class DefaultController extends Controller {
     public function ajaxAction(Request $request) {
         $command = $request->request->get('chat');
 
-        /**
-         * Проверка существования команды
-         */
-        $serviceMethods = get_class_methods($this->get('command'));
-
-        if (!in_array($command, $serviceMethods)) {
-            $message = "0:1";
-        } else {
-            $message = $this->get('command')->$command();
-        }
+        $result = $this->get('command')->execute($command);
 
         $response = array(
-//            "command" => $result,
-            "message" => $message,
+            "command" => $result,
+            //            "message" => $message,
         );
         return new JsonResponse($response);
 

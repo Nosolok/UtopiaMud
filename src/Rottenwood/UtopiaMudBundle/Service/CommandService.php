@@ -3,6 +3,10 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Yaml\Parser;
 
 /**
  * Class PersonService
@@ -15,17 +19,26 @@ class CommandService {
      * @var
      */
     protected $em;
+    protected $kernel;
 
     /**
      * Конструктор
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em) {
+    public function __construct(EntityManager $em, Kernel $kernel) {
         $this->em = $em;
+        $this->kernel = $kernel;
     }
 
-    public function look() {
-        return 1;
+    public function execute($command) {
+        /**
+         * Путь к файлу списка игровых команд
+         */
+        $yaml = new Parser();
+        $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/config/commands.yml");
+        $value = $yaml->parse(file_get_contents($path));
+
+        return $value;
     }
 
 }
