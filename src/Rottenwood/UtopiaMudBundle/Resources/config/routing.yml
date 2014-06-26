@@ -5,3 +5,4 @@ rottenwood_utopia_mud_homepage:
 ajax:
     path:     /ajax
     defaults: { _controller: RottenwoodUtopiaMudBundle:Default:ajax }
+    requirements: { _method: POST }
