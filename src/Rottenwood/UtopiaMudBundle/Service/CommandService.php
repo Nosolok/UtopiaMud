@@ -32,18 +32,19 @@ class CommandService {
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/config/commands.yml");
         $commands = Yaml::parse(file_get_contents($path));
 
+        // разбитие команды на символы и их подсчет
+        $count =  count(preg_split('/(?<!^)(?!$)/u', $command ));
+
         // проверка существования команды
-        if ($resultkey = $this->recursive_array_search($command, $commands["commands"])) {
-            $message = "yes";
+        if ($run = $this->recursive_array_search($command, $commands["commands"])) {
+            $result["command"] = $run;
+            $result["commandtype"] = $commands["commands"][$run]["type"];
+            $result["message"] = "yes";
         } else {
-            $message = "0:1"; // команда не найдена
+            $result["message"] = "0:1"; // команда не найдена
         }
 
-        // подготовка результата
-        $result = array(
-            "key"     => $resultkey,
-            "message" => $message,
-        );
+        $result["count"] = $count;
 
         return $result;
     }
