@@ -8,12 +8,6 @@
 #    3: skill
 
 commands:
-    look:
-        type: action
-        alias:
-        - look
-        - смотреть
-        - взглянуть
     north:
         type: action
         alias:
@@ -34,4 +28,10 @@ commands:
         alias:
         - east
         - восток
+    look:
+        type: action
+        alias:
+        - look
+        - смотреть
+        - взглянуть
 
