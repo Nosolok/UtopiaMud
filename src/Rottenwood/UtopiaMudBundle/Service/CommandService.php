@@ -36,7 +36,7 @@ class CommandService {
         $count = count(preg_split('/(?<!^)(?!$)/u', $command));
 
         // проверка существования команды
-        if ($run = $this->recursive_array_search($command, $commands["commands"])) {
+        if ($run = $this->recursive_array_search_substr($command, $commands["commands"], $count)) {
             $result["command"] = $run;
             $result["commandtype"] = $commands["commands"][$run]["type"];
             $result["message"] = "yes";
@@ -44,26 +44,7 @@ class CommandService {
             $result["message"] = "0:1"; // команда не найдена
         }
 
-        $result["test"] = $this->recursive_array_search_substr($command, $commands["commands"], $count);
-        $result["count"] = $count;
-
         return $result;
-    }
-
-    /**
-     * Рекурсивный поиск по массиву (матрице)
-     * @param $needle
-     * @param $haystack
-     * @return bool|int|string
-     */
-    public function recursive_array_search($needle, $haystack) {
-        foreach ($haystack as $key => $value) {
-            $current_key = $key;
-            if ($needle === $value OR (is_array($value) && $this->recursive_array_search($needle, $value) !== false)) {
-                return $current_key;
-            }
-        }
-        return false;
     }
 
     /**
