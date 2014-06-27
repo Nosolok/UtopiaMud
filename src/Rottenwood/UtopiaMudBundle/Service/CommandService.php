@@ -14,32 +14,30 @@ class CommandService {
 
     protected $em;
     protected $kernel;
+    protected $commandaction;
 
-    /**
-     * Конструктор
-     * @param EntityManager $em
-     * @param Kernel        $kernel
-     */
-    public function __construct(EntityManager $em, Kernel $kernel) {
+    public function __construct(EntityManager $em, Kernel $kernel, CommandActionService $commandaction) {
         $this->em = $em;
         $this->kernel = $kernel;
+        $this->commandaction = $commandaction;
     }
 
     public function execute($command) {
-        /**
-         * Парсинг файла со списком внутриигровых команд
-         */
+        // парсинг файла со списком внутриигровых команд
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/config/commands.yml");
         $commands = Yaml::parse(file_get_contents($path));
 
         // разбитие команды на символы и их подсчет
         $count = count(preg_split('/(?<!^)(?!$)/u', $command));
+        $run = $this->recursive_array_search_substr($command, $commands["commands"], $count);
 
         // проверка существования команды
-        if ($run = $this->recursive_array_search_substr($command, $commands["commands"], $count)) {
-            $result["command"] = $run;
-            $result["commandtype"] = $commands["commands"][$run]["type"];
-            $result["message"] = "yes";
+        if ($run && method_exists($this->commandaction, $run)) {
+            $commandtype = "command" . $commands["commands"][$run]["type"];
+//            $result["command"] = $run;
+//            $result["commandtype"] = $commandtype;
+            // запуск команды
+            $result = $this->{$commandtype}->$run();
         } else {
             $result["message"] = "0:1"; // команда не найдена
         }

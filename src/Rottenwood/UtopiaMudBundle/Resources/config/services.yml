@@ -4,7 +4,10 @@ parameters:
 services:
   command:
     class:      Rottenwood\UtopiaMudBundle\Service\CommandService
-    arguments:  [@doctrine.orm.entity_manager, @kernel, ]
+    arguments:  [@doctrine.orm.entity_manager, @kernel, @commandaction]
+  commandaction:
+    class:      Rottenwood\UtopiaMudBundle\Service\CommandActionService
+    arguments:  [@doctrine.orm.entity_manager]
 #
 #  calendar:
 #    class: Rottenwood\BillingBonesBundle\Service\Calendar
