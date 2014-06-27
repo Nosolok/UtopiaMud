@@ -17,13 +17,13 @@ class CommandActionService {
         $this->em = $em;
     }
 
-
     // смотреть
     public function look() {
         $result["message"] = "1:1"; // вы осмотрелись
         $result["roomnamelook"] = "Тестовая комната";
         $result["roomdesclook"] = "Приглушенный свет этой тестовой комнаты создает уютную атмосферу.";
-        $result["exits"] = "";
+        $result["exits"]["n"] = "open";
+        $result["exits"]["s"] = "closed";
         return $result;
     }
 

@@ -1,5 +1,16 @@
 //#### Функции
 
+// Отображение выходов
+function showexits(data) {
+//    alert(data["n"]);
+    $('#game').append("<span class='roomexits'>[ Выходы: ");
+    if (data['n']) {$('#game').append("<span class='roomexits'>север ");};
+    if (data['s']) {$('#game').append("<span class='roomexits'>юг ");};
+    if (data['w']) {$('#game').append("<span class='roomexits'>запад ");};
+    if (data['e']) {$('#game').append("<span class='roomexits'>восток ");};
+    $('#game').append("<span class='roomexits'>]<br><br>");
+}
+
 //#### Действия при загрузке страницы
 $(document).ready(function() {
 
@@ -45,7 +56,7 @@ function processJson(data) {
         if (data['roomnamelook']) {$('#game').append("<br><span class='roomname'>" + data['roomnamelook'] + "</span><br>");}
         if (data['roomdesclook']) {$('#game').append("<span class='roomdesc'>" + data['roomdesclook'] + "</span><br><br>");}
         if (data['exits']) {
-            showexits(data);
+            showexits(data['exits']);
         }
     } else if (data['message']=="1:2") {
         $('#game').append("<br><span class='plaintext'>Вы обратили взгляд на объект.</span><br><br>");
@@ -53,7 +64,7 @@ function processJson(data) {
     if (data['roomname'] && roomalreadyseen!=1) {$('#game').append("<br><span class='roomname'>" + data['roomname'] + "</span><br>");}
     if (data['roomdesc'] && roomalreadyseen!=1) {$('#game').append("<span class='roomdesc'>" + data['roomdesc'] + "</span><br><br>");}
     if (data['exits'] && roomalreadyseen!=1) {
-        showexits(data);
+        showexits(data['exits']);
     }
     if (data['mobs']) {
         var mobs = data['mobs'];
