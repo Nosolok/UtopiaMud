@@ -1,0 +1,125 @@
+{% extends "RottenwoodUtopiaMudBundle:Default:index.html.twig" %}
+
+{% block styles %}
+    <link type="text/css" href="{{ asset('assets/css/css-reset.css') }}" rel="stylesheet"/>
+    <link type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet"/>
+    <link type="text/css" href="{{ asset('assets/css/bootstrap-responsive.css') }}" rel="stylesheet"/>
+    <link type="text/css" href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+{% endblock styles %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block game %}
+    <style>
+        .sitetitle {
+            font-size: 50px;
+        }
+
+        .sitedescription {
+            font-size: 20px;
+            color: #808080;
+        }
+        .registrationform {
+            /*background-color: #191919;*/
+            /*position: absolute;*/
+            /*left: 0;*/
+            /*right: 0;*/
+            /*height: 200px;*/
+            /*width: 200px;*/
+            text-align: center;
+            padding: 30px;
+            margin: 50px 0 10px 0;
+        }
+
+        .registrationformlogin {
+            /*background-color: #191919;*/
+            text-align: center;
+            padding: 13px;
+            font-size: 25px;
+            margin: 10px 0 10px 0;
+        }
+
+        .registrationform2 {
+            /*background-color: #191919;*/
+            text-align: center;
+            padding: 5px;
+            font-size: 25px;
+            margin: 10px 0 10px 0;
+        }
+
+        .registrationformbutton {
+            background-color: #191919;
+            text-align: center;
+            padding: 15px;
+            font-size: 25px;
+            margin: 50px 0 10px 0;
+        }
+
+        .registrationformbutton:hover {
+            background-color: #323232;
+            cursor: pointer;
+        }
+    </style>
+
+{% block fos_user_content %}
+    {% if error %}
+        <div>{{ error|trans }}</div>
+    {% endif %}
+
+    <form action="{{ path("fos_user_security_check") }}" method="post">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    <input type="hidden" id="remember_me" name="_remember_me" value="on" />
+    <div class="container">
+        <div class="row">
+            <div class="span8 offset2 text-justify">
+                <div class="registrationform">
+                    <h1 class="sitetitle">Утопия</h1>
+                    <p class="sitedescription">многопользовательское подземелье</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="registrationformlogin" class="span2 offset3 text-justify">
+                <div class="registrationformlogin">
+                    Логин
+                </div>
+            </div>
+            <div id="registrationformlogin" class="span4 text-justify">
+                <div class="registrationform2">
+                    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="registrationformpassword" class="span2 offset3 text-justify">
+                <div class="registrationformlogin">
+                    Пароль
+                </div>
+            </div>
+            <div id="registrationformlogin" class="span4 text-justify">
+                <div class="registrationform2">
+                    <input type="password" id="password" name="_password" required="required" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span3 offset3 text-justify">
+                <div class="registrationformbutton">
+                    Регистрация
+                </div>
+            </div>
+            <div class="span3 text-justify">
+                <div class="registrationformbutton">
+                    Вход
+                </div>
+            </div>
+        </div>
+    </div>
+    {#<input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />#}
+    </form>
+
+    {% endblock fos_user_content %}
+
+    {% endblock game %}
+
+{% block chat %}{% endblock chat %}

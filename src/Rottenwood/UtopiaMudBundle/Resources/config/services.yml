@@ -1,17 +1,15 @@
 parameters:
-  rottenwood_utopia_mud.command.class: Rottenwood\UtopiaMudBundle\Example
+    rottenwood_utopia_mud.command.class: Rottenwood\UtopiaMudBundle\Example
 
 services:
-  command:
-    class:      Rottenwood\UtopiaMudBundle\Service\CommandService
-    arguments:  [@doctrine.orm.entity_manager, @kernel, @commandaction]
-  commandaction:
-    class:      Rottenwood\UtopiaMudBundle\Service\CommandActionService
-    arguments:  [@doctrine.orm.entity_manager]
-#
-#  calendar:
-#    class: Rottenwood\BillingBonesBundle\Service\Calendar
-#    arguments: [%calendar.mood%]
-#    rottenwood_utopia_mud.example:
-#        class: %rottenwood_utopia_mud.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    command:
+        class:      Rottenwood\UtopiaMudBundle\Service\CommandService
+        arguments:  [@doctrine.orm.entity_manager, @kernel, @commandaction]
+    commandaction:
+        class:      Rottenwood\UtopiaMudBundle\Service\CommandActionService
+        arguments:  [@doctrine.orm.entity_manager]
+    utopiamud_user.registration.form.type:
+        class: Acme\UserBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: acme_user_registration }

@@ -23,4 +23,8 @@ class DefaultController extends Controller {
         $result = $this->get('command')->execute($command);
         return new JsonResponse($result);
     }
+
+    public function loginAction() {
+        return $this->render('RottenwoodUtopiaMudBundle:Default:login.html.twig');
+    }
 }

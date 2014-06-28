@@ -14,10 +14,12 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="http://malsup.github.com/jquery.form.js"></script>
         {# Стили #}
-        <link type="text/css" href="{{ asset('assets/css/css-reset.css') }}" rel="stylesheet"/>
-        <link type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet"/>
-        <link type="text/css" href="{{ asset('assets/css/bootstrap-responsive.css') }}" rel="stylesheet"/>
-        <link type="text/css" href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+        {% block styles %}
+            <link type="text/css" href="{{ asset('assets/css/css-reset.css') }}" rel="stylesheet"/>
+            <link type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet"/>
+            <link type="text/css" href="{{ asset('assets/css/bootstrap-responsive.css') }}" rel="stylesheet"/>
+            <link type="text/css" href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+        {% endblock styles %}
         {# Шрифты #}
         <link type="text/css" href="{{ asset('assets/css/font-awesome.css') }}" rel="stylesheet"/>
         {# Скрипты #}

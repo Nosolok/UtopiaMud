@@ -3,22 +3,23 @@
 {% block content %}
     <div id="header"></div>
     <div id="game">
-        <!-- <span class="roomname">Центр Мироздания</span><br>
-        <span class="roomdesc">Начальная точка отсчета нашего мира, а так же и последняя его граница.</span><br>
-        <span id="roomtest"></span> -->
-
-        <script type="text/javascript">
-            $('#game').append("<br><span class='plaintext'>Добро пожаловать в Миры Утопии!</span><br>");
-            $.post("ajax", { chat: "look" },
-                    function(data){
-                        processJson(data);
-                    }, "json");
-        </script>
-
+        {% block game %}
+            {% block ajax %}
+                <script type="text/javascript">
+                    $('#game').append("<br><span class='plaintext'>Добро пожаловать в Миры Утопии!</span><br>");
+                    $.post("ajax", { chat: "look" },
+                            function(data){
+                                processJson(data);
+                            }, "json");
+                </script>
+            {% endblock ajax %}
+        {% endblock game %}
     </div>
     <div id="chat">
+        {% block chat %}
         <form id="chatform" action="ajax" method="post">
             <input id="chatinput" autocomplete="off" name="chat" type="text">
         </form>
+        {% endblock chat %}
     </div>
 {% endblock content %}
