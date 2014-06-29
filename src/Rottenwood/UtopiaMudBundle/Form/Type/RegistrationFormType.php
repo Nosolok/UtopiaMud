@@ -1,6 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: Rottenwood
  * Date: 29.06.14
  * Time: 2:24

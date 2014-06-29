@@ -34,4 +34,10 @@ commands:
         - look
         - смотреть
         - взглянуть
-
+    quit:
+        type: system
+        alias:
+        - quit
+        - конец
+        - выход
+        - exit

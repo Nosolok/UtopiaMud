@@ -2,14 +2,20 @@ parameters:
     rottenwood_utopia_mud.command.class: Rottenwood\UtopiaMudBundle\Example
 
 services:
+    utopiamud_user.registration.form.type:
+        class: Rottenwood\UtopiaMudBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: utopiamud_user_registration }
+    # Главный командный сервис
     command:
         class:      Rottenwood\UtopiaMudBundle\Service\CommandService
-        arguments:  [@doctrine.orm.entity_manager, @kernel, @commandaction]
+        arguments:  [@doctrine.orm.entity_manager, @kernel, @commandaction, @commandsystem]
+    # Сервис команд действия
     commandaction:
         class:      Rottenwood\UtopiaMudBundle\Service\CommandActionService
         arguments:  [@doctrine.orm.entity_manager]
-    utopiamud_user.registration.form.type:
-        class: Acme\UserBundle\Form\Type\RegistrationFormType
-        arguments: [%fos_user.model.user.class%]
-        tags:
-            - { name: form.type, alias: acme_user_registration }
+    # Сервис служебных команд
+    commandsystem:
+            class:      Rottenwood\UtopiaMudBundle\Service\CommandSystemService
+            arguments:  [@doctrine.orm.entity_manager]

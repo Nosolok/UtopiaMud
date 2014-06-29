@@ -32,7 +32,6 @@ class Register extends BaseUser {
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
      * @Assert\NotBlank(message="Пожалуйста, введите свое имя.", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=3,
@@ -43,4 +42,14 @@ class Register extends BaseUser {
      * )
      */
     protected $name;
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+
+        return $this;
+    }
 }

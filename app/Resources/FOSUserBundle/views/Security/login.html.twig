@@ -1,5 +1,9 @@
 {% extends "RottenwoodUtopiaMudBundle:Default:index.html.twig" %}
 
+{% block headjscripts %}
+
+{% endblock headjscripts %}
+
 {% block styles %}
     <link type="text/css" href="{{ asset('assets/css/css-reset.css') }}" rel="stylesheet"/>
     <link type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet"/>
@@ -10,6 +14,25 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block game %}
+    <script>
+        $(document).ready(function () {
+            $('#loginformbutton').click(function () {
+                $("#loginform").submit();
+            });
+            $('#registrationformbutton').click(function () {
+//                $('#form').html("test");
+                $.ajax({
+                    url: "register/",
+                    context: document.body,
+                    dataType: "html"
+                }).done(function(data) {
+//                    $( this ).addClass( "done" );
+                    $('#form').html(data);
+                });
+            });
+        });
+    </script>
+
     <style>
         .sitetitle {
             font-size: 50px;
@@ -19,20 +42,20 @@
             font-size: 20px;
             color: #808080;
         }
+
+        .errorbox {
+            text-align: center;
+            color: red;
+            height: 20px;
+        }
+
         .registrationform {
-            /*background-color: #191919;*/
-            /*position: absolute;*/
-            /*left: 0;*/
-            /*right: 0;*/
-            /*height: 200px;*/
-            /*width: 200px;*/
             text-align: center;
             padding: 30px;
             margin: 50px 0 10px 0;
         }
 
         .registrationformlogin {
-            /*background-color: #191919;*/
             text-align: center;
             padding: 13px;
             font-size: 25px;
@@ -40,86 +63,100 @@
         }
 
         .registrationform2 {
-            /*background-color: #191919;*/
             text-align: center;
             padding: 5px;
             font-size: 25px;
             margin: 10px 0 10px 0;
         }
 
-        .registrationformbutton {
+        .formbutton {
             background-color: #191919;
             text-align: center;
             padding: 15px;
             font-size: 25px;
-            margin: 50px 0 10px 0;
+            margin: 15px 0 10px 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
-        .registrationformbutton:hover {
+        .formbutton:hover {
             background-color: #323232;
             cursor: pointer;
         }
     </style>
 
-{% block fos_user_content %}
-    {% if error %}
-        <div>{{ error|trans }}</div>
-    {% endif %}
+    {% block fos_user_content %}
 
-    <form action="{{ path("fos_user_security_check") }}" method="post">
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-    <input type="hidden" id="remember_me" name="_remember_me" value="on" />
-    <div class="container">
-        <div class="row">
-            <div class="span8 offset2 text-justify">
-                <div class="registrationform">
-                    <h1 class="sitetitle">Утопия</h1>
-                    <p class="sitedescription">многопользовательское подземелье</p>
+        <div id="form">
+        <form id="loginform" action="{{ path("fos_user_security_check") }}" method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+            <input type="hidden" id="remember_me" negistrationformloginame="_remember_me" value="on"/>
+
+            <div class="container">
+                <div class="row">
+                    <div class="span8 offset2 text-justify">
+                        <div class="registrationform">
+                            <h1 class="sitetitle">Утопия</h1>
+
+                            <p class="sitedescription">многопользовательское подземелье</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2 offset3 text-justify">
+                        <div class="registrationformlogin">
+                            Логин
+                        </div>
+                    </div>
+                    <div id="registrationformlogin" class="span4 text-justify">
+                        <div class="registrationform2">
+                            <input type="text" id="username" name="_username" value="{{ last_username }}"
+                                   required="required"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2 offset3 text-justify">
+                        <div class="registrationformlogin">
+                            Пароль
+                        </div>
+                    </div>
+                    <div id="registrationformpassword" class="span4 text-justify">
+                        <div class="registrationform2">
+                            <input type="password" id="password" name="_password" required="required"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span8 offset2 text-justify errorbox">
+                    {% if error %}
+                        <div>{{ error|trans }}</div>
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span3 offset3 text-justify">
+                        <div id="registrationformbutton" class="formbutton">
+                            Регистрация
+                        </div>
+                    </div>
+                    <div class="span3 text-justify">
+                        <div id="loginformbutton" class="formbutton">
+                            Вход
+                        </div>
+                    </div>
                 </div>
             </div>
+            {#<input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />#}
+        </form>
         </div>
-        <div class="row">
-            <div id="registrationformlogin" class="span2 offset3 text-justify">
-                <div class="registrationformlogin">
-                    Логин
-                </div>
-            </div>
-            <div id="registrationformlogin" class="span4 text-justify">
-                <div class="registrationform2">
-                    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div id="registrationformpassword" class="span2 offset3 text-justify">
-                <div class="registrationformlogin">
-                    Пароль
-                </div>
-            </div>
-            <div id="registrationformlogin" class="span4 text-justify">
-                <div class="registrationform2">
-                    <input type="password" id="password" name="_password" required="required" />
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="span3 offset3 text-justify">
-                <div class="registrationformbutton">
-                    Регистрация
-                </div>
-            </div>
-            <div class="span3 text-justify">
-                <div class="registrationformbutton">
-                    Вход
-                </div>
-            </div>
-        </div>
-    </div>
-    {#<input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />#}
-    </form>
 
     {% endblock fos_user_content %}
 
-    {% endblock game %}
+{% endblock game %}
 
 {% block chat %}{% endblock chat %}

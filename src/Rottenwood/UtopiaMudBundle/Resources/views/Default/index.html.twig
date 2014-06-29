@@ -7,7 +7,7 @@
             {% block ajax %}
                 <script type="text/javascript">
                     $('#game').append("<br><span class='plaintext'>Добро пожаловать в Миры Утопии!</span><br>");
-                    $.post("ajax", { chat: "look" },
+                    $.post("ajax/", { chat: "look" },
                             function(data){
                                 processJson(data);
                             }, "json");

@@ -49,6 +49,14 @@ function processJson(data) {
     if (data['message']=="0:3") {$('#game').append("<br><span class='plaintext'>Вы не можете двигаться в данном направлении.</span><br><br>");var roomalreadyseen = 1;}
     if (data['message']=="0:4") {$('#game').append("<br><span class='plaintext'>Вы витаете в пустоте.</span><br><br>");}
 
+    //*** ответ от сервера: системные действия
+    if (data['message']=="0:5") {
+        var url = "logout";
+        $(location).attr('href',url);
+    }
+    if (data['message']=="0:5:1") {$('#game').append("<br><span class='plaintext'>Для выхода введите команду &quot;конец&quot; (quit) целиком.</span><br><br>");}
+
+
     //*** ответ от сервера: результаты команд
     if (data['message']=="1:1") {
         var roomalreadyseen = 1;

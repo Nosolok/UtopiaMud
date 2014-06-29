@@ -15,11 +15,14 @@ class CommandService {
     protected $em;
     protected $kernel;
     protected $commandaction;
+    protected $commandsystem;
 
-    public function __construct(EntityManager $em, Kernel $kernel, CommandActionService $commandaction) {
+    public function __construct(EntityManager $em, Kernel $kernel, CommandActionService $commandaction,
+                                CommandSystemService $commandsystem) {
         $this->em = $em;
         $this->kernel = $kernel;
         $this->commandaction = $commandaction;
+        $this->commandsystem = $commandsystem;
     }
 
     public function execute($command) {
@@ -32,10 +35,19 @@ class CommandService {
         $run = $this->recursive_array_search_substr($command, $commands["commands"], $count);
 
         // проверка существования команды
-        if ($run && method_exists($this->commandaction, $run)) {
+        if ($run && (method_exists($this->commandaction, $run) OR method_exists($this->commandsystem, $run))) {
             $commandtype = "command" . $commands["commands"][$run]["type"];
 //            $result["command"] = $run;
 //            $result["commandtype"] = $commandtype;
+            // если команда - "выход"
+            if ($run == "quit") {
+            	if (!($run == $command OR $command == "конец")) {
+                    $result["message"] = "0:5:1"; // просьба ввести выход целиком
+                    $result["run"] = $run;
+                    $result["command"] = $command;
+                    return $result;
+                }
+            }
             // запуск команды
             $result = $this->{$commandtype}->$run();
         } else {
@@ -66,5 +78,7 @@ class CommandService {
         }
         return false;
     }
+
+
 
 }
