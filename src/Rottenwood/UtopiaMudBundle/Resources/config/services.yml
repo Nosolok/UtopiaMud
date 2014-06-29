@@ -1,5 +1,6 @@
 parameters:
     rottenwood_utopia_mud.command.class: Rottenwood\UtopiaMudBundle\Example
+    security.authentication.success_handler.class: Rottenwood\UtopiaMudBundle\Handler\LoginSuccessHandler
 
 services:
     utopiamud_user.registration.form.type:
@@ -7,6 +8,10 @@ services:
         arguments: [%fos_user.model.user.class%]
         tags:
             - { name: form.type, alias: utopiamud_user_registration }
+    security.authentication.customized_success_handler:
+            class: %security.authentication.success_handler.class%
+            public: false
+            arguments:  [@router, @security.context]
     # Главный командный сервис
     command:
         class:      Rottenwood\UtopiaMudBundle\Service\CommandService
