@@ -2,11 +2,6 @@
 #   Список команд   #
 #####################
 
-#commandtype:
-#    1: talk
-#    2: action
-#    3: skill
-
 commands:
     north:
         type: action
