@@ -18,6 +18,7 @@ class Room {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+//     * @ORM\OneToMany(targetEntity="Player", mappedBy="room")
 
     /**
      * @var string
@@ -32,47 +33,40 @@ class Room {
     private $roomdesc;
 
     /**
-     * @var array
-     * @ORM\Column(name="west", type="simple_array")
+     * @var integer
+     * @ORM\Column(name="west", type="integer")
      */
     private $west;
 
     /**
-     * @var array
-     * @ORM\Column(name="east", type="simple_array")
-     */
-    private $east;
-
-    /**
-     * @var array
-     * @ORM\Column(name="north", type="simple_array")
+     * @var integer
+     * @ORM\Column(name="north", type="integer")
      */
     private $north;
 
     /**
-     * @var array
-     * @ORM\Column(name="south", type="simple_array")
+     * @var integer
+     * @ORM\Column(name="south", type="integer")
      */
     private $south;
 
     /**
-     * @var array
-     * @ORM\Column(name="up", type="simple_array")
+     * @var integer
+     * @ORM\Column(name="east", type="integer")
+     */
+    private $east;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="up", type="integer")
      */
     private $up;
 
     /**
-     * @var array
-     * @ORM\Column(name="down", type="simple_array")
+     * @var integer
+     * @ORM\Column(name="down", type="integer")
      */
     private $down;
-
-    /**
-     * @var array
-     * @ORM\Column(name="flag", type="array")
-     */
-    private $flag;
-
 
     /**
      * Get id
@@ -122,7 +116,7 @@ class Room {
 
     /**
      * Set west
-     * @param array $west
+     * @param integer $west
      * @return Room
      */
     public function setWest($west) {
@@ -133,56 +127,31 @@ class Room {
 
     /**
      * Get west
-     * @return array
+     * @return integer
      */
     public function getWest() {
         return $this->west;
     }
 
-    /**
-     * Set east
-     * @param array $east
-     * @return Room
-     */
-    public function setEast($east) {
-        $this->east = $east;
-
-        return $this;
-    }
-
-    /**
-     * Get east
-     * @return array
-     */
-    public function getEast() {
-        return $this->east;
-    }
-
-    /**
-     * Set north
-     * @param array $north
-     * @return Room
-     */
     public function setNorth($north) {
         $this->north = $north;
 
         return $this;
     }
 
-    /**
-     * Get north
-     * @return array
-     */
     public function getNorth() {
         return $this->north;
     }
 
+
     /**
      * Set south
-     * @param array $south
+     *
+     * @param integer $south
      * @return Room
      */
-    public function setSouth($south) {
+    public function setSouth($south)
+    {
         $this->south = $south;
 
         return $this;
@@ -190,66 +159,58 @@ class Room {
 
     /**
      * Get south
-     * @return array
+     *
+     * @return integer 
      */
-    public function getSouth() {
+    public function getSouth()
+    {
         return $this->south;
     }
 
     /**
-     * Set up
-     * @param array $up
+     * Set east
+     *
+     * @param integer $east
      * @return Room
      */
-    public function setUp($up) {
+    public function setEast($east)
+    {
+        $this->east = $east;
+
+        return $this;
+    }
+
+    /**
+     * Get east
+     *
+     * @return integer 
+     */
+    public function getEast()
+    {
+        return $this->east;
+    }
+
+    public function setUp($up)
+    {
         $this->up = $up;
 
         return $this;
     }
 
-    /**
-     * Get up
-     * @return array
-     */
-    public function getUp() {
+    public function getUp()
+    {
         return $this->up;
     }
 
-    /**
-     * Set down
-     * @param array $down
-     * @return Room
-     */
-    public function setDown($down) {
+    public function setDown($down)
+    {
         $this->down = $down;
 
         return $this;
     }
 
-    /**
-     * Get down
-     * @return array
-     */
-    public function getDown() {
+    public function getDown()
+    {
         return $this->down;
-    }
-
-    /**
-     * Set flag
-     * @param array $flag
-     * @return Room
-     */
-    public function setFlag($flag) {
-        $this->flag = $flag;
-
-        return $this;
-    }
-
-    /**
-     * Get flag
-     * @return array
-     */
-    public function getFlag() {
-        return $this->flag;
     }
 }

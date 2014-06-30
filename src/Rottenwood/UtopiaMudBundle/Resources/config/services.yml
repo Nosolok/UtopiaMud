@@ -19,8 +19,8 @@ services:
     # Сервис команд действия
     commandaction:
         class:      Rottenwood\UtopiaMudBundle\Service\CommandActionService
-        arguments:  [@doctrine.orm.entity_manager]
+        arguments:  [@service_container, @doctrine.orm.entity_manager]
     # Сервис служебных команд
     commandsystem:
-            class:      Rottenwood\UtopiaMudBundle\Service\CommandSystemService
-            arguments:  [@doctrine.orm.entity_manager]
+        class:      Rottenwood\UtopiaMudBundle\Service\CommandSystemService
+        arguments:  [@service_container, @doctrine.orm.entity_manager]

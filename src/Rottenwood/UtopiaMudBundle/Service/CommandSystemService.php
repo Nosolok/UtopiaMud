@@ -8,6 +8,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -16,11 +17,10 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class CommandSystemService {
 
-    protected $em;
-//    protected $kernel;
+    protected $container;
 
-    public function __construct(EntityManager $em) {
-        $this->em = $em;
+    public function __construct(ContainerInterface $container) {
+        $this->container = $container;
     }
 
     // конец (выход)

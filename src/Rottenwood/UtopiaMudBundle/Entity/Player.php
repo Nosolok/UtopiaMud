@@ -45,6 +45,7 @@ class Player extends BaseUser {
     /**
      * Комната в которой находится персонаж
      * @ORM\ManyToOne(targetEntity="Room")
+     * @ORM\JoinColumn(name="room", referencedColumnName="id")
      */
     private $room = 1;
 
@@ -55,16 +56,6 @@ class Player extends BaseUser {
 
     public function setRace($race) {
         $this->race = $race;
-
-        return $this;
-    }
-
-    public function getRaces() {
-        return $this->races;
-    }
-
-    public function setRaces($races) {
-        $this->races = $races;
 
         return $this;
     }
@@ -87,5 +78,15 @@ class Player extends BaseUser {
         $this->sex = $sex;
 
         return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

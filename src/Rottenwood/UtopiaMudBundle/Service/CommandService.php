@@ -4,6 +4,7 @@ namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Kernel;
+//use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -12,6 +13,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class CommandService {
 
+//    protected $user;
     protected $em;
     protected $kernel;
     protected $commandaction;
