@@ -30,21 +30,23 @@ class Player extends BaseUser {
     protected $id;
 
     /**
+     * Раса персонажа
      * @ORM\ManyToOne(targetEntity="Race")
      */
     private $race;
 
     /**
+     * Пол персонажа
      * @var integer
      * @ORM\Column(name="sex", type="integer", length=1)
      */
     private $sex;
 
     /**
-     * @var integer
-     * @ORM\Column(name="room", type="integer", length=255, nullable=true)
+     * Комната в которой находится персонаж
+     * @ORM\ManyToOne(targetEntity="Room")
      */
-    private $room;
+    private $room = 1;
 
 
     public function getRace() {

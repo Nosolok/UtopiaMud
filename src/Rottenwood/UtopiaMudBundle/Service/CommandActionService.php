@@ -19,9 +19,17 @@ class CommandActionService {
 
     // смотреть
     public function look() {
+        $roomname = 1;
+
+//        $roomname = $this->em
+//            ->getRepository('RottenwoodUtopiaMudBundle:Room')
+//            ->find();
+
+        $roomdesc = 1;
+
         $result["message"] = "1:1"; // вы осмотрелись
-        $result["roomnamelook"] = "Тестовая комната";
-        $result["roomdesclook"] = "Приглушенный свет этой тестовой комнаты создает уютную атмосферу.";
+        $result["roomnamelook"] = $roomname;
+        $result["roomdesclook"] = $roomdesc;
         $result["exits"]["n"] = "open";
         $result["exits"]["s"] = "closed";
         return $result;

@@ -30,19 +30,17 @@ class CommandService {
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/config/commands.yml");
         $commands = Yaml::parse(file_get_contents($path));
 
-        // разбитие команды на символы и их подсчет
+        // разбитие команды на символы и их подсчет (хак для русских символов)
         $count = count(preg_split('/(?<!^)(?!$)/u', $command));
         $run = $this->recursive_array_search_substr($command, $commands["commands"], $count);
 
         // проверка существования команды
         if ($run && (method_exists($this->commandaction, $run) OR method_exists($this->commandsystem, $run))) {
             $commandtype = "command" . $commands["commands"][$run]["type"];
-//            $result["command"] = $run;
-//            $result["commandtype"] = $commandtype;
             // если команда - "выход"
             if ($run == "quit") {
             	if (!($run == $command OR $command == "конец")) {
-                    $result["message"] = "0:5:1"; // просьба ввести выход целиком
+                    $result["message"] = "0:5:1"; // просьба ввести команду целиком
                     $result["run"] = $run;
                     $result["command"] = $command;
                     return $result;
