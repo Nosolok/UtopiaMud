@@ -36,6 +36,12 @@ class Player extends BaseUser {
 
     /**
      * @var integer
+     * @ORM\Column(name="sex", type="integer", length=1)
+     */
+    private $sex;
+
+    /**
+     * @var integer
      * @ORM\Column(name="room", type="integer", length=255, nullable=true)
      */
     private $room;
@@ -67,6 +73,16 @@ class Player extends BaseUser {
 
     public function setRoom($room) {
         $this->room = $room;
+
+        return $this;
+    }
+
+    public function getSex() {
+        return $this->sex;
+    }
+
+    public function setSex($sex) {
+        $this->sex = $sex;
 
         return $this;
     }

@@ -18,7 +18,12 @@ class RegistrationFormType extends BaseType {
 
         // add your custom field
         $builder
-
+            ->add('sex','choice',array('label'=>'Пол',
+                                          'multiple'=>false,
+                                          'choices'=>array(1=>'мужской', 2=>'женский'),
+//                                          'attr'=>array('style'=>'width:300px', 'customattr'=>'customdata'),
+                                          'data'=> 1
+            ))
             ->add('race', 'entity', array(
                 'class' => 'Rottenwood\UtopiaMudBundle\Entity\Race',
                 'query_builder' => function(EntityRepository $repository) {

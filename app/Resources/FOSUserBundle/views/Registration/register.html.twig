@@ -95,19 +95,31 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
-                        <div class="span8 offset2 text-justify">
-                            <div class="registrationformreg">
-                                <div id="autoform">
-                                    {#{{ form_widget(form) }}#}
-
-
-                                    {{ form_end(form) }}
-                                </div>
+                        <div class="span3 offset2 text-justify">
+                            <div class="registrationformfield">
+                                Пол
+                            </div>
+                        </div>
+                        <div id="registrationformfield" class="span4 text-justify">
+                            <div class="registrationformfield2">
+                                {{ form_widget(form.sex) }}
                             </div>
                         </div>
                     </div>
+                                    {{ form_end(form) }}
+
+                    {#<div class="row">#}
+                        {#<div class="span8 offset2 text-justify">#}
+                            {#<div class="registrationformreg">#}
+                                {#<div id="autoform">#}
+                                    {#&#123;&#35;{{ form_widget(form) }}&#35;&#125;#}
+
+
+                                {#</div>#}
+                            {#</div>#}
+                        {#</div>#}
+                    {#</div>#}
                     <div id="registerbutton" class="registerbutton">
                         В игру!
                     </div>
