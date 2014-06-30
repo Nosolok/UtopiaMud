@@ -9,9 +9,14 @@ services:
         tags:
             - { name: form.type, alias: utopiamud_user_registration }
     security.authentication.customized_success_handler:
-            class: %security.authentication.success_handler.class%
-            public: false
-            arguments:  [@router, @security.context]
+        class: %security.authentication.success_handler.class%
+        public: false
+        arguments:  [@router, @security.context]
+#    registration_listener:
+#        class: Rottenwood\UtopiaMudBundle\EventListener\RegistrationListener
+#        arguments: [@router]
+#        tags:
+#        - { name: kernel.event_subscriber }
     # Главный командный сервис
     command:
         class:      Rottenwood\UtopiaMudBundle\Service\CommandService

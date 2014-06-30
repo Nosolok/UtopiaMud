@@ -1,0 +1,9 @@
+Rottenwood\UtopiaMudBundle\Entity\Player:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+#        - Callback:
+#            methods:
+#                - [Rottenwood\UtopiaMudBundle\Validator\Validator, isEmailValid]
+    properties:
+        email:
+            - Email: ~

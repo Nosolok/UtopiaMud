@@ -1,6 +1,6 @@
 <?php
 
-namespace Rottenwood\UtopiaMudBundle\Entity;
+namespace Rottenwood\UtopiaMudBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

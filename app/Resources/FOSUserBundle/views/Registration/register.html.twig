@@ -1,5 +1,123 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{#{% extends "RottenwoodUtopiaMudBundle:Default:index.html.twig" %}#}
 
-{% block fos_user_content %}
-{% include "FOSUserBundle:Registration:register_content.html.twig" %}
-{% endblock fos_user_content %}
+
+{% block headjscripts %}
+    <script type="text/javascript" src="{{ asset('assets/js/register.js') }}"></script>
+{% endblock headjscripts %}
+
+{% block styles %}
+    <link type="text/css" href="{{ asset('assets/css/login.css') }}" rel="stylesheet"/>
+    <link type="text/css" href="{{ asset('assets/css/css-reset.css') }}" rel="stylesheet"/>
+    <link type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet"/>
+    <link type="text/css" href="{{ asset('assets/css/bootstrap-responsive.css') }}" rel="stylesheet"/>
+    <link type="text/css" href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+{% endblock styles %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block game %}
+
+    {% block fos_user_content %}
+
+        <div id="form">
+            <form id="registerform" action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }}
+                  method="POST" class="fos_user_registration_register">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="span8 offset2 text-justify">
+                            <div class="registrationformreg">
+                                <h1 class="sitetitle">Утопия</h1>
+
+                                <p class="sitedescription">многопользовательское подземелье</p>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    <div class="row">
+                        <div class="span3 offset2 text-justify">
+                            <div class="registrationformfield">
+                                Имя
+                            </div>
+                        </div>
+                        <div id="registrationformfield" class="span4 text-justify">
+                            <div class="registrationformfield2">
+                                {{ form_widget(form.username) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span3 offset2 text-justify">
+                            <div class="registrationformfield">
+                                E-mail
+                            </div>
+                        </div>
+                        <div id="registrationformfield" class="span4 text-justify">
+                            <div class="registrationformfield2">
+                                {{ form_widget(form.email) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span3 offset2 text-justify">
+                            <div class="registrationformfield">
+                                Пароль
+                            </div>
+                        </div>
+                        <div id="registrationformfield" class="span4 text-justify">
+                            <div class="registrationformfield2">
+                                {{ form_widget(form.plainPassword.first) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span3 offset2 text-justify">
+                            <div class="registrationformfield">
+                                Пароль
+                            </div>
+                        </div>
+                        <div id="registrationformfield" class="span4 text-justify">
+                            <div class="registrationformfield2">
+                                {{ form_widget(form.plainPassword.second) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span3 offset2 text-justify">
+                            <div class="registrationformfield">
+                                Раса
+                            </div>
+                        </div>
+                        <div id="registrationformfield" class="span4 text-justify">
+                            <div class="registrationformfield2">
+                                {{ form_widget(form.race) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="span8 offset2 text-justify">
+                            <div class="registrationformreg">
+                                <div id="autoform">
+                                    {#{{ form_widget(form) }}#}
+
+
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="registerbutton" class="registerbutton">
+                        В игру!
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    {% endblock fos_user_content %}
+
+{% endblock game %}
+
+{% block chat %}{% endblock chat %}

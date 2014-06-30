@@ -1,7 +1,7 @@
 {% extends "RottenwoodUtopiaMudBundle:Default:index.html.twig" %}
 
 {% block headjscripts %}
-
+    <script type="text/javascript" src="{{ asset('assets/js/login.js') }}"></script>
 {% endblock headjscripts %}
 
 {% block styles %}
@@ -9,85 +9,12 @@
     <link type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet"/>
     <link type="text/css" href="{{ asset('assets/css/bootstrap-responsive.css') }}" rel="stylesheet"/>
     <link type="text/css" href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+    <link type="text/css" href="{{ asset('assets/css/login.css') }}" rel="stylesheet"/>
 {% endblock styles %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block game %}
-    <script>
-        $(document).ready(function () {
-            $('#loginformbutton').click(function () {
-                $("#loginform").submit();
-            });
-            $('#registrationformbutton').click(function () {
-//                $('#form').html("test");
-                $.ajax({
-                    url: "register/",
-                    context: document.body,
-                    dataType: "html"
-                }).done(function(data) {
-//                    $( this ).addClass( "done" );
-                    $('#form').html(data);
-                });
-            });
-        });
-    </script>
-
-    <style>
-        .sitetitle {
-            font-size: 50px;
-        }
-
-        .sitedescription {
-            font-size: 20px;
-            color: #808080;
-        }
-
-        .errorbox {
-            text-align: center;
-            color: red;
-            height: 20px;
-        }
-
-        .registrationform {
-            text-align: center;
-            padding: 30px;
-            margin: 50px 0 10px 0;
-        }
-
-        .registrationformlogin {
-            text-align: left;
-            padding: 13px;
-            font-size: 25px;
-            margin: 10px 0 10px 0;
-        }
-
-        .registrationform2 {
-            text-align: center;
-            padding: 5px;
-            font-size: 25px;
-            margin: 10px 0 10px 0;
-        }
-
-        .formbutton {
-            background-color: #191919;
-            text-align: center;
-            padding: 15px;
-            font-size: 25px;
-            margin: 15px 0 10px 0;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .formbutton:hover {
-            background-color: #323232;
-            cursor: pointer;
-        }
-    </style>
 
     {% block fos_user_content %}
 

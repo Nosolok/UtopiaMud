@@ -1,3 +1,7 @@
+#rottenwood_user:
+#    resource: "@RottenwoodUserBundle/Resources/config/routing.yml"
+#    prefix:   /
+
 rottenwood_utopia_mud:
     resource: "@RottenwoodUtopiaMudBundle/Resources/config/routing.yml"
     prefix:   /

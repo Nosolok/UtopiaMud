@@ -1,55 +1,73 @@
 <?php
-
+/**
+ * User: Rottenwood
+ * Date: 29.06.14
+ * Time: 1:52
+ */
 namespace Rottenwood\UtopiaMudBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\Entity
  * @ORM\Table(name="players")
- * @ORM\Entity(repositoryClass="Rottenwood\UtopiaMudBundle\Entity\PlayerRepository")
+ * @ORM\Entity(repositoryClass="Rottenwood\UtopiaMudBundle\Repository\PlayerRepository")
  */
-class Player {
+class Player extends BaseUser {
 
-    /**
-     * @var integer
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var string
-     * @ORM\Column(name="name", type="string", length=25)
-     */
-    private $name;
-
-
-    /**
-     * Get id
-     * @return integer
-     */
-    public function getId() {
-        return $this->id;
+    public function __construct() {
+        parent::__construct();
+        // your own logic
     }
 
     /**
-     * Set name
-     * @param string $name
-     * @return Player
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    public function setName($name) {
-        $this->name = $name;
+    protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Race")
+     */
+    private $race;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="room", type="integer", length=255, nullable=true)
+     */
+    private $room;
+
+
+    public function getRace() {
+        return $this->race;
+    }
+
+    public function setRace($race) {
+        $this->race = $race;
 
         return $this;
     }
 
-    /**
-     * Get name
-     * @return string
-     */
-    public function getName() {
-        return $this->name;
+    public function getRaces() {
+        return $this->races;
     }
 
+    public function setRaces($races) {
+        $this->races = $races;
+
+        return $this;
+    }
+
+    public function getRoom() {
+        return $this->room;
+    }
+
+    public function setRoom($room) {
+        $this->room = $room;
+
+        return $this;
+    }
 }

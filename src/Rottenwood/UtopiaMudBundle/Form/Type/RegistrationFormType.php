@@ -7,6 +7,7 @@
 
 namespace Rottenwood\UtopiaMudBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -16,9 +17,22 @@ class RegistrationFormType extends BaseType {
         parent::buildForm($builder, $options);
 
         // add your custom field
-        $builder->add('name');
+        $builder
+
+            ->add('race', 'entity', array(
+                'class' => 'Rottenwood\UtopiaMudBundle\Entity\Race',
+                'query_builder' => function(EntityRepository $repository) {
+                        return $repository->createQueryBuilder('r')
+                            ->select('r');
+//                            ->where('r.id > 0');
+                    }
+                    ));
     }
 
+    /**
+     * Не менять
+     * @return string
+     */
     public function getName() {
         return 'utopiamud_user_registration';
     }

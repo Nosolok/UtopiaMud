@@ -1,0 +1,97 @@
+.sitetitle {
+    font-size: 50px;
+}
+
+.sitedescription {
+    font-size: 20px;
+    color: #808080;
+}
+
+.errorbox {
+    text-align: center;
+    color: red;
+    height: 20px;
+}
+
+.registrationform {
+    text-align: center;
+    padding: 30px;
+    margin: 50px 0 10px 0;
+}
+
+.registrationformreg {
+    text-align: center;
+    padding: 10px;
+    margin: 0px 0 10px 0;
+}
+
+.registrationformfield {
+    text-align: right;
+    padding: 10px;
+    font-size: 20px;
+    /*margin: 10px 0 10px 0;*/
+}
+
+.registrationformfield2 {
+    text-align: center;
+    padding: 5px;
+    font-size: 25px;
+}
+
+.registrationformlogin {
+    text-align: left;
+    padding: 13px;
+    font-size: 25px;
+    margin: 10px 0 10px 0;
+}
+
+.registrationform2 {
+    text-align: center;
+    padding: 5px;
+    font-size: 25px;
+    margin: 10px 0 10px 0;
+}
+
+.formbutton {
+    background-color: #191919;
+    text-align: center;
+    padding: 15px;
+    font-size: 25px;
+    margin: 15px 0 10px 0;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.formbutton:hover, .registerbutton:hover {
+    background-color: #323232;
+    cursor: pointer;
+}
+
+.registerbutton {
+    background-color: #191919;
+    text-align: center;
+    /*padding: 15px;*/
+    font-size: 25px;
+    margin: 30px auto;
+    padding: 20px;
+    width: 300px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+button, input, select {
+    width: 300px;
+}
+
+/*#autoform label {*/
+    /*background-color: red;*/
+    /*width: 300px; !important*/
+/*}*/
