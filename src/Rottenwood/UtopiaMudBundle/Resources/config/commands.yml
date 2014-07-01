@@ -24,17 +24,17 @@ commands:
         - east
         - восток
     up:
-            type: action
-            alias:
-            - up
-            - вверх
-            - наверх
+        type: action
+        alias:
+        - up
+        - вверх
+        - наверх
     down:
-            type: action
-            alias:
-            - down
-            - вниз
-            - низ
+        type: action
+        alias:
+        - down
+        - вниз
+        - низ
     look:
         type: action
         alias:
