@@ -13,7 +13,7 @@ app/config/parameters.ini
 app/config/parameters.yml
 
 # Composer
-composer.phar
+#composer.phar
 
 # PhpStorm
 /.idea/
