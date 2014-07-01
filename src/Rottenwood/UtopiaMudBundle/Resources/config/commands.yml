@@ -46,3 +46,8 @@ commands:
         alias:
         - quit
         - конец
+    format:
+        type: system
+        alias:
+        - format
+        - формат

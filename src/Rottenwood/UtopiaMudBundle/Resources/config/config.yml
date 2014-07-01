@@ -1,2 +1,2 @@
-mud:
-    testparameter: test
+parameters:
+    zones: test

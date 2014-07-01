@@ -22,7 +22,25 @@ class Room {
 
     /**
      * @var string
-     * @ORM\Column(name="name", type="string", length=25)
+     * @ORM\Column(name="zone", type="string", length=25)
+     */
+    private $zone;
+
+    /**
+     * @var string
+     * @ORM\Column(name="anchor", type="string", length=30)
+     */
+    private $anchor;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="type", type="integer", length=3)
+     */
+    private $type;
+
+    /**
+     * @var string
+     * @ORM\Column(name="name", type="string", length=30)
      */
     private $name;
 
@@ -212,5 +230,74 @@ class Room {
     public function getDown()
     {
         return $this->down;
+    }
+
+    /**
+     * Set zone
+     *
+     * @param string $zone
+     * @return Room
+     */
+    public function setZone($zone)
+    {
+        $this->zone = $zone;
+
+        return $this;
+    }
+
+    /**
+     * Get zone
+     *
+     * @return string 
+     */
+    public function getZone()
+    {
+        return $this->zone;
+    }
+
+    /**
+     * Set anchor
+     *
+     * @param string $anchor
+     * @return Room
+     */
+    public function setAnchor($anchor)
+    {
+        $this->anchor = $anchor;
+
+        return $this;
+    }
+
+    /**
+     * Get anchor
+     *
+     * @return string 
+     */
+    public function getAnchor()
+    {
+        return $this->anchor;
+    }
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     * @return Room
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }
