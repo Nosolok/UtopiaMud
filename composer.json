@@ -1,10 +1,34 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
+    "name": "rottenwood/utopiamud",
+    "description": "Web-based PHP MUD Engine",
+    "version": "0.0.1-dev",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "keywords": ["mud", "rpg", "game", "mmorpg", "roguelike", "text game"],
+    "homepage": "https://github.com/Rottenwood/UtopiaMud",
+    "time": "2014-07-26",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Petr Karmashev",
+            "nickname": "Rottenwood",
+            "email": "petr@quank.org",
+            "role": "Lead Developer"
+        },
+    ],
+    "support": {
+        "email": "petr@quank.org",
+        "issues": "https://github.com/Rottenwood/UtopiaMud/issues",
+        "forum": "https://github.com/Rottenwood/UtopiaMud/issues",
+        "wiki": "https://github.com/Rottenwood/UtopiaMud/wiki",
+        "irc": "na",
+        "source": "https://github.com/Rottenwood/UtopiaMud"
+    },
     "autoload": {
-        "psr-0": { "": "src/", "SymfonyStandard": "app/" }
+        "psr-0": {
+            "": "src/",
+            "SymfonyStandard": "app/",
+            "WebSocket": "server"
+        }
     },
     "require": {
         "php": ">=5.3.3",
@@ -18,7 +42,8 @@
         "sensio/distribution-bundle": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
-        "friendsofsymfony/user-bundle": "~2.0@dev"
+        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "cboden/ratchet": "0.3.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
