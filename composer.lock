@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "2178516e9d285d92bdcf1091b63d9f22",
+    "hash": "e131393bddadcd2c3cc4687f79a608e0",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -797,6 +797,58 @@
                 "sql"
             ],
             "time": "2014-01-12 16:20:24"
+        },
+        {
+            "name": "kakserpom/phpdaemon",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kakserpom/phpdaemon.git",
+                "reference": "7bd7900047afec86d3f054c7e9d6416450c8c1c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kakserpom/phpdaemon/zipball/7bd7900047afec86d3f054c7e9d6416450c8c1c0",
+                "reference": "7bd7900047afec86d3f054c7e9d6416450c8c1c0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-event": ">=1.6.0",
+                "ext-pcntl": "*",
+                "ext-shmop": "*",
+                "ext-sockets": "*",
+                "php": ">=5.4"
+            },
+            "bin": [
+                "bin/phpd"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPDaemon": ""
+                },
+                "files": [
+                    "PHPDaemon/Utils/func.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Vasily Zorin",
+                    "email": "phpdaemon@googlegroups.com",
+                    "homepage": "http://daemon.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Asynchronous server-side framework for Web and network applications implemented in PHP using libevent. phpDaemon can handle thousands of simultaneous connections.",
+            "homepage": "https://github.com/kakserpom/phpdaemon",
+            "keywords": [
+                "phpdaemon"
+            ],
+            "time": "2014-07-01 11:37:33"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1655,7 +1707,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "friendsofsymfony/user-bundle": 20
+        "friendsofsymfony/user-bundle": 20,
+        "kakserpom/phpdaemon": 20
     },
     "platform": {
         "php": ">=5.3.3"
