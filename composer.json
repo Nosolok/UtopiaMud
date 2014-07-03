@@ -9,18 +9,16 @@
     "license": "GPL-2.0",
     "authors": [
         {
-            "name": "Petr Karmashev",
-            "nickname": "Rottenwood",
+            "name": "Petr Karmashev, Rottenwood",
             "email": "petr@quank.org",
             "role": "Lead Developer"
-        },
+        }
     ],
     "support": {
         "email": "petr@quank.org",
         "issues": "https://github.com/Rottenwood/UtopiaMud/issues",
         "forum": "https://github.com/Rottenwood/UtopiaMud/issues",
         "wiki": "https://github.com/Rottenwood/UtopiaMud/wiki",
-        "irc": "na",
         "source": "https://github.com/Rottenwood/UtopiaMud"
     },
     "autoload": {
