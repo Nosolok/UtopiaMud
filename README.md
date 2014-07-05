@@ -3,7 +3,8 @@
 
 [Wiki](https://github.com/Rottenwood/UtopiaMud/wiki) | [Ссылка на GoogleDocs](https://drive.google
 .com/folderview?id=0B4iRVGZoxmySTm5oZHhLZHVPYWs&usp=sharing) |
-[Доска Trello](https://trello.com/b/dYc2L9lX/mud)
+[Доска Trello](https://trello.com/b/dYc2L9lX/mud) | [Легкая версия ролевых правил GURPS](https://cloud.mail
+.ru/public/47c25a67bed8/gurps-rules-lite.pdf)
 
 > MUD (Multi User Dungeon) — текстовая многопользовательская компьютерная игра, в которой присутствуют элементы ролевой игры, приключений, боевой системы и обязательно чат, как правило разделённый на каналы. Традиционно для передачи сообщений используется протокол telnet.
 

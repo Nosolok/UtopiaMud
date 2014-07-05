@@ -41,7 +41,8 @@
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
-        "cboden/ratchet": "0.3.*"
+        "ratchet/pawl": "dev-master",
+        "voryx/thruway": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
