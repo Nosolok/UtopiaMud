@@ -7,13 +7,12 @@ $(document).ready(function () {
     var chat = $('#chatinput');
     var game = $('#game');
     connection.onopen = function (session) {
-        console.log("Соединение установлено.");
+        console.log("Соединение установлено");
 
         // Подписка на канал системных данных
         function onevent(args) {
             game.append('<p>' + args[0] + '</p>');
             console.log(args);
-//            render(args[0]);
         }
 
         session.subscribe('system.channel', onevent);
@@ -23,8 +22,9 @@ $(document).ready(function () {
         // Подписка на личный канал
         session.subscribe('personal.' + hash, function (data) {
             console.log(data);
+            console.log(data["message"]);
+            render(data);
         });
-
 
         $('#chatform').submit(function (event) {
             event.preventDefault();
@@ -32,7 +32,7 @@ $(document).ready(function () {
 
             // Очистка чата
             chat.val('');
-            session.publish('personal.' + hash, ['CMD',lastcommand]);
+            session.publish('personal.' + hash, ['CMD', lastcommand]);
             // Эхо введенной команды
             game.append("<span class='command'>" + lastcommand + "</span><br>");
         });
@@ -52,23 +52,32 @@ $(document).ready(function () {
     connection.open();
 
     // Удержание фокуса на поле ввода
-    var el = document.getElementById('game');
+    var el = document.getElementById('game');   // почему-то с jQuery не работает
     chat.focus();
     el.onmouseup = function () {
         setTimeout(function () {
             chat.focus();
         });
     };
+
 });
+
+// Скроллинг чата вниз
+function scroll() {
+    game.scrollTop = game.scrollHeight;
+}
 
 // Обработка входящей информации
 function render(data) {
-    console.log("Входные данные для рендера: " + data);
+    console.log("Входные данные для рендера:");
+    console.log(data);
 
     //*** ответ от сервера: ошибки
     if (data['message'] == "0:1") {
         $('#game').append("<br><span class='plaintext'>Команда не найдена!</span><br><br>");
     }
+
+    scroll();
 }
 
 // Обработка пользовательского ввода и ответа от сервера

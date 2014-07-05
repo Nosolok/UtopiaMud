@@ -72,15 +72,17 @@ $connection->on('open', function (ClientSession $session) use ($connection) {
         $clients = new Clients();
 
 
+
+
         // Подписка на канал данных и коллбэк при их получении
-        $session->subscribe('system.channel', function ($args) use ($session, $clients) {
+        $session->subscribe('system.channel', function ($args) use ($session, $clients, $personalChannel) {
 
             echo "Данные: {$args[0]}\n";
 
             // Если пришел хэш доступа
             if (strpos($args[0], 'HASH:::') !== false) {
                 $hash = substr($args[0], 7);
-                // Проверяю его на уникальность
+                // Проверка хэша на уникальность
                 if ($clients->clientIsUnique($hash)) {
                     // Если хэш уже присутствует
                     echo "Переподключение хэша: \033[0;33m", $hash, "\033[m\n";
@@ -90,9 +92,22 @@ $connection->on('open', function (ClientSession $session) use ($connection) {
                     $clients->add($hash);
                     // Подключение к каналу пользователя
                     $channel = 'personal.' . $hash;
-                    $session->subscribe($channel, function ($argss) use ($hash) {
+
+                    // Обработка персонального канала данных пользователя
+                    $personalChannel = function ($argss) use ($hash, $session, $channel) {
                         echo "\033[0;37m{$hash} \033[1;34m[{$argss[0]}]\033[0;37m {$argss[1]}\033[m\n";
-                    });
+                        // Если пришла команда
+                        if ($argss[0] == "CMD") {
+                            echo "Command get!!\n";
+                            $session->publish($channel, ["message" => "0:1"]);
+                        } else {
+                            echo "\033[1;31m[Ошибка]\033[m Запрос не распознан!\n";
+                        }
+                    };
+
+                    // Подписка на персональный канал данных пользователя
+                    $session->subscribe($channel, $personalChannel);
+
                 };
             };
 
