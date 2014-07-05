@@ -3,50 +3,36 @@
  */
 
 $(document).ready(function () {
-    var connection = new autobahn.Connection({url: 'ws://127.0.0.1:6661/', realm: 'realm1'});
+    var connection = new autobahn.Connection({url: 'ws://127.0.0.1:6661/', realm: 'utopia'});
     var chat = $('#chatinput');
     var game = $('#game');
     connection.onopen = function (session) {
         console.log("Соединение установлено.");
 
-        // Подписка на канал данных
+        // Подписка на канал системных данных
         function onevent(args) {
             game.append('<p>' + args[0] + '</p>');
             console.log(args);
-//            processData(args[0]);
+//            render(args[0]);
         }
 
         session.subscribe('system.channel', onevent);
-
-        // Публикация в канал данных
-//        session.publish('test.channel', ['HASH:::' + hash]);
+        // отправка хэша
+        session.publish('system.channel', ['HASH:::' + hash]);
 
         // Подписка на личный канал
         session.subscribe('personal.' + hash, function (data) {
             console.log(data);
         });
 
-        session.publish('system.channel', ['HASH:::' + hash]);
-
-//        // Выполнение функции на удаленной стороне
-//        session.call('server.createchannel', [hash]).then(
-//        function (res) {
-//             console.log("Result:", res);
-//        });
 
         $('#chatform').submit(function (event) {
             event.preventDefault();
             var lastcommand = chat.val();
 
-//            var data = {
-//                message: "0:1",
-//                firstname: "Василий",
-//                middlename: "Петрович"
-//            }
-
             // Очистка чата
             chat.val('');
-            session.publish('personal.' + hash, [lastcommand]);
+            session.publish('personal.' + hash, ['CMD',lastcommand]);
             // Эхо введенной команды
             game.append("<span class='command'>" + lastcommand + "</span><br>");
         });
@@ -74,6 +60,16 @@ $(document).ready(function () {
         });
     };
 });
+
+// Обработка входящей информации
+function render(data) {
+    console.log("Входные данные для рендера: " + data);
+
+    //*** ответ от сервера: ошибки
+    if (data['message'] == "0:1") {
+        $('#game').append("<br><span class='plaintext'>Команда не найдена!</span><br><br>");
+    }
+}
 
 // Обработка пользовательского ввода и ответа от сервера
 function processData(data) {

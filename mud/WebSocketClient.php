@@ -15,6 +15,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 // Класс для хранения списка подключенных игроков
 //TODO: переместить класс в отдельный файл
 class Clients {
+
     public $clients = array();
 
     public function add($client) {
@@ -24,14 +25,34 @@ class Clients {
     public function clientIsUnique($client) {
 
         if (in_array($client, $this->clients)) {
-            echo "YES \n";
             return true;
         } else {
-            echo "NO \n";
             return false;
         }
     }
 }
+
+/// Консольные цвета
+$color = array(
+    "red"    => "\033[0;31m",
+    "lred"   => "\033[1;31m",
+    "green"  => "\033[0;32m",
+    "lgreen" => "\033[1;32m",
+    "blue"   => "\033[0;34m",
+    "lblue"  => "\033[1;34m",
+    "yellow"  => "\033[0;33m",
+    "lyellow"  => "\033[1;33m",
+    "white"  => "\033[1;37m",
+    "cyan"  => "\033[0;36m",
+    "lcyan"  => "\033[1;36m",
+    "mag"  => "\033[0;35m'",
+    "lmag"  => "\033[1;35m",
+    "gray"  => "\033[0;37m",
+    "dgray"  => "\033[1;30m",
+    "normal" => "\033[m"
+);
+
+///
 
 $onClose = function ($msg) {
     echo $msg;
@@ -39,7 +60,7 @@ $onClose = function ($msg) {
 
 $connection = new Connection(
     array(
-        "realm"   => 'realm1',
+        "realm"   => 'utopia',
         "onClose" => $onClose,
         "url"     => 'ws://127.0.0.1:6661',
     )
@@ -62,15 +83,15 @@ $connection->on('open', function (ClientSession $session) use ($connection) {
                 // Проверяю его на уникальность
                 if ($clients->clientIsUnique($hash)) {
                     // Если хэш уже присутствует
-                    echo 'Переподключение хэша: ', $hash, "\n";
+                    echo "Переподключение хэша: \033[0;33m", $hash, "\033[m\n";
                 } else {
                     // Если хэш отсутствует
-                    echo 'Зарегистрирован новый хэш: ', $hash, "\n";
+                    echo "Зарегистрирован новый хэш: \033[1;33m", $hash, "\033[m\n";
                     $clients->add($hash);
                     // Подключение к каналу пользователя
                     $channel = 'personal.' . $hash;
                     $session->subscribe($channel, function ($argss) use ($hash) {
-                        echo "Личные данные: [{$hash}] {$argss[0]}\n";
+                        echo "\033[0;37m{$hash} \033[1;34m[{$argss[0]}]\033[0;37m {$argss[1]}\033[m\n";
                     });
                 };
             };
@@ -82,10 +103,14 @@ $connection->on('open', function (ClientSession $session) use ($connection) {
         // Публикация в канал данных
         $session->publish('system.channel', array('Сервер перезагружен.'), [], ["acknowledge" => true])->then(
             function () {
-                echo "Данные отправлены!\n";
+                echo "\n     \033[1;30m>==<   \033[1;31mУтопия   \033[1;30m>==<\n\n";
+                echo "     \033[1;30m    www.utopia.ml\n";
+                echo "     \033[1;30m     Rottenwood\n";
+                echo "     \033[1;30m        2014\n\n";
+                echo "     \033[1;30m====================\033[m\n\n";
             },
             function ($error) {
-                echo "Ошибка отправки данных: {$error}\n";
+                echo "\033[1;31mОшибка отправки данных: {$error}\033[m\n";
             }
         );
 
