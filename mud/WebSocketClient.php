@@ -6,6 +6,7 @@
 
 //TODO: сделать запуск сервера отдельной симфони-командой
 
+use Rottenwood\UtopiaMudBundle\Server;
 use Thruway\ClientSession;
 use Thruway\Connection;
 
@@ -25,38 +26,40 @@ $connection = new Connection(
 
 $connection->on('open', function (ClientSession $session) {
 
-        // 1) subscribe to a topic
-        $onevent = function ($args) {
-            echo "Event {$args[0]}\n";
-        };
-        $session->subscribe('test.channel', $onevent);
+        // Подписка на канал данных и коллбэк при их получении
+        $session->subscribe('test.channel', function ($args) {
+            echo "Данные: {$args[0]}\n";
 
-        // 2) publish an event
-        $session->publish('test.channel', array('Hello, world from PHP!!!'), [], ["acknowledge" => true])->then(
+        });
+
+        // Публикация в канал данных
+        $session->publish('test.channel', array('Сервер перезагружен.'), [], ["acknowledge" => true])->then(
             function () {
-                echo "Publish Acknowledged!\n";
+                echo "Данные отправлены!\n";
             },
             function ($error) {
-                // publish failed
-                echo "Publish Error {$error}\n";
+                echo "Ошибка отправки данных: {$error}\n";
             }
         );
 
-        // 3) register a procedure for remoting
-        $add2 = function ($args) {
-            return $args[0] + $args[1];
-        };
-        $session->register('server.add', $add2);
+        // Создание нового канала для каждого игрока
+        
 
-        // 4) call a remote procedure
-        $session->call('server.add', array(2, 3))->then(
-            function ($res) {
-                echo "Result: {$res}\n";
-            },
-            function ($error) {
-                echo "Call Error: {$error}\n";
-            }
-        );
+//        // Назначение функции для удаленного выполнение
+//        $add2 = function ($args) {
+//            return $args[0] + $args[1];
+//        };
+//        $session->register('server.add', $add2);
+//
+//        // Выполнение функции на удаленной стороне (клиенте)
+//        $session->call('server.add', array(2, 3))->then(
+//            function ($res) {
+//                echo "Удаленный вызов: {$res}\n";
+//            },
+//            function ($error) {
+//                echo "Ошибка удаленного вызова: {$error}\n";
+//            }
+//        );
     }
 
 );

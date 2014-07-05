@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d93129f408b17ddf2d9ce4bbb01da6bc",
+    "hash": "bf2909eb32665165b61dd4674330ce17",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -1604,6 +1604,53 @@
             "time": "2014-03-30 17:19:02"
         },
         {
+            "name": "rottenwood/thruwayrus",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Rottenwood/Thruway.git",
+                "reference": "82f29539cba1fb3f56707a9ec64493d5f5cca40a"
+            },
+            "require": {
+                "cboden/ratchet": "0.3.*",
+                "php": ">=5.4",
+                "ratchet/pawl": "dev-master",
+                "react/socket": "0.4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Thruway": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bonneau",
+                    "email": "matt@bonneau.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "David Dan",
+                    "email": "davidwdan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP WAMP2 library",
+            "keywords": [
+                "Autobahn",
+                "Client",
+                "Server",
+                "Sockets",
+                "WAMP",
+                "WAMP2",
+                "WebSockets"
+            ],
+            "time": "2014-07-05 13:36:09"
+        },
+        {
             "name": "sensio/distribution-bundle",
             "version": "v3.0.1",
             "target-dir": "Sensio/Bundle/DistributionBundle",
@@ -2169,16 +2216,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.15.1",
+            "version": "v1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed"
+                "reference": "8ce37115802e257a984a82d38254884085060024"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/1fb5784662f438d7d96a541e305e28b812e2eeed",
-                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/8ce37115802e257a984a82d38254884085060024",
+                "reference": "8ce37115802e257a984a82d38254884085060024",
                 "shasum": ""
             },
             "require": {
@@ -2187,7 +2234,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.15-dev"
+                    "dev-master": "1.16-dev"
                 }
             },
             "autoload": {
@@ -2222,61 +2269,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-02-13 10:19:29"
-        },
-        {
-            "name": "voryx/thruway",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/voryx/Thruway.git",
-                "reference": "adf290d6eb1994a56415e26e9e2cf4999acd59b5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/voryx/Thruway/zipball/adf290d6eb1994a56415e26e9e2cf4999acd59b5",
-                "reference": "adf290d6eb1994a56415e26e9e2cf4999acd59b5",
-                "shasum": ""
-            },
-            "require": {
-                "cboden/ratchet": "0.3.*",
-                "php": ">=5.4",
-                "ratchet/pawl": "dev-master",
-                "react/socket": "0.4.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Thruway": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Matt Bonneau",
-                    "email": "matt@bonneau.net",
-                    "role": "Developer"
-                },
-                {
-                    "name": "David Dan",
-                    "email": "davidwdan@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP WAMP2 library",
-            "keywords": [
-                "Autobahn",
-                "WAMP",
-                "WAMP2",
-                "WebSockets",
-                "client",
-                "server",
-                "sockets"
-            ],
-            "time": "2014-06-22 02:54:20"
+            "time": "2014-07-05 12:19:05"
         }
     ],
     "packages-dev": [
@@ -2338,7 +2331,7 @@
     "stability-flags": {
         "friendsofsymfony/user-bundle": 20,
         "ratchet/pawl": 20,
-        "voryx/thruway": 20
+        "rottenwood/thruwayrus": 20
     },
     "platform": {
         "php": ">=5.3.3"

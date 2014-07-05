@@ -10,7 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller {
 
     public function indexAction() {
-        return $this->render('RottenwoodUtopiaMudBundle:Default:index.html.twig');
+        $session = $this->get('session')->getId();
+
+        $data = array();
+        $data['hash'] = $session;
+
+        return $this->render('RottenwoodUtopiaMudBundle:Default:index.html.twig', $data);
     }
 
     /**
