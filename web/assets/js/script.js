@@ -16,10 +16,23 @@ $(document).ready(function () {
 //            processData(args[0]);
         }
 
-        session.subscribe('test.channel', onevent);
+        session.subscribe('system.channel', onevent);
 
         // Публикация в канал данных
-        session.publish('test.channel', ['HASH:::' + hash]);
+//        session.publish('test.channel', ['HASH:::' + hash]);
+
+        // Подписка на личный канал
+        session.subscribe('personal.' + hash, function (data) {
+            console.log(data);
+        });
+
+        session.publish('system.channel', ['HASH:::' + hash]);
+
+//        // Выполнение функции на удаленной стороне
+//        session.call('server.createchannel', [hash]).then(
+//        function (res) {
+//             console.log("Result:", res);
+//        });
 
         $('#chatform').submit(function (event) {
             event.preventDefault();
@@ -31,10 +44,9 @@ $(document).ready(function () {
 //                middlename: "Петрович"
 //            }
 
-
             // Очистка чата
             chat.val('');
-            session.publish('test.channel', [lastcommand]);
+            session.publish('personal.' + hash, [lastcommand]);
             // Эхо введенной команды
             game.append("<span class='command'>" + lastcommand + "</span><br>");
         });
