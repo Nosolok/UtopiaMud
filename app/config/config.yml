@@ -9,9 +9,9 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    form:
-        session:
-            name: UTOPIAMUD
+    form: ~
+    session:
+        name: "UTOPIAMUD"
     csrf_protection: ~
     validation:      { enable_annotations: true }
     templating:
