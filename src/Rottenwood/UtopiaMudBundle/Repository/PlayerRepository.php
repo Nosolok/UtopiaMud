@@ -11,5 +11,39 @@ use Doctrine\ORM\EntityRepository;
  */
 class PlayerRepository extends EntityRepository {
 
+    /**
+     * Сохраняет токен сессии в объект Player
+     * @param $id
+     * @param $hash
+     * @return mixed
+     */
+    public function saveHash($id, $hash) {
+        $querybuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $querybuilder->update('RottenwoodUtopiaMudBundle:Player', 'p')
+            ->set('p.hash', '?1')
+            ->where('p.id = ?2')
+            ->setParameter(1, $hash)
+            ->setParameter(2, $id)
+            ->getQuery();
+        $result = $query->execute();
+
+        return $result;
+    }
+
+    /**
+     * Возвращает игрока по последнему токену его сессии
+     * @param $hash
+     * @return int
+     */
+    public function getByHash($hash) {
+        $query = $this->getEntityManager()->createQuery('SELECT p FROM RottenwoodUtopiaMudBundle:Player p WHERE p
+        .hash LIKE :hash');
+        $query->setParameter('hash', '%' . $hash . '%');
+        $result = $query->getResult();
+
+        return $result;
+    }
+
+
 
 }

@@ -43,6 +43,13 @@ class Player extends BaseUser {
     private $sex;
 
     /**
+     * Последний токен персонажа
+     * @var string
+     * @ORM\Column(name="hash", type="string", length=26)
+     */
+    private $hash;
+
+    /**
      * Комната в которой находится персонаж
      * @ORM\ManyToOne(targetEntity="Room")
      * @ORM\JoinColumn(name="room", referencedColumnName="id")
@@ -88,5 +95,28 @@ class Player extends BaseUser {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set hash
+     *
+     * @param string $hash
+     * @return Player
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * Get hash
+     *
+     * @return string 
+     */
+    public function getHash()
+    {
+        return $this->hash;
     }
 }

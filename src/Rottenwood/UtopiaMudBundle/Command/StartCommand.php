@@ -57,7 +57,12 @@ class StartCommand extends ContainerAwareCommand {
                     } else {
                         // Если хэш отсутствует
                         echo "Зарегистрирован новый хэш: \033[1;33m", $hash, "\033[m\n";
+
+//                        $char = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository
+//                            ('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
+
                         $clients->add($hash);
+
                         // Подключение к каналу пользователя
                         $channel = 'personal.' . $hash;
 
