@@ -42,7 +42,6 @@ class StartCommand extends ContainerAwareCommand {
             // Создаю коллекцию подписчиков
             $clients = new Entity\DataChannel();
 
-
             // Подписка на канал данных и коллбэк при их получении
             $session->subscribe('system.channel', function ($args) use ($session, $clients, $personalChannel) {
 

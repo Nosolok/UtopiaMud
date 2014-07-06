@@ -1,6 +1,8 @@
 <?php
 
 namespace Rottenwood\UtopiaMudBundle\Service;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Сервис обработки введенных пользователем команд
@@ -14,14 +16,46 @@ class NewCommandService {
     protected $commandaction;
     protected $commandsystem;
 
-    public function __construct() {
+    private $newCommandActionService;
 
+    public function __construct(Kernel $kernel, NewCommandActionService $commandaction,
+                                NewCommandSystemService $commandsystem) {
+        $this->kernel = $kernel;
+        $this->commandaction = $commandaction;
+        $this->commandsystem = $commandsystem;
     }
 
     public function execute($command) {
+        // парсинг файла со списком внутриигровых команд
+        $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/config/commands.yml");
+        $commands = Yaml::parse(file_get_contents($path));
 
-        $result["message"] = "0:1"; // команда не найдена
+        // разбитие команды на символы и их подсчет (хак для русских символов)
+        $count = count(preg_split('/(?<!^)(?!$)/u', $command));
+        $run = $this->recursive_array_search_substr($command, $commands["commands"], $count);
 
+        // проверка существования команды
+        if ($run && (method_exists($this->commandaction, $run) OR method_exists($this->commandsystem, $run) )) {
+//        if ($run && (method_exists($this->commandaction, $run) OR method_exists($this->commandsystem, $run))) {
+            $commandtype = "command" . $commands["commands"][$run]["type"];
+            // если команда - "выход"
+            if ($run == "quit") {
+                if (!($run == $command OR $command == "конец")) {
+                    $result["message"] = "0:5:1"; // просьба ввести команду целиком
+                    $result["run"] = $run;
+                    $result["command"] = $command;
+                    return $result;
+                }
+            }
+            // запуск команды
+            $result = $this->{$commandtype}->$run();
+        } else {
+            $result["message"] = "0:1"; // команда не найдена
+        }
+
+//        $result["message"] = "0:1"; // команда не найдена
+
+//        $result = $run;
 
         return $result;
     }

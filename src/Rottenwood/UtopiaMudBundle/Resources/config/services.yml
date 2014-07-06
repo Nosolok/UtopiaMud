@@ -12,19 +12,29 @@ services:
         class: %security.authentication.success_handler.class%
         public: false
         arguments:  [@router, @security.context]
-    # Главный командный сервис
-    command:
-        class:      Rottenwood\UtopiaMudBundle\Service\CommandService
-        arguments:  [@doctrine.orm.entity_manager, @kernel, @commandaction, @commandsystem]
-    # Сервис команд действия
-    commandaction:
-        class:      Rottenwood\UtopiaMudBundle\Service\CommandActionService
-        arguments:  [@service_container, @doctrine.orm.entity_manager]
-    # Сервис служебных команд
-    commandsystem:
-        class:      Rottenwood\UtopiaMudBundle\Service\CommandSystemService
-        arguments:  [@service_container, @kernel, @doctrine.orm.entity_manager]
+#    # Главный командный сервис
+#    command:
+#        class:      Rottenwood\UtopiaMudBundle\Service\CommandService
+#        arguments:  [@doctrine.orm.entity_manager, @kernel, @commandaction, @commandsystem]
+#    # Сервис команд действия
+#    commandaction:
+#        class:      Rottenwood\UtopiaMudBundle\Service\CommandActionService
+#        arguments:  [@service_container, @doctrine.orm.entity_manager]
+#    # Сервис служебных команд
+#    commandsystem:
+#        class:      Rottenwood\UtopiaMudBundle\Service\CommandSystemService
+#        arguments:  [@service_container, @kernel, @doctrine.orm.entity_manager]
+
     # Команды для вебсокетов
+    # Главный командный сервис
     newcommand:
         class:  Rottenwood\UtopiaMudBundle\Service\NewCommandService
-        arguments:  [@kernel, @doctrine.orm.entity_manager]
+        arguments:  [@kernel, @newcommandaction, @newcommandsystem]
+    # Сервис команд действия
+    newcommandaction:
+        class:  Rottenwood\UtopiaMudBundle\Service\NewCommandActionService
+        arguments:  []
+    # Сервис служебных команд
+    newcommandsystem:
+            class:  Rottenwood\UtopiaMudBundle\Service\NewCommandSystemService
+            arguments:  [@kernel]
