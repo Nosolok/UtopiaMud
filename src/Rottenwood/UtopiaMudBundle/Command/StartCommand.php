@@ -13,26 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Thruway\ClientSession;
 use Thruway\Connection;
-
-// Класс для хранения списка подключенных игроков
-//TODO: переместить класс в отдельный файл
-class Clients {
-
-    public $clients = array();
-
-    public function add($client) {
-        $this->clients[] = $client;
-    }
-
-    public function clientIsUnique($client) {
-
-        if (in_array($client, $this->clients)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
+use Rottenwood\UtopiaMudBundle\Entity;
 
 class StartCommand extends ContainerAwareCommand {
 
@@ -59,7 +40,7 @@ class StartCommand extends ContainerAwareCommand {
         $connection->on('open', function (ClientSession $session) use ($connection) {
 
             // Создаю коллекцию подписчиков
-            $clients = new Clients();
+            $clients = new Entity\DataChannel();
 
 
             // Подписка на канал данных и коллбэк при их получении
