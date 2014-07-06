@@ -1,7 +1,8 @@
 # Утопия
 ## Современный веб-движок для MUD
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/a6196715-eb57-4447-a423-71127f7ed827/big.png)](https://insight.sensiolabs.com/projects/a6196715-eb57-4447-a423-71127f7ed827)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/a6196715-eb57-4447-a423-71127f7ed827/big.png)]
+(https://insight.sensiolabs.com/projects/a6196715-eb57-4447-a423-71127f7ed827) Качество кода: [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Rottenwood/UtopiaMud/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Rottenwood/UtopiaMud/?branch=master)
 
 [Wiki](https://github.com/Rottenwood/UtopiaMud/wiki) | [Легкая версия ролевых правил GURPS](https://cloud.mail.ru/public/47c25a67bed8/gurps-rules-lite.pdf)
 
