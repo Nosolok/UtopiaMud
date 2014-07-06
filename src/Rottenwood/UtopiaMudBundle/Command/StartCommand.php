@@ -67,7 +67,7 @@ class StartCommand extends ContainerAwareCommand {
                             // Если пришла команда
                             if ($argss[0] == "CMD") {
                                 $result = $this->getContainer()->get('newcommand')->execute($argss[1]);
-                                var_dump($result);
+//                                var_dump($result);
                                 $session->publish($channel, $result);
                             } else {
                                 echo "\033[1;31m[Ошибка]\033[m Запрос не распознан!\n";
