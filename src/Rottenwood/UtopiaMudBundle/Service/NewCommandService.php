@@ -36,11 +36,10 @@ class NewCommandService {
 
         // проверка существования команды
         if ($run && (method_exists($this->commandaction, $run) || method_exists($this->commandsystem, $run) )) {
-//        if ($run && (method_exists($this->commandaction, $run) OR method_exists($this->commandsystem, $run))) {
             $commandtype = "command" . $commands["commands"][$run]["type"];
             // если команда - "выход"
             if ($run == "quit") {
-                if (!($run == $command OR $command == "конец")) {
+                if (!($run == $command || $command == "конец")) {
                     $result["message"] = "0:5:1"; // просьба ввести команду целиком
                     $result["run"] = $run;
                     $result["command"] = $command;
@@ -74,7 +73,7 @@ class NewCommandService {
                 $value = mb_substr($value, 0, $substr, "utf-8");
             }
             $current_key = $key;
-            if ($needle === $value OR (is_array($value) && $this->recursive_array_search_substr
+            if ($needle === $value || (is_array($value) && $this->recursive_array_search_substr
                         ($needle, $value, $substr) !== false)
             ) {
                 return $current_key;
