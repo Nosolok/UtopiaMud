@@ -35,7 +35,7 @@ class NewCommandService {
         $run = $this->recursive_array_search_substr($command, $commands["commands"], $count);
 
         // проверка существования команды
-        if ($run && (method_exists($this->commandaction, $run) OR method_exists($this->commandsystem, $run) )) {
+        if ($run && (method_exists($this->commandaction, $run) || method_exists($this->commandsystem, $run) )) {
 //        if ($run && (method_exists($this->commandaction, $run) OR method_exists($this->commandsystem, $run))) {
             $commandtype = "command" . $commands["commands"][$run]["type"];
             // если команда - "выход"
