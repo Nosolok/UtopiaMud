@@ -38,8 +38,9 @@ class NewCommandActionService {
     public function techCheckRoom($exit) {
         // если выхода в той стороне нет
         if ($exit == "null") {
-            $result["message"] = "0:3"; // нет выхода
 
+            $result = array();
+            $result["message"] = "0:3"; // нет выхода
             return $result;
         } else {
             return false;
@@ -48,6 +49,7 @@ class NewCommandActionService {
 
     // смотреть
     public function look() {
+        $result = array();
         $result["message"] = "1:1"; // вы осмотрелись
         $result["roomnamelook"] = "test";
         $result["roomdesclook"] = "testdesc";

@@ -2,6 +2,13 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
+parameters:
+    pdo.db_options:
+        db_table:    sessions
+        db_id_col:   session_id
+        db_data_col: session_value
+        db_time_col: session_time
+
 framework:
     #esi:             ~
     translator:      { fallback: "%locale%" }
@@ -12,8 +19,11 @@ framework:
     form: ~
     session:
         name: "UTOPIAMUD"
-        handler_id: session.handler.native_file
+        handler_id: session.handler.pdo
         save_path: "%kernel.root_dir%/sessions"
+        gc_probability: 1
+        gc_divisor: 100
+        gc_maxlifetime: 1440
     csrf_protection: ~
     validation:      { enable_annotations: true }
     templating:
@@ -27,6 +37,21 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
+
+# PDO services
+services:
+    pdo:
+        class: PDO
+        arguments:
+            - "mysql:host=%database_host%;dbname=%database_name%"
+            - "%database_user%"
+            - "%database_password%"
+        calls:
+            - [setAttribute, [3, 2]] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments: ["@pdo", "%pdo.db_options%"]
 
 # Twig Configuration
 twig:
