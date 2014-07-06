@@ -10,13 +10,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 class NewCommandService {
 
-    //    protected $user;
     protected $em;
     protected $kernel;
     protected $commandaction;
     protected $commandsystem;
-
-    private $newCommandActionService;
 
     public function __construct(Kernel $kernel, NewCommandActionService $commandaction,
                                 NewCommandSystemService $commandsystem) {
@@ -51,10 +48,6 @@ class NewCommandService {
         } else {
             $result["message"] = "0:1"; // команда не найдена
         }
-
-//        $result["message"] = "0:1"; // команда не найдена
-
-//        $result = $run;
 
         return $result;
     }

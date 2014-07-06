@@ -31,9 +31,6 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface {
         } elseif ($this->security->isGranted('ROLE_ADMIN')) {
             $response = new RedirectResponse($this->router->generate('rottenwood_utopiamud_index'));
         } elseif ($this->security->isGranted('ROLE_USER')) {
-            // // перевод юзера на страницу, с которой он перешел
-//             $referer_url = $request->headers->get('referer');
-//             $response = new RedirectResponse($referer_url);
 
             $response = new RedirectResponse($this->router->generate('rottenwood_utopiamud_index'));
         } else {

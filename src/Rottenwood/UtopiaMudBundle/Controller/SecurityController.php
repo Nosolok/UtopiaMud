@@ -9,9 +9,6 @@ namespace Rottenwood\UtopiaMudBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-//use Rottenwood\UtopiaMudBundle\Form\Type\RegistrationType;
-//use Rottenwood\UtopiaMudBundle\Form\Model\Registration;
-
 class SecurityController extends Controller {
 
     public function loginAction() {
