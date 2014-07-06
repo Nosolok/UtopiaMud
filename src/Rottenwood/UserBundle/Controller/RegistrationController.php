@@ -40,6 +40,7 @@ class RegistrationController extends ContainerAware
         if (null === $response = $event->getResponse()) {
             $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
             $response = new RedirectResponse($url);
+            return $response;
         }
     }
 
@@ -50,7 +51,7 @@ class RegistrationController extends ContainerAware
 
             $userManager->updateUser($user);
 
-            $this->techPatch($event);
+            $response = $this->techPatch($event);
 
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
@@ -134,7 +135,7 @@ class RegistrationController extends ContainerAware
 
         $userManager->updateUser($user);
 
-        $this->techPatch($event);
+        $response = $this->techPatch($event);
 
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
 
