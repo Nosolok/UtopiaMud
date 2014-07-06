@@ -24,3 +24,7 @@ services:
     commandsystem:
         class:      Rottenwood\UtopiaMudBundle\Service\CommandSystemService
         arguments:  [@service_container, @kernel, @doctrine.orm.entity_manager]
+    # Команды для вебсокетов
+    newcommand:
+        class:  Rottenwood\UtopiaMudBundle\Service\NewCommandService
+        arguments:  [@kernel, @doctrine.orm.entity_manager]

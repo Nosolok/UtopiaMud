@@ -6,6 +6,7 @@
 
 namespace Rottenwood\UtopiaMudBundle\Command;
 
+use Rottenwood\UtopiaMudBundle\Entity;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +14,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Thruway\ClientSession;
 use Thruway\Connection;
-use Rottenwood\UtopiaMudBundle\Entity;
 
 class StartCommand extends ContainerAwareCommand {
 
@@ -67,11 +67,9 @@ class StartCommand extends ContainerAwareCommand {
                             echo "\033[0;37m{$hash} \033[1;34m[{$argss[0]}]\033[0;37m {$argss[1]}\033[m\n";
                             // Если пришла команда
                             if ($argss[0] == "CMD") {
-                                echo "Command get!!\n";
-
-//                                $result = $commandService->execute($argss[1]);
-
-                                $session->publish($channel, ["0:1"]);
+                                $result = $this->getContainer()->get('newcommand')->execute($argss[1]);
+                                var_dump($result);
+                                $session->publish($channel, $result);
                             } else {
                                 echo "\033[1;31m[Ошибка]\033[m Запрос не распознан!\n";
                             }
