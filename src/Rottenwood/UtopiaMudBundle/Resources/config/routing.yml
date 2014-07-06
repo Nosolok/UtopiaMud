@@ -1,6 +1,7 @@
 rottenwood_utopiamud_index:
     path:     /
     defaults: { _controller: RottenwoodUtopiaMudBundle:Default:index }
+    requirements: { _method: GET }
 
 ### Login
 #utopiamud_login:
