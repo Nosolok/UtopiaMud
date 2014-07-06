@@ -32,7 +32,7 @@ class NewCommandService {
 
         // разбитие команды на символы и их подсчет (хак для русских символов)
         $count = count(preg_split('/(?<!^)(?!$)/u', $command));
-        $run = $this->recursive_array_search_substr($command, $commands["commands"], $count);
+        $run = $this->recursiveArraySearchSubstr($command, $commands["commands"], $count);
 
         // проверка существования команды
         if ($run && (method_exists($this->commandaction, $run) || method_exists($this->commandsystem, $run) )) {
@@ -67,13 +67,13 @@ class NewCommandService {
      * @param $substr
      * @return bool|int|string
      */
-    public function recursive_array_search_substr($needle, $haystack, $substr) {
+    public function recursiveArraySearchSubstr($needle, $haystack, $substr) {
         foreach ($haystack as $key => $value) {
             if (is_string($value)) {
                 $value = mb_substr($value, 0, $substr, "utf-8");
             }
             $current_key = $key;
-            if ($needle === $value || (is_array($value) && $this->recursive_array_search_substr
+            if ($needle === $value || (is_array($value) && $this->recursiveArraySearchSubstr
                         ($needle, $value, $substr) !== false)
             ) {
                 return $current_key;
