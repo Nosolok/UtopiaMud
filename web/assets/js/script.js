@@ -35,6 +35,7 @@ $(document).ready(function () {
             session.publish('personal.' + hash, ['CMD', lastcommand]);
             // Эхо введенной команды
             game.append("<span class='command'>" + lastcommand + "</span><br>");
+            scroll();
         });
 
         // Назначение функции для удаленного выполнение
@@ -51,6 +52,7 @@ $(document).ready(function () {
     // Открытие соединения
     connection.open();
 
+
     // Удержание фокуса на поле ввода
     var el = document.getElementById('game');   // почему-то с jQuery не работает
     chat.focus();
@@ -61,7 +63,6 @@ $(document).ready(function () {
     };
 
 });
-
 // Скроллинг чата вниз
 function scroll() {
     game.scrollTop = game.scrollHeight;
