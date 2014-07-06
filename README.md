@@ -1,6 +1,8 @@
 # Утопия
 ## Современный веб-движок для MUD
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/a6196715-eb57-4447-a423-71127f7ed827/big.png)](https://insight.sensiolabs.com/projects/a6196715-eb57-4447-a423-71127f7ed827)
+
 [Wiki](https://github.com/Rottenwood/UtopiaMud/wiki) | [Легкая версия ролевых правил GURPS](https://cloud.mail.ru/public/47c25a67bed8/gurps-rules-lite.pdf)
 
 > MUD (Multi User Dungeon) — текстовая многопользовательская компьютерная игра, в которой присутствуют элементы ролевой игры, приключений, боевой системы и обязательно чат, как правило разделённый на каналы. Традиционно для передачи сообщений используется протокол telnet.
