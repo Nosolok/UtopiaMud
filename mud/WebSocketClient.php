@@ -6,9 +6,11 @@
 
 //TODO: сделать запуск сервера отдельной симфони-командой
 
-use Rottenwood\UtopiaMudBundle\Server;
+//use Rottenwood\UtopiaMudBundle\Server;
+use Rottenwood\UtopiaMudBundle\Service;
 use Thruway\ClientSession;
 use Thruway\Connection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -99,7 +101,9 @@ $connection->on('open', function (ClientSession $session) use ($connection) {
                         // Если пришла команда
                         if ($argss[0] == "CMD") {
                             echo "Command get!!\n";
-                            $session->publish($channel, ["message" => "0:1"]);
+
+
+                            $session->publish($channel, [$result]);
                         } else {
                             echo "\033[1;31m[Ошибка]\033[m Запрос не распознан!\n";
                         }
