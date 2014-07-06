@@ -36,6 +36,13 @@ use FOS\UserBundle\Model\UserInterface;
  */
 class RegistrationController extends ContainerAware
 {
+    private function techPatch($event) {
+        if (null === $response = $event->getResponse()) {
+            $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
+            $response = new RedirectResponse($url);
+        }
+    }
+
     private function registerTech($form, $request, $dispatcher, $userManager, $user) {
         if ($form->isValid()) {
             $event = new FormEvent($form, $request);
@@ -43,10 +50,7 @@ class RegistrationController extends ContainerAware
 
             $userManager->updateUser($user);
 
-            if (null === $response = $event->getResponse()) {
-                $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
-                $response = new RedirectResponse($url);
-            }
+            $this->techPatch($event);
 
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
@@ -130,10 +134,7 @@ class RegistrationController extends ContainerAware
 
         $userManager->updateUser($user);
 
-        if (null === $response = $event->getResponse()) {
-            $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
-            $response = new RedirectResponse($url);
-        }
+        $this->techPatch($event);
 
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
 
