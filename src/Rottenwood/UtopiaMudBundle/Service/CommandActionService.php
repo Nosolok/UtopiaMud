@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\SecurityContext;
  * Сервис команд действия
  * @package Rottenwood\UtopiaMudBundle\Service
  */
-class NewCommandActionService {
+class CommandActionService {
 
     protected $em;
     protected $kernel;

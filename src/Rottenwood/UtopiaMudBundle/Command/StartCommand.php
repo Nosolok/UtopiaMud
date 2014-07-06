@@ -66,7 +66,7 @@ class StartCommand extends ContainerAwareCommand {
                             echo "\033[0;37m{$hash} \033[1;34m[{$argss[0]}]\033[0;37m {$argss[1]}\033[m\n";
                             // Если пришла команда
                             if ($argss[0] == "CMD") {
-                                $result = $this->getContainer()->get('newcommand')->execute($argss[1]);
+                                $result = $this->getContainer()->get('command')->execute($argss[1]);
                                 $session->publish($channel, $result);
                             } else {
                                 echo "\033[1;31m[Ошибка]\033[m Запрос не распознан!\n";

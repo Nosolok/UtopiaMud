@@ -13,14 +13,14 @@ services:
         public: false
         arguments:  [@router, @security.context]
     # Главный командный сервис
-    newcommand:
-        class:  Rottenwood\UtopiaMudBundle\Service\NewCommandService
-        arguments:  [@kernel, @newcommandaction, @newcommandsystem]
+    command:
+        class:  Rottenwood\UtopiaMudBundle\Service\CommandService
+        arguments:  [@kernel, @commandaction, @commandsystem]
     # Сервис команд действия
-    newcommandaction:
-        class:  Rottenwood\UtopiaMudBundle\Service\NewCommandActionService
+    commandaction:
+        class:  Rottenwood\UtopiaMudBundle\Service\CommandActionService
         arguments:  []
     # Сервис служебных команд
-    newcommandsystem:
-            class:  Rottenwood\UtopiaMudBundle\Service\NewCommandSystemService
+    commandsystem:
+            class:  Rottenwood\UtopiaMudBundle\Service\CommandSystemService
             arguments:  [@kernel]

@@ -15,7 +15,7 @@ use Symfony\Component\Yaml\Yaml;
  * Сервис служебных команд
  * @package Rottenwood\UtopiaMudBundle\Service
  */
-class NewCommandSystemService {
+class CommandSystemService {
 
     private $kernel;
 

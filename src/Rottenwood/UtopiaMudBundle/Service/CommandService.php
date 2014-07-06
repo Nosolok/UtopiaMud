@@ -1,6 +1,7 @@
 <?php
 
 namespace Rottenwood\UtopiaMudBundle\Service;
+
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
 
@@ -8,15 +9,15 @@ use Symfony\Component\Yaml\Yaml;
  * Сервис обработки введенных пользователем команд
  * @package Rottenwood\UtopiaMudBundle\Service
  */
-class NewCommandService {
+class CommandService {
 
     protected $em;
     protected $kernel;
     protected $commandaction;
     protected $commandsystem;
 
-    public function __construct(Kernel $kernel, NewCommandActionService $commandaction,
-                                NewCommandSystemService $commandsystem) {
+    public function __construct(Kernel $kernel, CommandActionService $commandaction,
+                                CommandSystemService $commandsystem) {
         $this->kernel = $kernel;
         $this->commandaction = $commandaction;
         $this->commandsystem = $commandsystem;
