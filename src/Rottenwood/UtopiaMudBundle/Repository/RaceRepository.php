@@ -10,9 +10,5 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class RaceRepository extends EntityRepository {
-    public function findAllOrderedByName() {
-        return $this->getEntityManager()
-            ->createQuery('SELECT r FROM RottenwoodUtopiaMudBundle:Race r ORDER BY r.name ASC')
-            ->getResult();
-    }
+
 }
