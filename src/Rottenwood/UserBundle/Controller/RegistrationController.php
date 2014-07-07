@@ -146,6 +146,11 @@ class RegistrationController extends ContainerAware
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
+        // Запись хэша в базу пользователя
+        $session = $this->container->get('session')->getId();
+        $this->container->get('doctrine.orm.entity_manager')->getRepository('RottenwoodUtopiaMudBundle:Player')
+            ->saveHash($user, $session);
+
         // Перенаправление на главный экран после регистрации
         $url = $this->container->get('router')->generate('rottenwood_utopiamud_index');
         $response = new RedirectResponse($url);
