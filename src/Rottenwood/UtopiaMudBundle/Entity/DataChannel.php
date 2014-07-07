@@ -19,12 +19,25 @@ class DataChannel {
         $this->clients[] = $client;
     }
 
+    public function addArray($client) {
+        $this->clients[$client->getHash()] = $client;
+    }
+
     public function clientIsUnique($client) {
 
         if (in_array($client, $this->clients)) {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function hashIsUnique($hash) {
+
+        if (array_key_exists($hash, $this->clients)) {
+            return false;
+        } else {
+            return true;
         }
     }
 }

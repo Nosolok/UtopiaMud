@@ -36,29 +36,6 @@ use FOS\UserBundle\Model\UserInterface;
  */
 class RegistrationController extends ContainerAware
 {
-    private function techPatch($event) {
-        if (null === $response = $event->getResponse()) {
-            $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
-            $response = new RedirectResponse($url);
-            return $response;
-        }
-    }
-
-    private function registerTech($form, $request, $dispatcher, $userManager, $user) {
-        if ($form->isValid()) {
-            $event = new FormEvent($form, $request);
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-
-            $userManager->updateUser($user);
-
-            $response = $this->techPatch($event);
-
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-
-            return $response;
-        }
-    }
-
     public function registerAction(Request $request)
     {
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
@@ -84,7 +61,21 @@ class RegistrationController extends ContainerAware
         if ('POST' === $request->getMethod()) {
             $form->bind($request);
 
-            $this->registerTech($form, $request, $dispatcher, $userManager, $user);
+            if ($form->isValid()) {
+                $event = new FormEvent($form, $request);
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+
+                $userManager->updateUser($user);
+
+                if (null === $response = $event->getResponse()) {
+                    $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
+                    $response = new RedirectResponse($url);
+                }
+
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+
+                return $response;
+            }
         }
 
         return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
@@ -135,7 +126,10 @@ class RegistrationController extends ContainerAware
 
         $userManager->updateUser($user);
 
-        $response = $this->techPatch($event);
+        if (null === $response = $event->getResponse()) {
+            $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
+            $response = new RedirectResponse($url);
+        }
 
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
 

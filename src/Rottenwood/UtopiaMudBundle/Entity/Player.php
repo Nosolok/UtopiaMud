@@ -45,7 +45,7 @@ class Player extends BaseUser {
     /**
      * Последний токен персонажа
      * @var string
-     * @ORM\Column(name="hash", type="string", length=26)
+     * @ORM\Column(name="hash", type="string", length=26, nullable=true)
      */
     private $hash;
 
@@ -54,7 +54,7 @@ class Player extends BaseUser {
      * @ORM\ManyToOne(targetEntity="Room")
      * @ORM\JoinColumn(name="room", referencedColumnName="id")
      */
-    private $room = 1;
+    private $room;
 
 
     public function getRace() {

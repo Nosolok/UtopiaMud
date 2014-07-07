@@ -6,6 +6,7 @@ $(document).ready(function () {
         $("#loginform").submit();
     });
     $('#registrationformbutton').click(function () {
+        console.log("test");
         $.ajax({
             url: "register/",
             context: document.body,

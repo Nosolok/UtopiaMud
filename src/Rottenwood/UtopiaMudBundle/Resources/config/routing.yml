@@ -1,7 +1,7 @@
 rottenwood_utopiamud_index:
     path:     /
     defaults: { _controller: RottenwoodUtopiaMudBundle:Default:index }
-    requirements: { _method: GET }
+#    requirements: { _method: GET }
 
 ### Login
 #utopiamud_login:
@@ -31,4 +31,4 @@ fos_user_change_password:
 utopiamud_ajax:
     path:     /ajax
     defaults: { _controller: RottenwoodUtopiaMudBundle:Default:ajax }
-    requirements: { _method: POST }
+#    requirements: { _method: POST }
