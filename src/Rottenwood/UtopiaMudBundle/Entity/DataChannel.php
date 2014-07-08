@@ -15,29 +15,25 @@ class DataChannel {
 
     public $clients = array();
 
+    /**
+     * Добавление персонажа в список подключенных персонажей
+     * @param $client
+     */
     public function add($client) {
-        $this->clients[] = $client;
-    }
-
-    public function addArray($client) {
         $this->clients[$client->getHash()] = $client;
     }
 
-    public function clientIsUnique($client) {
-
-        if (in_array($client, $this->clients)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    /**
+     * Проверка токена на уникальность
+     * @param $hash
+     * @return bool
+     */
     public function hashIsUnique($hash) {
 
         if (array_key_exists($hash, $this->clients)) {
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
 }

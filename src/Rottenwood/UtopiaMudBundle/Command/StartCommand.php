@@ -51,7 +51,7 @@ class StartCommand extends ContainerAwareCommand {
                 if (strpos($args[0], 'HASH:::') !== false) {
                     $hash = substr($args[0], 7);
                     // Проверка хэша на уникальность
-                    if (!$clients->hashIsUnique($hash)) {
+                    if ($clients->hashIsUnique($hash)) {
                         // Если хэш уже присутствует
                         echo "Переподключение хэша: \033[0;33m", $hash, "\033[m\n";
                     } else {
@@ -61,14 +61,8 @@ class StartCommand extends ContainerAwareCommand {
                         $char = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository
                             ('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
 
-//                        $char = $char->getHash();
-//                        $clients->add($hash);
-                        $clients->addArray($char[0]);
-//                        $clients->addArray($char);
-
-                        var_dump($char[0]);
-//                        var_dump($clients);
-//                        var_dump($char[0]->getHash());
+                        // Добавление клиента в список подключенных клиентов
+                        $clients->add($char[0]);
 
                         // Подключение к каналу пользователя
                         $channel = 'personal.' . $hash;
