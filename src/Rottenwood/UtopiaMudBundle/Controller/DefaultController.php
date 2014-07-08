@@ -9,6 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller {
 
+    /**
+     * Вызов главной страницы. Запись токена игрока в базу данных
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction() {
         $session = $this->get('session')->getId();
         $id = $this->get('security.context')->getToken()->getUser();
@@ -32,9 +36,5 @@ class DefaultController extends Controller {
         $command = $request->request->get('chat');
         $result = $this->get('command')->execute($command);
         return new JsonResponse($result);
-    }
-
-    public function loginAction() {
-        return $this->render('RottenwoodUtopiaMudBundle:Default:login.html.twig');
     }
 }
