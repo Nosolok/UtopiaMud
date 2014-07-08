@@ -41,7 +41,7 @@ class StartCommand extends ContainerAwareCommand {
             $clients = new Entity\DataChannel();
 
             // Подписка на канал данных и коллбэк при их получении
-            $session->subscribe('system.channel', function ($args) use ($session, $clients, $personalChannel) {
+            $session->subscribe('system.channel', function ($args) use ($session, $clients) {
 
                 echo "Данные: {$args[0]}\n";
 
@@ -56,8 +56,7 @@ class StartCommand extends ContainerAwareCommand {
                         // Если хэш отсутствует
                         echo "Зарегистрирован новый хэш: \033[1;33m", $hash, "\033[m\n";
 
-                        $char = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository
-                            ('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
+                        $char = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
 
                         // Добавление клиента в список подключенных клиентов
                         $clients->add($char[0]);

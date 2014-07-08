@@ -45,6 +45,7 @@ class CommandService {
             // если команда - "выход"
             if ($run == "quit") {
                 if (!($run == $command || $command == "конец")) {
+                    echo "[quit]\n";
                     $result["message"] = "0:5:1"; // просьба ввести команду целиком
                     $result["run"] = $run;
                     $result["command"] = $command;

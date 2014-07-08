@@ -46,7 +46,6 @@ class CommandActionService {
     // смотреть
     public function look() {
 
-
         $result = array();
         $result["message"] = "1:1"; // вы осмотрелись
         $result["roomnamelook"] = "test";
