@@ -151,6 +151,17 @@ class RegistrationController extends ContainerAware
         $this->container->get('doctrine.orm.entity_manager')->getRepository('RottenwoodUtopiaMudBundle:Player')
             ->saveHash($user, $session);
 
+        // ID юзера
+        $userId = $user->getId();
+
+        // Назначение стартовой комнаты
+        $userObject = $this->container->get('doctrine.orm.entity_manager')->getRepository('RottenwoodUtopiaMudBundle:Player')->find($userId);
+        $room = $this->container->get('doctrine.orm.entity_manager')->getRepository('RottenwoodUtopiaMudBundle:Room')->find(1);
+        $userObject->setRoom($room);
+
+        $this->container->get('doctrine.orm.entity_manager')->persist($userObject);
+        $this->container->get('doctrine.orm.entity_manager')->flush();
+
         // Перенаправление на главный экран после регистрации
         $url = $this->container->get('router')->generate('rottenwood_utopiamud_index');
         $response = new RedirectResponse($url);
