@@ -54,7 +54,7 @@ class CommandService {
             // вывод в консоль полного имени команды
             echo "[$run]\n";
             // запуск команды
-            $result = $this->{$commandtype}->$run();
+            $result = $this->{$commandtype}->$run($user);
         } else {
             // вывод в консоль информации о ненайденной команде
             echo "[! command not found !]\n";
