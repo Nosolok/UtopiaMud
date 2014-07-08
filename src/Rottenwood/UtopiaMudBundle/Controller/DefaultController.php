@@ -3,9 +3,6 @@
 namespace Rottenwood\UtopiaMudBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Debug\Exception;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller {
 
