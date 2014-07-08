@@ -68,11 +68,13 @@ class StartCommand extends ContainerAwareCommand {
                         $channel = 'personal.' . $hash;
 
                         // Обработка персонального канала данных пользователя
-                        $personalChannel = function ($argss) use ($hash, $session, $channel) {
-                            echo "\033[0;37m{$hash} \033[1;34m[{$argss[0]}]\033[0;37m {$argss[1]}\033[m\n";
-                            // Если пришла команда
+                        $personalChannel = function ($argss) use ($hash, $session, $channel, $clients) {
+                            echo "\033[0;37m{$clients->clients[$hash]->getUsername()} \033[1;34m[{$argss[0]}]\033[0;37m {$argss[1]}\033[m ";
+                            // Распознание типа запроса
                             if ($argss[0] == "CMD") {
-                                $result = $this->getContainer()->get('command')->execute($argss[1]);
+                                // Передача команды и объекта текущего Player командному сервису
+                                $result = $this->getContainer()->get('command')->execute($argss[1], $clients->clients[$hash]);
+                                // Публикация результата в персональный канал данных
                                 $session->publish($channel, $result);
                             } else {
                                 echo "\033[1;31m[Ошибка]\033[m Запрос не распознан!\n";

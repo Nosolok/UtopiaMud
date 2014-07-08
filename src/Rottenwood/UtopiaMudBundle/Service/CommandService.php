@@ -2,6 +2,7 @@
 
 namespace Rottenwood\UtopiaMudBundle\Service;
 
+use Rottenwood\UtopiaMudBundle\Entity\Player;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
 
@@ -23,7 +24,13 @@ class CommandService {
         $this->commandsystem = $commandsystem;
     }
 
-    public function execute($command) {
+    /**
+     * Запуск команды и возврат результата
+     * @param $command
+     * @param $user     Player  Инициатор команды
+     * @return mixed
+     */
+    public function execute($command, Player $user) {
         // парсинг файла со списком внутриигровых команд
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/config/commands.yml");
         $commands = Yaml::parse(file_get_contents($path));
@@ -44,9 +51,13 @@ class CommandService {
                     return $result;
                 }
             }
+            // вывод в консоль полного имени команды
+            echo "[$run]\n";
             // запуск команды
             $result = $this->{$commandtype}->$run();
         } else {
+            // вывод в консоль информации о ненайденной команде
+            echo "[! command not found !]\n";
             $result["message"] = "0:1"; // команда не найдена
         }
 
