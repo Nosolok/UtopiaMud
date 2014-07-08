@@ -25,7 +25,7 @@ class DataChannel {
 
     /**
      * Проверка токена на уникальность
-     * @param $hash
+     * @param string $hash
      * @return bool
      */
     public function hashIsUnique($hash) {

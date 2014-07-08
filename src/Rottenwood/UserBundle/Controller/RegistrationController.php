@@ -19,7 +19,6 @@ namespace Rottenwood\UserBundle\Controller;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
-use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;

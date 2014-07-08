@@ -69,8 +69,8 @@ class CommandService {
      * Входные параметры: иголка, стог сена, количество символо
      * @param $needle
      * @param $haystack
-     * @param $substr
-     * @return bool|int|string
+     * @param integer $substr
+     * @return string
      */
     public function recursiveArraySearchSubstr($needle, $haystack, $substr) {
         foreach ($haystack as $key => $value) {

@@ -8,7 +8,6 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**

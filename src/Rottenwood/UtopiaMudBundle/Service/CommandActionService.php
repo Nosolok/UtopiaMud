@@ -2,10 +2,6 @@
 
 namespace Rottenwood\UtopiaMudBundle\Service;
 
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Security\Core\SecurityContext;
-
 /**
  * Сервис команд действия
  * @package Rottenwood\UtopiaMudBundle\Service
