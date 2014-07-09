@@ -51,37 +51,37 @@ class Room {
 
     /**
      * @var integer
-     * @ORM\Column(name="west", type="integer")
+     * @ORM\Column(name="west", type="string", length=30)
      */
     private $west;
 
     /**
      * @var integer
-     * @ORM\Column(name="north", type="integer")
+     * @ORM\Column(name="north", type="string", length=30)
      */
     private $north;
 
     /**
      * @var integer
-     * @ORM\Column(name="south", type="integer")
+     * @ORM\Column(name="south", type="string", length=30)
      */
     private $south;
 
     /**
      * @var integer
-     * @ORM\Column(name="east", type="integer")
+     * @ORM\Column(name="east", type="string", length=30)
      */
     private $east;
 
     /**
      * @var integer
-     * @ORM\Column(name="up", type="integer")
+     * @ORM\Column(name="up", type="string", length=30)
      */
     private $up;
 
     /**
      * @var integer
-     * @ORM\Column(name="down", type="integer")
+     * @ORM\Column(name="down", type="string", length=30)
      */
     private $down;
 
@@ -133,7 +133,7 @@ class Room {
 
     /**
      * Set west
-     * @param integer $west
+     * @param string $west
      * @return Room
      */
     public function setWest($west) {
@@ -144,7 +144,7 @@ class Room {
 
     /**
      * Get west
-     * @return integer
+     * @return string
      */
     public function getWest() {
         return $this->west;
@@ -164,7 +164,7 @@ class Room {
     /**
      * Set south
      *
-     * @param integer $south
+     * @param string $south
      * @return Room
      */
     public function setSouth($south)
@@ -177,7 +177,7 @@ class Room {
     /**
      * Get south
      *
-     * @return integer 
+     * @return string
      */
     public function getSouth()
     {
@@ -187,7 +187,7 @@ class Room {
     /**
      * Set east
      *
-     * @param integer $east
+     * @param string $east
      * @return Room
      */
     public function setEast($east)
@@ -200,7 +200,7 @@ class Room {
     /**
      * Get east
      *
-     * @return integer 
+     * @return string
      */
     public function getEast()
     {

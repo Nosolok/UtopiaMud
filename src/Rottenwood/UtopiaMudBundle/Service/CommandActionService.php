@@ -54,7 +54,17 @@ class CommandActionService {
             $result["exits"]["d"] = 1;
         }
 
+        // персонажи
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds();
+        $rooms = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
+        $playersInRoom = $rooms->findPlayersInRoom($roomId, $playersOnline);
 
+        if ($playersInRoom) {
+            foreach ($playersInRoom as $player) {
+                $result["players"][$player->getUsername()]["race"] = $player->getRace()->getName();
+                $result["players"][$player->getUsername()]["sex"] = $player->getSex();
+            }
+        }
 
         return $result;
     }
@@ -62,7 +72,7 @@ class CommandActionService {
     /**
      * Техническая функция перемещения персонажа
      * персонаж, комната назначения
-     * @param Player $char
+     * @param Player                                  $char
      * @param \Rottenwood\UtopiaMudBundle\Entity\Room $room
      * @return bool
      */
@@ -96,20 +106,19 @@ class CommandActionService {
      */
     public function north(Player $char) {
         $room = $char->getRoom();
-        $destinationRoomInt = $room->getNorth();
+        $destinationRoomAnchor = $room->getNorth();
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomInt == null) {
+        if ($destinationRoomAnchor === "0") {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
 
         // перемещение в комнату назначения
-        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->find($destinationRoomInt);
-        $this->techGotoRoom($char, $destinationRoom);
-
-        $result = $this->techLook($destinationRoom);
+        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
+        $this->techGotoRoom($char, $destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0]);
 
         return $result;
     }
@@ -121,20 +130,19 @@ class CommandActionService {
      */
     public function south(Player $char) {
         $room = $char->getRoom();
-        $destinationRoomInt = $room->getSouth();
+        $destinationRoomAnchor = $room->getSouth();
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomInt == null) {
+        if ($destinationRoomAnchor === "0") {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
 
         // перемещение в комнату назначения
-        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->find($destinationRoomInt);
-        $this->techGotoRoom($char, $destinationRoom);
-
-        $result = $this->techLook($destinationRoom);
+        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
+        $this->techGotoRoom($char, $destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0]);
 
         return $result;
     }
@@ -146,20 +154,19 @@ class CommandActionService {
      */
     public function east(Player $char) {
         $room = $char->getRoom();
-        $destinationRoomInt = $room->getEast();
+        $destinationRoomAnchor = $room->getEast();
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomInt == null) {
+        if ($destinationRoomAnchor === "0") {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
 
         // перемещение в комнату назначения
-        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->find($destinationRoomInt);
-        $this->techGotoRoom($char, $destinationRoom);
-
-        $result = $this->techLook($destinationRoom);
+        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
+        $this->techGotoRoom($char, $destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0]);
 
         return $result;
     }
@@ -171,20 +178,19 @@ class CommandActionService {
      */
     public function west(Player $char) {
         $room = $char->getRoom();
-        $destinationRoomInt = $room->getWest();
+        $destinationRoomAnchor = $room->getWest();
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomInt == null) {
+        if ($destinationRoomAnchor === "0") {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
 
         // перемещение в комнату назначения
-        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->find($destinationRoomInt);
-        $this->techGotoRoom($char, $destinationRoom);
-
-        $result = $this->techLook($destinationRoom);
+        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
+        $this->techGotoRoom($char, $destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0]);
 
         return $result;
     }
@@ -196,20 +202,19 @@ class CommandActionService {
      */
     public function up(Player $char) {
         $room = $char->getRoom();
-        $destinationRoomInt = $room->getUp();
+        $destinationRoomAnchor = $room->getUp();
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomInt == null) {
+        if ($destinationRoomAnchor === "0") {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
 
         // перемещение в комнату назначения
-        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->find($destinationRoomInt);
-        $this->techGotoRoom($char, $destinationRoom);
-
-        $result = $this->techLook($destinationRoom);
+        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
+        $this->techGotoRoom($char, $destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0]);
 
         return $result;
     }
@@ -221,20 +226,19 @@ class CommandActionService {
      */
     public function down(Player $char) {
         $room = $char->getRoom();
-        $destinationRoomInt = $room->getDown();
+        $destinationRoomAnchor = $room->getDown();
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomInt == null) {
+        if ($destinationRoomAnchor === "0") {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
 
         // перемещение в комнату назначения
-        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->find($destinationRoomInt);
-        $this->techGotoRoom($char, $destinationRoom);
-
-        $result = $this->techLook($destinationRoom);
+        $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
+        $this->techGotoRoom($char, $destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0]);
 
         return $result;
     }

@@ -16,11 +16,6 @@ use FOS\UserBundle\Model\User as BaseUser;
  */
 class Player extends BaseUser {
 
-    public function __construct() {
-        parent::__construct();
-        // your own logic
-    }
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

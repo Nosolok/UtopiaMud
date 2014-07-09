@@ -5,6 +5,7 @@
  */
 
 namespace Rottenwood\UtopiaMudBundle\Service;
+use Rottenwood\UtopiaMudBundle\Entity\Player;
 
 /**
  * Класс для хранения списка подключенных игроков
@@ -18,7 +19,7 @@ class DataChannelService {
     /**
      * Добавление персонажа в список подключенных персонажей
      * @param $hash
-     * @param $client
+     * @param Player $client
      */
     public function add($hash, $client) {
         $this->clients[$hash] = $client;
@@ -36,5 +37,21 @@ class DataChannelService {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Возвращает форматированный список ID игроков онлайн
+     * @return string
+     */
+    public function getOnlineIds() {
+        $charsIds = array();
+
+        foreach ($this->clients as $user) {
+            $charsIds[] = $user->getId();
+        }
+
+        $onlineList = implode(', ', $charsIds);
+
+        return $onlineList;
     }
 }

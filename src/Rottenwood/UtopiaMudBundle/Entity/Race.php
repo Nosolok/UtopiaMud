@@ -20,11 +20,18 @@ class Race {
     private $id;
 
     /**
+     * Мужское название расы
      * @var string
      * @ORM\Column(name="name", type="string", length=50)
      */
     private $name;
 
+    /**
+     * Женское название расы
+     * @var string
+     * @ORM\Column(name="namef", type="string", length=50)
+     */
+    private $namef;
 
     /**
      * Get id
@@ -53,8 +60,26 @@ class Race {
         return $this->name;
     }
 
-    public function __toString()
-    {
+    /**
+     * Set namef
+     * @param string $namef
+     * @return Race
+     */
+    public function setNamef($namef) {
+        $this->namef = $namef;
+
+        return $this;
+    }
+
+    /**
+     * Get namef
+     * @return string
+     */
+    public function getNamef() {
+        return $this->namef;
+    }
+
+    public function __toString() {
         return $this->name;
     }
 }
