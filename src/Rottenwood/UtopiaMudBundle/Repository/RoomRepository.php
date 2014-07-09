@@ -45,10 +45,10 @@ class RoomRepository extends EntityRepository {
      */
     public function findPlayersInRoom($room, $playersOnline) {
         $query = $this->getEntityManager()
-            ->createQuery("SELECT p FROM RottenwoodUtopiaMudBundle:Player p LEFT JOIN p.room r WITH r.id = ?1
-            WHERE p.id IN ( ?2 )");
+            ->createQuery("SELECT p FROM RottenwoodUtopiaMudBundle:Player p LEFT JOIN p.room r WHERE r.id = ?1
+            AND p.id IN (:players)");
         $query->setParameter(1, $room);
-        $query->setParameter(2, $playersOnline);
+        $query->setParameter('players', $playersOnline);
         $result = $query->getResult();
 
         return $result;

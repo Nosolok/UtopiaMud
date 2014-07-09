@@ -27,9 +27,11 @@ class CommandActionService {
     /**
      * Техническая функция осмотра комнаты
      * @param \Rottenwood\UtopiaMudBundle\Entity\Room $room
+     * @param                                         $charId
+     * @internal param \Rottenwood\UtopiaMudBundle\Entity\Player $char
      * @return mixed
      */
-    public function techLook($room) {
+    public function techLook($room, $charId) {
         $roomId = $room->getId();
         // осмотр комнаты
         $result["roomname"] = $room->getName();
@@ -55,14 +57,20 @@ class CommandActionService {
         }
 
         // персонажи
-        $playersOnline = $this->container->get('datachannel')->getOnlineIds();
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($charId);
         $rooms = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
         $playersInRoom = $rooms->findPlayersInRoom($roomId, $playersOnline);
 
         if ($playersInRoom) {
             foreach ($playersInRoom as $player) {
-                $result["players"][$player->getUsername()]["race"] = $player->getRace()->getName();
-                $result["players"][$player->getUsername()]["sex"] = $player->getSex();
+                $playerSex = $player->getSex();
+                if ($playerSex == 1) {
+                    $result["players"][$player->getUsername()]["race"] = $player->getRace()->getName();
+
+                } elseif ($playerSex == 2) {
+                    $result["players"][$player->getUsername()]["race"] = $player->getRace()->getNamef();
+
+                }
             }
         }
 
@@ -93,7 +101,7 @@ class CommandActionService {
         // получение описания комнаты в которой находится персонаж
         $room = $char->getRoom();
 
-        $result = $this->techLook($room);
+        $result = $this->techLook($room, 0);
         $result["message"] = "1:1"; // вы осмотрелись
 
         return $result;
@@ -118,7 +126,7 @@ class CommandActionService {
         // перемещение в комнату назначения
         $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0], $char->getId());
 
         return $result;
     }
@@ -142,7 +150,7 @@ class CommandActionService {
         // перемещение в комнату назначения
         $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0], $char->getId());
 
         return $result;
     }
@@ -166,7 +174,7 @@ class CommandActionService {
         // перемещение в комнату назначения
         $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0], $char->getId());
 
         return $result;
     }
@@ -190,7 +198,7 @@ class CommandActionService {
         // перемещение в комнату назначения
         $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0], $char->getId());
 
         return $result;
     }
@@ -214,7 +222,7 @@ class CommandActionService {
         // перемещение в комнату назначения
         $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0], $char->getId());
 
         return $result;
     }
@@ -238,7 +246,7 @@ class CommandActionService {
         // перемещение в комнату назначения
         $destinationRoom = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room')->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0]);
+        $result = $this->techLook($destinationRoom[0], $char->getId());
 
         return $result;
     }

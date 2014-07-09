@@ -101,6 +101,9 @@ $(document).ready(function () {
         if (data['exits']) {
             showexits(data['exits']);
         }
+        if (data['players']) {
+            showplayers(data['players']);
+        }
 
         scroll();
     }
@@ -115,6 +118,19 @@ $(document).ready(function () {
         if (data['u']) {game.append("<span class='roomexits'>вверх ");};
         if (data['d']) {game.append("<span class='roomexits'>вниз ");};
         game.append("<span class='roomexits'>]<br><br>");
+    }
+
+    // Отображение персонажей
+    function showplayers(data) {
+
+            console.log(data);
+        jQuery.each(data, function(name, data) {
+            console.log(data);
+        game.append("<span class='players'>" + name + ", " + data["race"] + "</span><br>");
+            return (this != "three"); // will stop running after "three"
+        });
+
+        game.append("<br>");
     }
 
 });
