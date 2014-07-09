@@ -59,7 +59,7 @@ class StartCommand extends ContainerAwareCommand {
                         $char = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
 
                         // Добавление клиента в список подключенных клиентов
-                        $clients->add($char[0]);
+                        $clients->add($hash, $char[0]);
 
                         // Подключение к каналу пользователя
                         $channel = 'personal.' . $hash;

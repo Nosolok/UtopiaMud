@@ -24,12 +24,14 @@ class CommandSystemService {
 
     // конец (выход)
     public function quit() {
+        $result = array();
         $result["message"] = "0:5"; // выход
         return $result;
     }
 
     // форматирование списка зон, перевод зон из YAML в БД и наоборот
     public function format() {
+        $result = array();
         $zoneanchor = "medievaltown";
 
         // парсинг файла списка зон

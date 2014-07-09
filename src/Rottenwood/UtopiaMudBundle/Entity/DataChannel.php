@@ -17,10 +17,11 @@ class DataChannel {
 
     /**
      * Добавление персонажа в список подключенных персонажей
+     * @param $hash
      * @param $client
      */
-    public function add($client) {
-        $this->clients[$client->getHash()] = $client;
+    public function add($hash, $client) {
+        $this->clients[$hash] = $client;
     }
 
     /**

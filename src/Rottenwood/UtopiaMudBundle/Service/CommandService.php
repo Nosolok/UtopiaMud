@@ -31,6 +31,8 @@ class CommandService {
      * @return mixed
      */
     public function execute($command, Player $user) {
+        $result = array();
+
         // парсинг файла со списком внутриигровых команд
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/config/commands.yml");
         $commands = Yaml::parse(file_get_contents($path));
