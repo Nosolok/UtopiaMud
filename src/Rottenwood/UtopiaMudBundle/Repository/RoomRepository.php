@@ -12,10 +12,20 @@ use Doctrine\ORM\EntityRepository;
 class RoomRepository extends EntityRepository {
 
     public function findCurrentRoom($id) {
-
-        $query = $this->getEntityManager()->createQuery('SELECT r FROM RottenwoodUtopiaMudBundle:Room r WHERE r.id LIKE
-        :id');
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT r FROM RottenwoodUtopiaMudBundle:Room r WHERE r.id LIKE :id');
         $query->setParameter('id', '%' . $id . '%');
+        $result = $query->getResult();
+
+        return $result;
+    }
+
+    public function findPlayersInRoom($room) {
+        $query = $this->getEntityManager()
+//            ->createQuery('SELECT p, r FROM RottenwoodUtopiaMudBundle:Player p JOIN p.room r WHERE p.room = :room');
+//            ->createQuery("SELECT u FROM CmsUser u LEFT JOIN u.articles a WITH a.topic LIKE '%foo%'");
+            ->createQuery("SELECT p FROM RottenwoodUtopiaMudBundle:Player p LEFT JOIN p.room r WITH r.id LIKE :room");
+        $query->setParameter('room', '%' . $room . '%');
         $result = $query->getResult();
 
         return $result;

@@ -24,3 +24,7 @@ services:
     commandsystem:
         class:  Rottenwood\UtopiaMudBundle\Service\CommandSystemService
         arguments:  [@kernel]
+    # Сервис игроков, находящихся онлайн
+    datachannel:
+        class:  Rottenwood\UtopiaMudBundle\Service\DataChannelService
+        arguments:  []

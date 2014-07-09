@@ -38,7 +38,8 @@ class StartCommand extends ContainerAwareCommand {
         $connection->on('open', function (ClientSession $session) use ($connection) {
 
             // Создаю коллекцию подписчиков
-            $clients = new Entity\DataChannel();
+//            $clients = new Entity\DataChannel();
+            $clients = $this->getContainer()->get('datachannel');
 
             // Подписка на канал данных и коллбэк при их получении
             $session->subscribe('system.channel', function ($args) use ($session, $clients) {

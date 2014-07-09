@@ -4,14 +4,14 @@
  * Date Created: 06.07.14 15:11
  */
 
-namespace Rottenwood\UtopiaMudBundle\Entity;
+namespace Rottenwood\UtopiaMudBundle\Service;
 
 /**
  * Класс для хранения списка подключенных игроков
  * Class DataChannel
  * @package Rottenwood\UtopiaMudBundle\Entity
  */
-class DataChannel {
+class DataChannelService {
 
     public $clients = array();
 

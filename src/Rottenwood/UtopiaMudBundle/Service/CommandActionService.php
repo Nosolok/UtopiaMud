@@ -24,10 +24,17 @@ class CommandActionService {
         $this->em = $em;
     }
 
+    /**
+     * Техническая функция осмотра комнаты
+     * @param \Rottenwood\UtopiaMudBundle\Entity\Room $room
+     * @return mixed
+     */
     public function techLook($room) {
-        // осмотр комнаты назначения
+        $roomId = $room->getId();
+        // осмотр комнаты
         $result["roomname"] = $room->getName();
         $result["roomdesc"] = $room->getRoomdesc();
+        // выходы
         if ($room->getNorth()) {
             $result["exits"]["n"] = 1;
         }
@@ -48,9 +55,17 @@ class CommandActionService {
         }
 
 
+
         return $result;
     }
 
+    /**
+     * Техническая функция перемещения персонажа
+     * персонаж, комната назначения
+     * @param Player $char
+     * @param \Rottenwood\UtopiaMudBundle\Entity\Room $room
+     * @return bool
+     */
     public function techGotoRoom($char, $room) {
         $char->setRoom($room);
         $this->em->persist($char);
