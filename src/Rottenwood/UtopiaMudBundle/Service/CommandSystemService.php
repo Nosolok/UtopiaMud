@@ -7,6 +7,7 @@
 
 namespace Rottenwood\UtopiaMudBundle\Service;
 
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
 
@@ -36,6 +37,9 @@ class CommandSystemService {
 
         // парсинг файла списка зон
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/zones/zonelist.yml");
+        if (!is_string($path)) {
+        	throw new Exception("Type of $path must be string.");
+        }
         $zones = Yaml::parse(file_get_contents($path));
 
         // проверка наличия искомой зоны в файле списка зон
@@ -43,21 +47,23 @@ class CommandSystemService {
             // зона существует
 
             // парсинг выбранной зоны
-            $zone = Yaml::parse(file_get_contents($this->kernel->locateResource
-                ("@RottenwoodUtopiaMudBundle/Resources/zones/".$zoneanchor."/rooms.yml")));
+            $zonepath = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/zones/".$zoneanchor."/rooms.yml");
+            if (!is_string($zonepath)) {
+                throw new Exception("Type of $zonepath must be string.");
+            }
+            $zone = Yaml::parse(file_get_contents($zonepath));
 
             // создание объекта класса Зона
 
             // запись объекта в БД
 
+            // вывод результата
+            $result["test"] = $zone;
         } else {
 
             // зоны не существует
-
+            $result["test"] = "zone not found";
         }
-
-
-        $result["test"] = $zone;
 
         return $result;
     }
