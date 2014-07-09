@@ -82,6 +82,12 @@ class StartCommand extends ContainerAwareCommand {
                         $session->subscribe($channel, $personalChannel);
 
                     };
+
+                    // Отправка стартовых команд пользователю
+                    $onlogin = $result = $this->getContainer()->get('command')->execute("look",
+                        $clients->clients[$hash]);
+                    $channel = 'personal.' . $hash;
+                    $session->publish($channel, $onlogin);
                 };
             });
 
