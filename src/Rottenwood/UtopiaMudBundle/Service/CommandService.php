@@ -3,6 +3,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Rottenwood\UtopiaMudBundle\Entity\Player;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
 
@@ -28,6 +29,7 @@ class CommandService {
      * Запуск команды и возврат результата
      * @param $command
      * @param $user     Player  Инициатор команды
+     * @throws \Symfony\Component\Config\Definition\Exception\Exception
      * @return mixed
      */
     public function execute($command, Player $user) {
@@ -35,6 +37,9 @@ class CommandService {
 
         // парсинг файла со списком внутриигровых команд
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/config/commands.yml");
+        if (!is_string($path)) {
+            throw new Exception("Type of $path must be string.");
+        }
         $commands = Yaml::parse(file_get_contents($path));
 
         // разбитие команды на символы и их подсчет (хак для русских символов)
