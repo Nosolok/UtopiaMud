@@ -22,7 +22,6 @@ $(document).ready(function () {
         // Подписка на личный канал
         session.subscribe('personal.' + hash, function (data) {
             console.log(data);
-            console.log(data["message"]);
             render(data);
         });
 
@@ -62,56 +61,52 @@ $(document).ready(function () {
         });
     };
 
-});
-// Скроллинг чата вниз
-function scroll() {
-    game.scrollTop = game.scrollHeight;
-}
-
-// Обработка входящей информации
-function render(data) {
-    console.log("Входные данные для рендера:");
-    console.log(data);
-
-    //*** ответ от сервера: ошибки
-    if (data['message'] == "0:1") {
-        $('#game').append("<br><span class='plaintext'>Команда не найдена!</span><br><br>");
+    // Скроллинг чата вниз
+    function scroll() {
+        var elem = document.getElementById('game');
+        elem.scrollTop = elem.scrollHeight;
     }
 
-    //*** ответ от сервера: системные действия
-    if (data['message'] == "0:5") {
-        var url = "logout";
-        $(location).attr('href', url);
-    }
-    if (data['message'] == "0:5:1") {
-        $('#game').append("<br><span class='plaintext'>Для выхода введите команду &quot;конец&quot; (quit) целиком.</span><br><br>");
-    }
+    // Обработка входящей информации
+    function render(data) {
+        console.log("Входные данные для рендера:");
+        console.log(data);
 
-    //*** ответ от сервера: результаты команд
-    if (data['message'] == "1:1") {
-        var roomalreadyseen = 1;
-        $('#game').append("<br><span class='plaintext'>Вы осмотрелись.</span><br><br>");
-        if (data['roomnamelook']) {
-            $('#game').append("<br><span class='roomname'>" + data['roomnamelook'] + "</span><br>");
+        //*** ответ от сервера: ошибки
+        if (data['message'] == "0:1") {
+            game.append("<br><span class='plaintext'>Команда не найдена!</span><br><br>");
+        } else if (data['message'] == "0:3") {
+            game.append("<br><span class='plaintext'>Вы не можете двигаться в данном направлении.</span><br><br>");
         }
-        if (data['roomdesclook']) {
-            $('#game').append("<span class='roomdesc'>" + data['roomdesclook'] + "</span><br><br>");
+
+        //*** ответ от сервера: системные действия
+        if (data['message'] == "0:5") {
+            var url = "logout";
+            $(location).attr('href', url);
+        }
+        if (data['message'] == "0:5:1") {
+            game.append("<br><span class='plaintext'>Для выхода введите команду &quot;конец&quot; (quit) целиком.</span><br><br>");
+        }
+
+        //*** ответ от сервера: результаты команд
+        if (data['message'] == "1:1") {
+            game.append("<br><span class='plaintext'>Вы осмотрелись.</span><br><br>");
+        } else if (data['message'] == "1:2") {
+            game.append("<br><span class='plaintext'>Вы обратили взгляд на объект.</span><br><br>");
+        }
+
+        if (data['roomname']) {
+            game.append("<br><span class='roomname'>" + data['roomname'] + "</span><br><span class='roomdesc'>" + data['roomdesc'] + "</span><br><br>");
         }
         if (data['exits']) {
             showexits(data['exits']);
         }
-    } else if (data['message'] == "1:2") {
-        $('#game').append("<br><span class='plaintext'>Вы обратили взгляд на объект.</span><br><br>");
-    }
-    if (data['roomname'] && roomalreadyseen != 1) {
-        $('#game').append("<br><span class='roomname'>" + data['roomname'] + "</span><br>");
-    }
-    if (data['roomdesc'] && roomalreadyseen != 1) {
-        $('#game').append("<span class='roomdesc'>" + data['roomdesc'] + "</span><br><br>");
+
+        scroll();
     }
 
-    scroll();
-}
+});
+
 
 // Обработка пользовательского ввода и ответа от сервера
 function processData(data) {

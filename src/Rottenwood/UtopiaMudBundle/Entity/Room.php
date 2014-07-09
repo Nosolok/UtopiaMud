@@ -18,7 +18,6 @@ class Room {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-//     * @ORM\OneToMany(targetEntity="Player", mappedBy="room")
 
     /**
      * @var string
