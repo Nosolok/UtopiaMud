@@ -28,6 +28,25 @@ class CommandActionService {
         // осмотр комнаты назначения
         $result["roomname"] = $room->getName();
         $result["roomdesc"] = $room->getRoomdesc();
+        if ($room->getNorth()) {
+            $result["exits"]["n"] = 1;
+        }
+        if ($room->getSouth()) {
+            $result["exits"]["s"] = 1;
+        }
+        if ($room->getEast()) {
+            $result["exits"]["e"] = 1;
+        }
+        if ($room->getWest()) {
+            $result["exits"]["w"] = 1;
+        }
+        if ($room->getUp()) {
+            $result["exits"]["u"] = 1;
+        }
+        if ($room->getDown()) {
+            $result["exits"]["d"] = 1;
+        }
+
 
         return $result;
     }
@@ -49,10 +68,8 @@ class CommandActionService {
         // получение описания комнаты в которой находится персонаж
         $room = $char->getRoom();
 
-        $result = array();
+        $result = $this->techLook($room);
         $result["message"] = "1:1"; // вы осмотрелись
-        $result["roomname"] = $room->getName();
-        $result["roomdesc"] = $room->getRoomdesc();
 
         return $result;
     }
