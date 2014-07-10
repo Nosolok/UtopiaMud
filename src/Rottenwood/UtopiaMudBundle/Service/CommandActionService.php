@@ -4,6 +4,7 @@ namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
+use Rottenwood\UtopiaMudBundle\Entity\Room;
 use Symfony\Component\DependencyInjection\Container;
 use Rottenwood\UtopiaMudBundle\Repository;
 
@@ -126,6 +127,7 @@ class CommandActionService {
      * Command: north
      * @param Player $char
      * @return array
+     * @method Room findByAnchor()
      */
     public function north(Player $char) {
         $room = $char->getRoom();
