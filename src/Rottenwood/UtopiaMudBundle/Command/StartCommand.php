@@ -29,7 +29,8 @@ class StartCommand extends ContainerAwareCommand {
      * @return bool
      */
     protected function start() {
-        $websockerServerPath = __DIR__ . "/../../../../socket/WebSocketServer.php";
+        $reflectionClass = new \ReflectionClass(get_class($this));
+        $websockerServerPath = dirname($reflectionClass->getFileName()) . '/../../../../socket/WebSocketServer.php';
 
         $this->websocketServerProcess = new Process("/usr/bin/php $websockerServerPath");
         $this->websocketServerProcess->start();
