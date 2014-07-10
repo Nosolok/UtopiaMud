@@ -10,10 +10,13 @@ use Rottenwood\UtopiaMudBundle\Entity;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 use Thruway\ClientSession;
 use Thruway\Connection;
 
 class StartCommand extends ContainerAwareCommand {
+
+    protected $websocketServerProcess;
 
     protected function configure() {
         $this
@@ -21,7 +24,28 @@ class StartCommand extends ContainerAwareCommand {
             ->setDescription('Start Utopia MUD server');
     }
 
+    /**
+     * Запуск вебсокет сервера
+     * @return bool
+     */
+    protected function start() {
+        $websockerServerPath = __DIR__ . "/../../../../socket/WebSocketServer.php";
+
+        $this->websocketServerProcess = new Process("/usr/bin/php $websockerServerPath");
+        $this->websocketServerProcess->start();
+
+        return true;
+    }
+
+    /**
+     * Запуск вебсокет клиента
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @return int|null|void
+     */
     protected function execute(InputInterface $input, OutputInterface $output) {
+
+        $this->start();
 
         $onClose = function ($msg) {
             echo $msg;
@@ -38,7 +62,7 @@ class StartCommand extends ContainerAwareCommand {
         $connection->on('open', function (ClientSession $session) use ($connection) {
 
             // Создаю коллекцию подписчиков
-//            $clients = new Entity\DataChannel();
+            //            $clients = new Entity\DataChannel();
             $clients = $this->getContainer()->get('datachannel');
 
             // Подписка на канал данных и коллбэк при их получении
@@ -108,6 +132,7 @@ class StartCommand extends ContainerAwareCommand {
             );
         });
 
+        sleep(1);
         $connection->open();
     }
 }
