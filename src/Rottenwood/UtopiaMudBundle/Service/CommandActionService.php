@@ -5,6 +5,7 @@ namespace Rottenwood\UtopiaMudBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
 use Symfony\Component\DependencyInjection\Container;
+use Rottenwood\UtopiaMudBundle\Repository;
 
 /**
  * Service of action commands
@@ -33,31 +34,18 @@ class CommandActionService {
      */
     public function techLook($room, $charId) {
         $roomId = $room->getId();
+        $result = array();
         // осмотр комнаты
         $result["roomname"] = $room->getName();
         $result["roomdesc"] = $room->getRoomdesc();
-        // выходы
-        if ($room->getNorth()) {
-            $result["exits"]["n"] = 1;
-        }
-        if ($room->getSouth()) {
-            $result["exits"]["s"] = 1;
-        }
-        if ($room->getEast()) {
-            $result["exits"]["e"] = 1;
-        }
-        if ($room->getWest()) {
-            $result["exits"]["w"] = 1;
-        }
-        if ($room->getUp()) {
-            $result["exits"]["u"] = 1;
-        }
-        if ($room->getDown()) {
-            $result["exits"]["d"] = 1;
+
+        if($exits = $this->techLookExits($room)) {
+            $result["exits"] = $exits;
         }
 
         // персонажи
         $playersOnline = $this->container->get('datachannel')->getOnlineIds($charId);
+        /** @var Repository\RoomRepository $rooms */
         $rooms = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
         $playersInRoom = $rooms->findPlayersInRoom($roomId, $playersOnline);
 
@@ -66,12 +54,39 @@ class CommandActionService {
                 $playerSex = $player->getSex();
                 if ($playerSex == 1) {
                     $result["players"][$player->getUsername()]["race"] = $player->getRace()->getName();
-
                 } elseif ($playerSex == 2) {
                     $result["players"][$player->getUsername()]["race"] = $player->getRace()->getNamef();
-
                 }
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Сбор и отображение выходов из комнаты
+     * @param \Rottenwood\UtopiaMudBundle\Entity\Room $room
+     * @return array
+     */
+    public function techLookExits($room) {
+        $result = array();
+        if ($room->getNorth()) {
+            $result["n"] = 1;
+        }
+        if ($room->getSouth()) {
+            $result["s"] = 1;
+        }
+        if ($room->getEast()) {
+            $result["e"] = 1;
+        }
+        if ($room->getWest()) {
+            $result["w"] = 1;
+        }
+        if ($room->getUp()) {
+            $result["u"] = 1;
+        }
+        if ($room->getDown()) {
+            $result["d"] = 1;
         }
 
         return $result;
