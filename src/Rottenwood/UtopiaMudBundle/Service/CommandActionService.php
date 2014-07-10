@@ -135,7 +135,7 @@ class CommandActionService {
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomAnchor === "0") {
+        if ($destinationRoomAnchor == null) {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
@@ -159,7 +159,7 @@ class CommandActionService {
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomAnchor === "0") {
+        if ($destinationRoomAnchor == null) {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
@@ -183,7 +183,7 @@ class CommandActionService {
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomAnchor === "0") {
+        if ($destinationRoomAnchor == null) {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
@@ -207,7 +207,7 @@ class CommandActionService {
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomAnchor === "0") {
+        if ($destinationRoomAnchor == null) {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
@@ -231,7 +231,7 @@ class CommandActionService {
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomAnchor === "0") {
+        if ($destinationRoomAnchor == null) {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
@@ -255,7 +255,7 @@ class CommandActionService {
         $result = array();
 
         // если выхода не найдено
-        if ($destinationRoomAnchor === "0") {
+        if ($destinationRoomAnchor == null) {
             $result["message"] = "0:3"; // нет выхода
             return $result;
         }
