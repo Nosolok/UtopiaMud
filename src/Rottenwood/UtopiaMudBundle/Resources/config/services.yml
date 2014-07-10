@@ -3,6 +3,19 @@ parameters:
     security.authentication.success_handler.class: Rottenwood\UtopiaMudBundle\Handler\LoginSuccessHandler
 
 services:
+    # PDO services
+    pdo:
+        class: PDO
+        arguments:
+            - "mysql:host=%database_host%;dbname=%database_name%"
+            - "%database_user%"
+            - "%database_password%"
+        calls:
+            - [setAttribute, [3, 2]] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments: ["@pdo", "%pdo.db_options%"]
     utopiamud_user.registration.form.type:
         class: Rottenwood\UtopiaMudBundle\Form\Type\RegistrationFormType
         arguments: [%fos_user.model.user.class%]

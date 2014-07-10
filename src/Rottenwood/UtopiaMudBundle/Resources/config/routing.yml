@@ -28,7 +28,3 @@ fos_user_change_password:
     prefix: /profile
 ###
 
-utopiamud_ajax:
-    path:     /ajax
-    defaults: { _controller: RottenwoodUtopiaMudBundle:Default:ajax }
-#    requirements: { _method: POST }
