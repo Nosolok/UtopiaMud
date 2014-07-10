@@ -1,5 +1,6 @@
 <?php
 
+namespace Rottenwood\UtopiaMudBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
