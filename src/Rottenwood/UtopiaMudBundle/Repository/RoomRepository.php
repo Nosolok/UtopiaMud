@@ -26,12 +26,17 @@ class RoomRepository extends EntityRepository {
     /**
      * Поиск комнаты по якорю
      * @param $anchor
+     * @param $zone
      * @return array
      */
-    public function findByAnchor($anchor) {
+    public function findByAnchor($anchor, $zone) {
+
         $query = $this->getEntityManager()
-            ->createQuery('SELECT r FROM RottenwoodUtopiaMudBundle:Room r WHERE r.anchor LIKE :anchor');
+            ->createQuery('SELECT r FROM RottenwoodUtopiaMudBundle:Room r WHERE r.anchor LIKE :anchor AND r.zone
+            LIKE :zone');
         $query->setParameter('anchor', '%' . $anchor . '%');
+        $query->setParameter('zone', '%' . $zone . '%');
+        $query->setMaxResults(1);
         $result = $query->getResult();
 
         return $result;
@@ -49,6 +54,46 @@ class RoomRepository extends EntityRepository {
             AND p.id IN (:players)");
         $query->setParameter(1, $room);
         $query->setParameter('players', $playersOnline);
+        $result = $query->getResult();
+
+        return $result;
+    }
+
+    /**
+     * Поиск всех комнат в зоне
+     * @param $zone
+     * @internal param $anchor
+     * @return array
+     */
+    public function findByZone($zone) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT r FROM RottenwoodUtopiaMudBundle:Room r WHERE r.zone LIKE :zone');
+        $query->setParameter('zone', '%' . $zone . '%');
+        $result = $query->getResult();
+
+        return $result;
+    }
+
+    // ID всех комнат в зоне
+    public function findAllRoomIdsInZone($zone) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT r.id FROM RottenwoodUtopiaMudBundle:Room r WHERE r.zone LIKE :zone');
+        $query->setParameter('zone', '%' . $zone . '%');
+        $result = $query->getResult();
+
+        // форматирование результата в один массив
+        $zoneIds = array();
+        foreach ($result as $roomId) {
+            $zoneIds[] = $roomId["id"];
+        }
+
+        return $zoneIds;
+    }
+
+    public function findAllPlayersInZone($roomsIds) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT p FROM RottenwoodUtopiaMudBundle:Player p WHERE p.room IN (:allroomsinzone)');
+        $query->setParameter('allroomsinzone', $roomsIds);
         $result = $query->getResult();
 
         return $result;

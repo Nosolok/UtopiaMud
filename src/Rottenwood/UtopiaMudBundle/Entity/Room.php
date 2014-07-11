@@ -51,39 +51,39 @@ class Room {
 
     /**
      * @var integer
-     * @ORM\Column(name="west", type="string", length=30)
+     * @ORM\Column(name="west", type="string", length=30, nullable=true)
      */
-    private $west;
+    private $west = "";
 
     /**
      * @var integer
-     * @ORM\Column(name="north", type="string", length=30)
+     * @ORM\Column(name="north", type="string", length=30, nullable=true)
      */
-    private $north;
+    private $north = "";
 
     /**
      * @var integer
-     * @ORM\Column(name="south", type="string", length=30)
+     * @ORM\Column(name="south", type="string", length=30, nullable=true)
      */
-    private $south;
+    private $south = "";
 
     /**
      * @var integer
-     * @ORM\Column(name="east", type="string", length=30)
+     * @ORM\Column(name="east", type="string", length=30, nullable=true)
      */
-    private $east;
+    private $east = "";
 
     /**
      * @var integer
-     * @ORM\Column(name="up", type="string", length=30)
+     * @ORM\Column(name="up", type="string", length=30, nullable=true)
      */
-    private $up;
+    private $up = "";
 
     /**
      * @var integer
-     * @ORM\Column(name="down", type="string", length=30)
+     * @ORM\Column(name="down", type="string", length=30, nullable=true)
      */
-    private $down;
+    private $down = "";
 
     /**
      * Get id

@@ -131,7 +131,15 @@ class CommandActionService {
      */
     public function north(Player $char) {
         $room = $char->getRoom();
+        /** @var Room $room */
         $destinationRoomAnchor = $room->getNorth();
+        if (strpos($destinationRoomAnchor,':')) {
+            // если якорь содержит ссылку на другую зону
+            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
+        } else {
+            $zone = $room->getZone();
+        }
+
         $result = array();
 
         // если выхода не найдено
@@ -142,7 +150,7 @@ class CommandActionService {
 
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
+        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
 
@@ -156,7 +164,14 @@ class CommandActionService {
      */
     public function south(Player $char) {
         $room = $char->getRoom();
+        /** @var Room $room */
         $destinationRoomAnchor = $room->getSouth();
+        if (strpos($destinationRoomAnchor,':')) {
+            // если якорь содержит ссылку на другую зону
+            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
+        } else {
+            $zone = $room->getZone();
+        }
         $result = array();
 
         // если выхода не найдено
@@ -167,7 +182,7 @@ class CommandActionService {
 
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
+        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
 
@@ -181,7 +196,14 @@ class CommandActionService {
      */
     public function east(Player $char) {
         $room = $char->getRoom();
+        /** @var Room $room */
         $destinationRoomAnchor = $room->getEast();
+        if (strpos($destinationRoomAnchor,':')) {
+            // если якорь содержит ссылку на другую зону
+            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
+        } else {
+            $zone = $room->getZone();
+        }
         $result = array();
 
         // если выхода не найдено
@@ -192,7 +214,7 @@ class CommandActionService {
 
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
+        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
 
@@ -206,7 +228,15 @@ class CommandActionService {
      */
     public function west(Player $char) {
         $room = $char->getRoom();
+        /** @var Room $room */
         $destinationRoomAnchor = $room->getWest();
+        if (strpos($destinationRoomAnchor,':')) {
+            // если якорь содержит ссылку на другую зону
+            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
+        } else {
+            $zone = $room->getZone();
+        }
+
         $result = array();
 
         // если выхода не найдено
@@ -217,7 +247,7 @@ class CommandActionService {
 
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
+        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
 
@@ -231,7 +261,14 @@ class CommandActionService {
      */
     public function up(Player $char) {
         $room = $char->getRoom();
+        /** @var Room $room */
         $destinationRoomAnchor = $room->getUp();
+        if (strpos($destinationRoomAnchor,':')) {
+            // если якорь содержит ссылку на другую зону
+            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
+        } else {
+            $zone = $room->getZone();
+        }
         $result = array();
 
         // если выхода не найдено
@@ -242,7 +279,7 @@ class CommandActionService {
 
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
+        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
 
@@ -256,7 +293,14 @@ class CommandActionService {
      */
     public function down(Player $char) {
         $room = $char->getRoom();
+        /** @var Room $room */
         $destinationRoomAnchor = $room->getDown();
+        if (strpos($destinationRoomAnchor,':')) {
+            // если якорь содержит ссылку на другую зону
+            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
+        } else {
+            $zone = $room->getZone();
+        }
         $result = array();
 
         // если выхода не найдено
@@ -267,7 +311,7 @@ class CommandActionService {
 
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
+        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
 

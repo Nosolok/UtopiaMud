@@ -45,10 +45,9 @@ class DataChannelService {
     }
 
     /**
-     * Возвращает форматированный список ID игроков онлайн
+     * Возвращает список ID игроков онлайн
      * @param $charId
-     * @internal param \Rottenwood\UtopiaMudBundle\Entity\Player $char
-     * @return string
+     * @return array
      */
     public function getOnlineIds($charId) {
         $charsIds = array();
