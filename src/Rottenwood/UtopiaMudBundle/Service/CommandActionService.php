@@ -141,6 +141,7 @@ class CommandActionService {
         }
 
         // перемещение в комнату назначения
+        /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
@@ -165,6 +166,7 @@ class CommandActionService {
         }
 
         // перемещение в комнату назначения
+        /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
@@ -189,6 +191,7 @@ class CommandActionService {
         }
 
         // перемещение в комнату назначения
+        /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
@@ -213,6 +216,7 @@ class CommandActionService {
         }
 
         // перемещение в комнату назначения
+        /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
@@ -237,6 +241,7 @@ class CommandActionService {
         }
 
         // перемещение в комнату назначения
+        /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
@@ -261,6 +266,7 @@ class CommandActionService {
         }
 
         // перемещение в комнату назначения
+        /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
