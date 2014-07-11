@@ -1,0 +1,67 @@
+##########################
+#   Список игровых рас   #
+##########################
+
+races:
+    human:
+        name: человек
+        namef: женщина
+        size: 5
+        ST: 10
+        DX: 10
+        IQ: 10
+        HT: 10
+
+    elf:
+        name: эльф
+        namef: эльфийка
+        size: 5
+        ST: 9
+        DX: 10
+        IQ: 11
+        HT: 10
+
+    dwarf:
+        name: гном
+        namef: гномиха
+        size: 3
+        ST: 11
+        DX: 10
+        IQ: 10
+        HT: 10
+
+    orc:
+        name: орк
+        namef: оркиня
+        size: 5
+        ST: 10
+        DX: 10
+        IQ: 9
+        HT: 12
+
+    ogre:
+        name: огр
+        namef: огриха
+        size: 7
+        ST: 16
+        DX: 9
+        IQ: 8
+        HT: 14
+
+    reptile:
+        name: ящер
+        namef: рептилия
+        size: 4
+        ST: 10
+        DX: 12
+        IQ: 9
+        HT: 12
+
+    halfling:
+        name: хоббит
+        namef: хоббитка
+        size: 3
+        ST: 8
+        DX: 11
+        IQ: 10
+        HT: 11
