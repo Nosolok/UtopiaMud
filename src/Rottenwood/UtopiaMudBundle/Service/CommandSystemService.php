@@ -36,7 +36,7 @@ class CommandSystemService {
     }
 
     // форматирование списка зон, перевод зон из YAML в БД и наоборот
-    public function format() {
+    public function import() {
         $result = array();
         $zoneanchor = "medievaltown";
 
@@ -80,15 +80,33 @@ class CommandSystemService {
 
                 if ($roomData["exits"]["north"]) {
                     $room->setNorth($roomData["exits"]["north"]);
+                } else {
+                    $room->setNorth("");
                 }
                 if ($roomData["exits"]["south"]) {
                     $room->setSouth($roomData["exits"]["south"]);
+                } else {
+                    $room->setSouth("");
                 }
                 if ($roomData["exits"]["east"]) {
                     $room->setEast($roomData["exits"]["east"]);
+                } else {
+                    $room->setEast("");
                 }
                 if ($roomData["exits"]["west"]) {
                     $room->setWest($roomData["exits"]["west"]);
+                } else {
+                    $room->setWest("");
+                }
+                if ($roomData["exits"]["up"]) {
+                    $room->setUp($roomData["exits"]["up"]);
+                } else {
+                    $room->setUp("");
+                }
+                if ($roomData["exits"]["down"]) {
+                    $room->setDown($roomData["exits"]["down"]);
+                } else {
+                    $room->setDown("");
                 }
 
                 // запись объекта в БД
@@ -97,10 +115,10 @@ class CommandSystemService {
             }
 
             // вывод результата
-            $result["test"] = $zone;
+            $result["system"] = "Зона была успешно импортирована.";
         } else {
             // зоны не существует
-            $result["test"] = "zone not found";
+            $result["system"] = "Зона для импорта не найдена.";
         }
 
         return $result;

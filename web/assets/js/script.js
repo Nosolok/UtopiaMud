@@ -11,7 +11,8 @@ $(document).ready(function () {
 
         // Подписка на канал системных данных
         function onevent(args) {
-            game.append('<p>' + args[0] + '</p>');
+            game.append("<br><span class='plaintext'>" + args[0] + "</span><br><br>");
+            scroll();
             console.log(args);
         }
 
@@ -103,6 +104,9 @@ $(document).ready(function () {
         }
         if (data['players']) {
             showplayers(data['players']);
+        }
+        if (data['system']) {
+            game.append("<br><span class='plaintext'>" + data['system'] + "</span><br><br>");
         }
 
         scroll();

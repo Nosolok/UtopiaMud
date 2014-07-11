@@ -63,7 +63,6 @@ class StartCommand extends ContainerAwareCommand {
         $connection->on('open', function (ClientSession $session) use ($connection) {
 
             // Создаю коллекцию подписчиков
-            //            $clients = new Entity\DataChannel();
             $clients = $this->getContainer()->get('datachannel');
 
             // Подписка на канал данных и коллбэк при их получении
@@ -131,6 +130,14 @@ class StartCommand extends ContainerAwareCommand {
                     echo "\033[1;31mОшибка отправки данных: {$error}\033[m\n";
                 }
             );
+
+            // Импорт зон
+            $zoneImport = $this->getContainer()->get('commandsystem')->import();
+            if ($zoneImport) {
+                echo "\033[1;32mЗоны импортированы\033[m\n";
+            } else {
+                echo "\033[1;31mЗоны не импортированы\033[m\n";
+            }
         });
 
         sleep(1);

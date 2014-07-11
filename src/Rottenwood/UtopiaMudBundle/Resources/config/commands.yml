@@ -46,8 +46,8 @@ commands:
         alias:
         - quit
         - конец
-    format:
+    import:
         type: system
         alias:
-        - format
-        - формат
+        - import
+        - импорт
