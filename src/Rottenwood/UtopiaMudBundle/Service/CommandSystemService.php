@@ -79,32 +79,32 @@ class CommandSystemService {
                 $room->setZone($zoneanchor);
                 $room->setType($roomData["type"]);
 
-                if (array_key_exists("north"), $roomData["exits"]) {
+                if (array_key_exists("north", $roomData["exits"])) {
                     $room->setNorth($roomData["exits"]["north"]);
                 } else {
                     $room->setNorth("");
                 }
-                if (array_key_exists("south"), $roomData["exits"]) {
+                if (array_key_exists("south", $roomData["exits"])) {
                     $room->setSouth($roomData["exits"]["south"]);
                 } else {
                     $room->setSouth("");
                 }
-                if (array_key_exists("east"), $roomData["exits"]) {
+                if (array_key_exists("east", $roomData["exits"])) {
                     $room->setEast($roomData["exits"]["east"]);
                 } else {
                     $room->setEast("");
                 }
-                if (array_key_exists("west"), $roomData["exits"]) {
+                if (array_key_exists("west", $roomData["exits"])) {
                     $room->setWest($roomData["exits"]["west"]);
                 } else {
                     $room->setWest("");
                 }
-                if (array_key_exists("up"), $roomData["exits"]) {
+                if (array_key_exists("up", $roomData["exits"])) {
                     $room->setUp($roomData["exits"]["up"]);
                 } else {
                     $room->setUp("");
                 }
-                if (array_key_exists("down"), $roomData["exits"]) {
+                if (array_key_exists("down", $roomData["exits"])) {
                     $room->setDown($roomData["exits"]["down"]);
                 } else {
                     $room->setDown("");
