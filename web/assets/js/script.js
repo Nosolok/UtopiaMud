@@ -11,8 +11,12 @@ $(document).ready(function () {
 
         // Подписка на канал системных данных
         function onevent(args) {
-            game.append("<br><span class='plaintext'>" + args[0] + "</span><br><br>");
-            scroll();
+            if (args[0] == "reloadpage") {
+                location.reload();
+            } else {
+                game.append("<br><span class='plaintext'>" + args[0] + "</span><br><br>");
+                scroll();
+            }
             console.log(args);
         }
 

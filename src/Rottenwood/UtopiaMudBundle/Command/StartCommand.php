@@ -118,7 +118,7 @@ class StartCommand extends ContainerAwareCommand {
 
 
             // Публикация в канал данных
-            $session->publish('system.channel', array('Сервер перезагружен.'), [], ["acknowledge" => true])->then(
+            $session->publish('system.channel', array('reloadpage'), [], ["acknowledge" => true])->then(
                 function () {
                     echo "\n     \033[1;30m>==<   \033[1;31mУтопия   \033[1;30m>==<\n\n";
                     echo "     \033[1;30m    www.utopia.ml\n";
