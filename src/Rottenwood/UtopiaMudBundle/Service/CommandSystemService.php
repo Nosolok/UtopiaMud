@@ -127,8 +127,6 @@ class CommandSystemService {
 
     // Загрузка списка рас и импорт его в базу данных
     public function setRaces() {
-        $result = array();
-
         // парсинг файла списка рас
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/races/races.yml");
         if (!is_string($path)) {
@@ -161,13 +159,11 @@ class CommandSystemService {
 
             // запись объекта в БД
             $this->em->persist($newRace);
-
-            var_dump($newRace);
         }
 
         $this->em->flush();
 
-        return $result;
+        return true;
     }
 
 }

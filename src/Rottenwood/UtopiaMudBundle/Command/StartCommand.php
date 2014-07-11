@@ -138,11 +138,16 @@ class StartCommand extends ContainerAwareCommand {
             if ($zoneImport) {
                 echo "\033[1;32mЗоны импортированы\033[m\n";
             } else {
-                echo "\033[1;31mЗоны не импортированы\033[m\n";
+                echo "\033[1;31mЗоны не были импортированы\033[m\n";
             }
 
             // Импорт рас
-            $this->getContainer()->get('commandsystem')->setRaces();
+            $raceImport = $this->getContainer()->get('commandsystem')->setRaces();
+            if ($raceImport) {
+                echo "\033[1;32mРасы импортированы\033[m\n";
+            } else {
+                echo "\033[1;31mРасы не были импортированы\033[m\n";
+            }
         });
 
         sleep(1);
