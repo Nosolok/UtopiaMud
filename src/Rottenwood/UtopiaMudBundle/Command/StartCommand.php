@@ -131,6 +131,8 @@ class StartCommand extends ContainerAwareCommand {
                 }
             );
 
+            // Команды после запуска сервера
+
             // Импорт зон
             $zoneImport = $this->getContainer()->get('commandsystem')->import();
             if ($zoneImport) {
@@ -138,6 +140,9 @@ class StartCommand extends ContainerAwareCommand {
             } else {
                 echo "\033[1;31mЗоны не импортированы\033[m\n";
             }
+
+            // Импорт рас
+            $this->getContainer()->get('commandsystem')->setRaces();
         });
 
         sleep(1);

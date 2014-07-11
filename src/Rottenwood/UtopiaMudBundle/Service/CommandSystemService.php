@@ -8,6 +8,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\UtopiaMudBundle\Entity\Race;
 use Rottenwood\UtopiaMudBundle\Entity\Room;
 use Rottenwood\UtopiaMudBundle\Repository;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -65,7 +66,7 @@ class CommandSystemService {
                 $oldRoom = $roomRepository->findByAnchor($anchor, $zoneanchor);
 
                 if ($oldRoom) {
-                	// если комната уже существовала
+                    // если комната уже существовала
                     $room = $oldRoom[0];
                 } else {
                     // если комнаты еще нет
@@ -120,6 +121,51 @@ class CommandSystemService {
             // зоны не существует
             $result["system"] = "Зона для импорта не найдена.";
         }
+
+        return $result;
+    }
+
+    // Загрузка списка рас и импорт его в базу данных
+    public function setRaces() {
+        $result = array();
+
+        // парсинг файла списка рас
+        $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/races/races.yml");
+        if (!is_string($path)) {
+            throw new Exception("Type of $path must be string.");
+        }
+        $races = Yaml::parse(file_get_contents($path));
+
+        // цикл создания и записи в базу рас
+        foreach ($races["races"] as $race => $raceData) {
+            /** @var Repository\RaceRepository $raceRepository */
+            $raceRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Race');
+            $oldRace = $raceRepository->findByAnchor($race);
+
+            if ($oldRace) {
+                // если раса уже существовала
+                $newRace = $oldRace[0];
+            } else {
+                // если расы еще нет
+                $newRace = new Race();
+            }
+
+            $newRace->setAnchor($race);
+            $newRace->setName($raceData["name"]);
+            $newRace->setNamef($raceData["namef"]);
+            $newRace->setSize($raceData["size"]);
+            $newRace->setST($raceData["ST"]);
+            $newRace->setDX($raceData["DX"]);
+            $newRace->setIQ($raceData["IQ"]);
+            $newRace->setHT($raceData["HT"]);
+
+            // запись объекта в БД
+            $this->em->persist($newRace);
+
+            var_dump($newRace);
+        }
+
+        $this->em->flush();
 
         return $result;
     }

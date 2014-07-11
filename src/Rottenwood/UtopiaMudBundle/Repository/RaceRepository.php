@@ -10,5 +10,14 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class RaceRepository extends EntityRepository {
+    public function findByAnchor($anchor) {
 
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT r FROM RottenwoodUtopiaMudBundle:Race r WHERE r.anchor LIKE :anchor');
+        $query->setParameter('anchor', '%' . $anchor . '%');
+        $query->setMaxResults(1);
+        $result = $query->getResult();
+
+        return $result;
+    }
 }
