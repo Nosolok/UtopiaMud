@@ -112,8 +112,9 @@ class CommandSystemService {
 
                 // запись объекта в БД
                 $this->em->persist($room);
-                $this->em->flush();
             }
+            
+            $this->em->flush();
 
             // вывод результата
             $result["system"] = "Зона была успешно импортирована.";
