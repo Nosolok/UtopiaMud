@@ -41,3 +41,8 @@ services:
     datachannel:
         class:  Rottenwood\UtopiaMudBundle\Service\DataChannelService
         arguments:  []
+
+    # Сервис вебсокетов
+    websocket:
+        class:  Rottenwood\UtopiaMudBundle\Service\WebsocketPusherService
+        arguments:  [@service_container]

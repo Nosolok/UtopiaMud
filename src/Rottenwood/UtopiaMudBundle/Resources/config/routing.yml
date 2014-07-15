@@ -28,3 +28,6 @@ fos_user_change_password:
     prefix: /profile
 ###
 
+test:
+    path:     /test
+    defaults: { _controller: RottenwoodUtopiaMudBundle:Default:test }

@@ -23,4 +23,27 @@ class DefaultController extends Controller {
 
         return $this->render('RottenwoodUtopiaMudBundle:Default:index.html.twig', $data);
     }
+
+    public function testAction() {
+        $session = $this->get('session')->getId();
+
+        $entryData = array(
+            'hash' => $session,
+            'CMD'    => "look",
+            'article'  => "kittensCategory",
+            'when'     => time(),
+        );
+
+        // This is our new stuff
+        $context = new \ZMQContext();
+        $socket = $context->getSocket(\ZMQ::SOCKET_PUSH, 'my pusher');
+        $socket->connect("tcp://localhost:5555");
+
+        $socket->send(json_encode($entryData));
+
+        $data = array();
+        $data['hash'] = $session;
+
+        return $this->render('RottenwoodUtopiaMudBundle:Default:test.html.twig', $data);
+    }
 }

@@ -22,6 +22,20 @@ class DataChannelService {
     public $clients = array();
 
     /**
+     * Список служебных
+     * @var array
+     */
+    public $channels = array();
+
+    public function setChannels($channel, $topic) {
+        $this->channels[$channel] = $topic;
+    }
+
+    public function getChannel($channel) {
+        return $this->channels[$channel];
+    }
+
+    /**
      * Добавление персонажа в список подключенных персонажей
      * @param        $hash
      * @param Player $client
@@ -60,5 +74,20 @@ class DataChannelService {
         }
 
         return $charsIds;
+    }
+
+    public function getByHash($hash) {
+
+        $client = $this->clients[$hash];
+
+        return $client;
+    }
+
+    public function channelOnline($channel) {
+        if (array_key_exists($channel, $this->channels)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
