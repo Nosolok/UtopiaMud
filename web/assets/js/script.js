@@ -25,7 +25,7 @@ $(document).ready(function () {
             var send = {};
             send["CMD"] = "look";
 
-            conn.publish('system.channel', "HASH:::" + hash);
+            conn.publish('system.channel', {'HASH': hash});
             conn.publish('personal.' + hash, send);
 
             // отправление команды
@@ -47,7 +47,7 @@ $(document).ready(function () {
             console.log('Переподключение..');
 
             // таймер
-            var timercount = 5;
+            var timercount = 1;
             scroll();
 
             var counter = setInterval(timer, 1000); //1000 will  run it every 1 second

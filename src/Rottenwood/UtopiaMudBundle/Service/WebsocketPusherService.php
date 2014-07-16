@@ -15,60 +15,35 @@ class WebsocketPusherService implements WampServerInterface {
     private $container;
     private $clients;
     private $em;
-    /**
-     * A lookup of all the topics clients have subscribed to
-     */
-    private $subscribedTopics = array();
+    private $onlineChars;
 
     public function __construct(Container $container) {
         $this->container = $container;
         $this->em = $container->get('doctrine.orm.entity_manager');
         // Создаю коллекцию подписчиков
         $this->clients = $this->container->get('datachannel');
+        $this->onlineChars = new \SplObjectStorage;
     }
-
-    public function sendData() {
-        $data = array(
-//            'hash' => $session,
-//            'CMD'    => "look",
-            'article'  => "kittensCategory",
-//            'when'     => time(),
-        );
-
-        // This is our new stuff
-        $context = new \ZMQContext();
-        $socket = $context->getSocket(\ZMQ::SOCKET_PUSH, 'my pusher');
-        $socket->connect("tcp://localhost:5555");
-
-        $socket->send(json_encode($data));
-    }
-
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-        //        $this->subscribedTopics[$topic->getId()] = $topic;
         $channel = $topic->getId();
         echo "Подписка на $channel\n";
-        ////        var_dump($topic->getId());
-        //        $channel = substr($topic->getId(),9);
-        //        $user = $this->clients->getByHash($channel);
-        //
-        //        $this->clients->setChannels($channel, $topic);
-
-        //        var_dump($conn);
-        //        var_dump($topic);
-
-        // Проверка
-
     }
 
     public function onUnSubscribe(ConnectionInterface $conn, $topic) {
     }
 
     public function onOpen(ConnectionInterface $conn) {
-
+        $this->onlineChars->attach($conn);
+        echo "New connection! ({$conn->resourceId})\n";
     }
 
     public function onClose(ConnectionInterface $conn) {
+        // Удаление вышедшего клиента из списка юзеров
+        $whoQuits = $this->onlineChars->offsetGet($conn);
+        $this->clients->remove($whoQuits);
+        $this->onlineChars->detach($conn);
+        echo "Connection {$conn->resourceId} has disconnected\n";
     }
 
     public function onCall(ConnectionInterface $conn, $id, $topic, array $params) {
@@ -77,12 +52,9 @@ class WebsocketPusherService implements WampServerInterface {
     }
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible) {
-        // In this application if clients send data it's because the user hacked around in console
-        //        $conn->close();
-
         $channel = $topic->getId();
 
-        // Если подписка оформлена на персональный канал
+        // Если сообщение пришло в персональный канал
         if ((substr($channel, 0, 9) == 'personal.')) {
             $hash = substr($channel, 9);
             /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
@@ -97,16 +69,42 @@ class WebsocketPusherService implements WampServerInterface {
 
                 // Отправка результата клиенту
                 $topic->broadcast($result);
-
-                var_dump($result);
             }
         }
 
+        // Если сообщение пришло в системный канал
+        if ($channel == 'system.channel') {
+            // Если передан хэш
+            if (array_key_exists("HASH", $event)) {
+                $hash = $event["HASH"];
 
+                /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
+                $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
+                // Если передан валидный токен
+                if ($char) {
+                    // Соотнесение Websocket Client ID с симфони юзер-токеном
+                    $this->onlineChars->attach($conn, $hash);
+                } else {
+                    $conn->close();
+                }
 
+                // Проверка хэша на уникальность
+                if ($this->clients->hashIsUnique($hash)) {
+                    // Если хэш уже присутствует
+                    echo "Переподключение хэша: \033[0;33m", $hash, "\033[m\n";
+                } else {
+                    // Если хэш отсутствует
+                    echo "Зарегистрирован новый хэш: \033[1;33m", $hash, "\033[m\n";
 
-//        echo $channel, ": ", $event, "\n";
-//        print_r($event);
+                    /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
+                    $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
+                    $char = $char[0];
+
+                    // Добавление клиента в список юзеров онлайн
+                    $this->clients->add($hash, $char);
+                }
+            }
+        }
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
@@ -114,76 +112,16 @@ class WebsocketPusherService implements WampServerInterface {
 
     public function onReboot($incoming) {
         $data = json_decode($incoming, true);
-
-        var_dump($data);
+        return false;
     }
 
-    /**
-     * @param string JSON'ified string we'll receive from ZeroMQ
-     */
-    public function onBlogEntry($entry) {
-        $entryData = json_decode($entry, true);
-
-        $hash = $entryData["hash"];
-        // Проверка хэша на уникальность
-        if ($this->clients->hashIsUnique($hash)) {
-            // Если хэш уже присутствует
-            echo "Переподключение хэша: \033[0;33m", $hash, "\033[m\n";
-        } else {
-            // Если хэш отсутствует
-            echo "Зарегистрирован новый хэш: \033[1;33m", $hash, "\033[m\n";
-
-            $char = $this->container->get('doctrine.orm.entity_manager')->getRepository('RottenwoodUtopiaMudBundle:Player')
-                ->getByHash($hash);
-
-            // Добавление клиента в список подключенных клиентов
-            $this->clients->add($hash, $char[0]);
-
-            // Подключение к каналу пользователя
-            //            $channel = 'personal.' . $hash;
-            $channel = $hash;
-
-            //            // Подписка на персональный канал данных пользователя
-            //            $session->subscribe($channel, $personalChannel);
-
-            //            $topic = $this->subscribedTopics[$channel];
-            //            $topic->broadcast($entryData);
-
-            //            echo "При подключении:\n";
-            //            var_dump($this->subscribedTopics);
-            //            var_dump($this);
-            //            echo "По хэшу:\n";
-            //            var_dump($this->subscribedTopics[$channel]);
-        };
-
-        //         если передана команда
-        //        if (array_key_exists("CMD", $entryData)) {
-        //
-        //        }
-
-        //        var_dump($channel);
-
-        $channel = $hash;
-
-        var_dump($channel);
-        var_dump($this->clients->channels);
-
-
-        // If the lookup topic object isn't set there is no one to publish to
-        if (!$this->clients->channelOnline($channel)) {
-            echo "no channel\n";
-            return;
+    // Онлайн лист
+    public function getOnlinelist() {
+        $onlineList = array();
+        foreach ($this->onlineChars as $key) {
+            $onlineList[] = $this->onlineChars[$key];
         }
-        echo "channel OK!\n";
 
-
-        //        $topic = $this->subscribedTopics[$entryData['category']];
-        $topic = $this->clients->getChannel($channel);
-
-        // re-send the data to all the clients subscribed to that category
-        $topic->broadcast($entryData);
-
+        return $onlineList;
     }
-
-
 }

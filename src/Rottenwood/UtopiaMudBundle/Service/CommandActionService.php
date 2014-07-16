@@ -54,10 +54,10 @@ class CommandActionService {
         if ($playersInRoom) {
             foreach ($playersInRoom as $player) {
                 $playerSex = $player->getSex();
-                if ($playerSex == 1) {
-                    $getNameFunction = "getName";
-                } elseif ($playerSex == 2) {
+                if ($playerSex == 2) {
                     $getNameFunction = "getNamef";
+                } else {
+                    $getNameFunction = "getName";
                 }
                 $result["players"][$player->getUsername()]["race"] = $player->getRace()->{$getNameFunction}();
             }

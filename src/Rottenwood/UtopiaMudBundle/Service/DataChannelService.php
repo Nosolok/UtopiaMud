@@ -22,26 +22,26 @@ class DataChannelService {
     public $clients = array();
 
     /**
-     * Список служебных
-     * @var array
-     */
-    public $channels = array();
-
-    public function setChannels($channel, $topic) {
-        $this->channels[$channel] = $topic;
-    }
-
-    public function getChannel($channel) {
-        return $this->channels[$channel];
-    }
-
-    /**
      * Добавление персонажа в список подключенных персонажей
      * @param        $hash
      * @param Player $client
      */
     public function add($hash, $client) {
+        $clientAlreadyInArray = in_array($client, $this->clients);
+
+        if ($clientAlreadyInArray) {
+            $oldHash = array_search($client, $this->clients);
+            unset($this->clients[$oldHash]);
+        }
         $this->clients[$hash] = $client;
+    }
+
+    /**
+     * Удаление персонажа из списка подключенных персонажей
+     * @param $hash
+     */
+    public function remove($hash) {
+        unset($this->clients[$hash]);
     }
 
     /**
@@ -76,6 +76,11 @@ class DataChannelService {
         return $charsIds;
     }
 
+    /**
+     * Возвращает объект Player по токену
+     * @param $hash
+     * @return Player $client
+     */
     public function getByHash($hash) {
 
         $client = $this->clients[$hash];
