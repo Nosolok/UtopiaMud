@@ -25,9 +25,6 @@ class WebsocketPusherService implements WampServerInterface {
         $this->em = $container->get('doctrine.orm.entity_manager');
         // Создаю коллекцию подписчиков
         $this->clients = $this->container->get('datachannel');
-
-        // Перезагрузка клиента
-        $this->sendData();
     }
 
     public function sendData() {

@@ -47,14 +47,8 @@ $(document).ready(function () {
             console.log('Переподключение..');
 
             // таймер
-            var timercount = 20;
-            game.append("<span class='command'>Соединение потеряно.<br>Переподключение через <span id='rebootcounter'>" + timercount + "</span> сек</span><br>"
-            )
-            ;
-//            setTimeout(function(){
-//                window.location.reload(1);
-//            }, 10000);
-
+            var timercount = 5;
+            scroll();
 
             var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
 
@@ -71,6 +65,9 @@ $(document).ready(function () {
                 // отображение таймера
                 rebootcounter.html(timercount);
             }
+
+            game.append("<span class='command'>Соединение потеряно.<br>Переподключение через <span id='rebootcounter'>" + timercount + "</span> сек</span><br><br>"
+            );
 
         },
         {
@@ -140,32 +137,26 @@ $(document).ready(function () {
 
     // Отображение выходов
     function showexits(data) {
-        game.append("<span class='roomexits'>[ Выходы: ");
+        var exitways = "";
         if (data['n']) {
-            game.append("<span class='roomexits'>север ");
+            exitways = "север ";
         }
-        ;
         if (data['s']) {
-            game.append("<span class='roomexits'>юг ");
+            exitways = exitways + "юг ";
         }
-        ;
         if (data['w']) {
-            game.append("<span class='roomexits'>запад ");
+            exitways = exitways + "запад ";
         }
-        ;
         if (data['e']) {
-            game.append("<span class='roomexits'>восток ");
+            exitways = exitways + "восток ";
         }
-        ;
         if (data['u']) {
-            game.append("<span class='roomexits'>вверх ");
+            exitways = exitways + "вверх ";
         }
-        ;
         if (data['d']) {
-            game.append("<span class='roomexits'>вниз ");
+            exitways = exitways + "вниз ";
         }
-        ;
-        game.append("<span class='roomexits'>]<br><br>");
+        game.append("<span class='roomexits'>[ Выходы: " + exitways + "]</span><br><br>");
     }
 
     // Отображение персонажей
