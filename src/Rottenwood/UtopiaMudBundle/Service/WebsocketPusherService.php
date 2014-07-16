@@ -14,6 +14,7 @@ class WebsocketPusherService implements WampServerInterface {
 
     private $container;
     private $clients;
+    private $em;
     /**
      * A lookup of all the topics clients have subscribed to
      */
@@ -21,23 +22,45 @@ class WebsocketPusherService implements WampServerInterface {
 
     public function __construct(Container $container) {
         $this->container = $container;
+        $this->em = $container->get('doctrine.orm.entity_manager');
         // Создаю коллекцию подписчиков
         $this->clients = $this->container->get('datachannel');
+
+        // Перезагрузка клиента
+        $this->sendData();
+    }
+
+    public function sendData() {
+        $data = array(
+//            'hash' => $session,
+//            'CMD'    => "look",
+            'article'  => "kittensCategory",
+//            'when'     => time(),
+        );
+
+        // This is our new stuff
+        $context = new \ZMQContext();
+        $socket = $context->getSocket(\ZMQ::SOCKET_PUSH, 'my pusher');
+        $socket->connect("tcp://localhost:5555");
+
+        $socket->send(json_encode($data));
     }
 
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-//        $this->subscribedTopics[$topic->getId()] = $topic;
-//        echo "test subscribe\n";
-////        var_dump($topic->getId());
-//        $channel = substr($topic->getId(),9);
-//        $user = $this->clients->getByHash($channel);
-//
-//        $this->clients->setChannels($channel, $topic);
+        //        $this->subscribedTopics[$topic->getId()] = $topic;
+        $channel = $topic->getId();
+        echo "Подписка на $channel\n";
+        ////        var_dump($topic->getId());
+        //        $channel = substr($topic->getId(),9);
+        //        $user = $this->clients->getByHash($channel);
+        //
+        //        $this->clients->setChannels($channel, $topic);
 
-//        var_dump($conn);
-//        var_dump($topic);
+        //        var_dump($conn);
+        //        var_dump($topic);
 
+        // Проверка
 
     }
 
@@ -58,13 +81,44 @@ class WebsocketPusherService implements WampServerInterface {
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible) {
         // In this application if clients send data it's because the user hacked around in console
-//        $conn->close();
+        //        $conn->close();
 
-        echo $topic->getId(), ": ", $event, "\n";
-//        var_dump($event);
+        $channel = $topic->getId();
+
+        // Если подписка оформлена на персональный канал
+        if ((substr($channel, 0, 9) == 'personal.')) {
+            $hash = substr($channel, 9);
+            /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
+            $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
+            $char = $char[0];
+            $channel = $char->getUsername();
+
+            // Если передана команда
+            if (array_key_exists("CMD", $event)) {
+                $command = $event["CMD"];
+                $result = $this->container->get('command')->execute($command, $char);
+
+                // Отправка результата клиенту
+                $topic->broadcast($result);
+
+                var_dump($result);
+            }
+        }
+
+
+
+
+//        echo $channel, ": ", $event, "\n";
+//        print_r($event);
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
+    }
+
+    public function onReboot($incoming) {
+        $data = json_decode($incoming, true);
+
+        var_dump($data);
     }
 
     /**
@@ -89,7 +143,7 @@ class WebsocketPusherService implements WampServerInterface {
             $this->clients->add($hash, $char[0]);
 
             // Подключение к каналу пользователя
-//            $channel = 'personal.' . $hash;
+            //            $channel = 'personal.' . $hash;
             $channel = $hash;
 
             //            // Подписка на персональный канал данных пользователя
@@ -98,11 +152,11 @@ class WebsocketPusherService implements WampServerInterface {
             //            $topic = $this->subscribedTopics[$channel];
             //            $topic->broadcast($entryData);
 
-//            echo "При подключении:\n";
-//            var_dump($this->subscribedTopics);
-//            var_dump($this);
-//            echo "По хэшу:\n";
-//            var_dump($this->subscribedTopics[$channel]);
+            //            echo "При подключении:\n";
+            //            var_dump($this->subscribedTopics);
+            //            var_dump($this);
+            //            echo "По хэшу:\n";
+            //            var_dump($this->subscribedTopics[$channel]);
         };
 
         //         если передана команда
@@ -110,12 +164,12 @@ class WebsocketPusherService implements WampServerInterface {
         //
         //        }
 
-//        var_dump($channel);
+        //        var_dump($channel);
 
         $channel = $hash;
 
         var_dump($channel);
-            var_dump($this->clients->channels);
+        var_dump($this->clients->channels);
 
 
         // If the lookup topic object isn't set there is no one to publish to
@@ -123,7 +177,7 @@ class WebsocketPusherService implements WampServerInterface {
             echo "no channel\n";
             return;
         }
-            echo "channel OK!\n";
+        echo "channel OK!\n";
 
 
         //        $topic = $this->subscribedTopics[$entryData['category']];
