@@ -42,8 +42,14 @@ class CommandService {
         }
         $commands = Yaml::parse(file_get_contents($path));
 
+        // разбитие строки на команду и аргументы
+        $arguments = explode(' ',trim($command));
+        $command = $arguments[0];
+        unset($arguments[0]);
+
         // разбитие команды на символы и их подсчет (хак для русских символов)
         $count = count(preg_split('/(?<!^)(?!$)/u', $command));
+
         $run = $this->recursiveArraySearchSubstr($command, $commands["commands"], $count);
 
         // проверка существования команды
@@ -62,7 +68,7 @@ class CommandService {
             // вывод в консоль полного имени команды
             echo "[$run]\n";
             // запуск команды
-            $result = $this->{$commandtype}->$run($user);
+            $result = $this->{$commandtype}->$run($user, $arguments);
         } else {
             // вывод в консоль информации о ненайденной команде
             echo "[! command not found !]\n";

@@ -108,3 +108,9 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
 .mobshow {
 	color:#ffa10a;
 }
+
+/*************    Чат    *************/
+/* say */
+.chatsayphrase {
+    color: #fff69b;
+}

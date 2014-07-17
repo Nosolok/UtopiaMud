@@ -51,3 +51,9 @@ commands:
         alias:
         - import
         - импорт
+    say:
+        type: action
+        alias:
+        - say
+        - сказать
+        - произнести

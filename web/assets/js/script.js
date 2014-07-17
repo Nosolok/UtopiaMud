@@ -95,6 +95,8 @@ $(document).ready(function () {
             game.append("<br><span class='plaintext'>Команда не найдена!</span><br><br>");
         } else if (data['message'] == "0:3") {
             game.append("<br><span class='plaintext'>Вы не можете двигаться в данном направлении.</span><br><br>");
+        } else if (data['message'] == "0:4:1") {
+            game.append("<br><span class='plaintext'>Что ты хочешь сказать?</span><br><br>");
         }
 
         //*** ответ от сервера: системные действия
@@ -137,6 +139,9 @@ $(document).ready(function () {
             game.append("<span class='plaintext'>" + data['who'] + " пришел снизу.</span><br><br>");
         } else if (data['message'] == "1:4:6") {
             game.append("<span class='plaintext'>" + data['who'] + " пришел сверху.</span><br><br>");
+        // сказать
+        } else if (data['message'] == "2:1") {
+            game.append("<span class='plaintext'>" + data['who'] + " сказал: <span class='chatsayphrase'>" + data['say'] + "</span></span><br><br>");
         }
 
 
