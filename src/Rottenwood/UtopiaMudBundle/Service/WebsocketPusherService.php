@@ -7,6 +7,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Ratchet\ConnectionInterface;
+use Ratchet\Wamp\Topic;
 use Ratchet\Wamp\WampServerInterface;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -16,6 +17,7 @@ class WebsocketPusherService implements WampServerInterface {
     private $clients;
     private $em;
     private $onlineChars;
+    private $topics = array();
 
     public function __construct(Container $container) {
         $this->container = $container;
@@ -23,11 +25,16 @@ class WebsocketPusherService implements WampServerInterface {
         // Создаю коллекцию подписчиков
         $this->clients = $this->container->get('datachannel');
         $this->onlineChars = new \SplObjectStorage;
+//        $this->topics = new \SplObjectStorage;
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
         $channel = $topic->getId();
         echo "Подписка на $channel\n";
+
+        // Запись канала в список
+        $this->topics[$channel] = $topic;
+
     }
 
     public function onUnSubscribe(ConnectionInterface $conn, $topic) {
@@ -69,8 +76,48 @@ class WebsocketPusherService implements WampServerInterface {
                 $command = $event["CMD"];
                 $result = $this->container->get('command')->execute($command, $char);
 
+//                // Отправка результата клиенту
+//                $topic->broadcast($result);
+
+                // Отправка результата связанным участникам
+                if (array_key_exists("3rd", $result)) {
+                    // Список респондентов
+                    $whomToTell = $result["3rd"];
+
+                    // Сообщение для респондентов
+                    $thirdEcho = $result["3rdecho"];
+                    unset($result["3rd"]);
+                    unset($result["3rdecho"]);
+
+                    // Поиск каналов данных нужных респондентов
+                    /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $player */
+                    foreach ($whomToTell as $player) {
+
+                        foreach ($this->onlineChars as $value) {
+                            $obj = $this->onlineChars->current(); // current object
+                            $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
+                            $playerHash = $player->getHash();
+                            $personalChannel = "personal." . $playerHash;
+                            if ($assoc_key == $playerHash) {
+                                $personalTopic = $this->topics[$personalChannel];
+                                /** @var Topic $personalTopic */
+                                $personalTopic->broadcast($thirdEcho);
+
+                            }
+
+//                            var_dump($obj);
+//                            var_dump($assoc_key);
+                        }
+
+                    }
+                }
+
                 // Отправка результата клиенту
                 $topic->broadcast($result);
+
+
+//                var_dump($this->topics);
+
             }
         }
 

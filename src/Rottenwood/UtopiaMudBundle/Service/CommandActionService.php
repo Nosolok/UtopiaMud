@@ -5,8 +5,8 @@ namespace Rottenwood\UtopiaMudBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
 use Rottenwood\UtopiaMudBundle\Entity\Room;
-use Symfony\Component\DependencyInjection\Container;
 use Rottenwood\UtopiaMudBundle\Repository;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Service of action commands
@@ -43,7 +43,7 @@ class CommandActionService {
         $result["roomname"] = $room->getName();
         $result["roomdesc"] = $room->getRoomdesc();
 
-        if($exits = $this->techLookExits($room)) {
+        if ($exits = $this->techLookExits($room)) {
             $result["exits"] = $exits;
         }
 
@@ -132,9 +132,10 @@ class CommandActionService {
      */
     public function north(Player $char) {
         $room = $char->getRoom();
+        $charName = $char->getUsername();
         /** @var Room $room */
         $destinationRoomAnchor = $room->getNorth();
-        if (strpos($destinationRoomAnchor,':')) {
+        if (strpos($destinationRoomAnchor, ':')) {
             // если якорь содержит ссылку на другую зону
             list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
         } else {
@@ -154,6 +155,17 @@ class CommandActionService {
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
+
+        // Оповещение всех в комнате
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["3rd"] = $playersInRoom;
+            $result["3rdecho"] = array();
+            $result["3rdecho"]["message"] = "1:3:1";  // ушел на север
+            $result["3rdecho"]["who"] = $charName;
+        }
 
         return $result;
     }
@@ -165,9 +177,10 @@ class CommandActionService {
      */
     public function south(Player $char) {
         $room = $char->getRoom();
+        $charName = $char->getUsername();
         /** @var Room $room */
         $destinationRoomAnchor = $room->getSouth();
-        if (strpos($destinationRoomAnchor,':')) {
+        if (strpos($destinationRoomAnchor, ':')) {
             // если якорь содержит ссылку на другую зону
             list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
         } else {
@@ -186,6 +199,17 @@ class CommandActionService {
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
+
+        // Оповещение всех в комнате
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["3rd"] = $playersInRoom;
+            $result["3rdecho"] = array();
+            $result["3rdecho"]["message"] = "1:3:3";  // ушел на юг
+            $result["3rdecho"]["who"] = $charName;
+        }
 
         return $result;
     }
@@ -197,9 +221,10 @@ class CommandActionService {
      */
     public function east(Player $char) {
         $room = $char->getRoom();
+        $charName = $char->getUsername();
         /** @var Room $room */
         $destinationRoomAnchor = $room->getEast();
-        if (strpos($destinationRoomAnchor,':')) {
+        if (strpos($destinationRoomAnchor, ':')) {
             // если якорь содержит ссылку на другую зону
             list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
         } else {
@@ -218,6 +243,17 @@ class CommandActionService {
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
+
+        // Оповещение всех в комнате
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["3rd"] = $playersInRoom;
+            $result["3rdecho"] = array();
+            $result["3rdecho"]["message"] = "1:3:2";  // ушел на восток
+            $result["3rdecho"]["who"] = $charName;
+        }
 
         return $result;
     }
@@ -229,9 +265,10 @@ class CommandActionService {
      */
     public function west(Player $char) {
         $room = $char->getRoom();
+        $charName = $char->getUsername();
         /** @var Room $room */
         $destinationRoomAnchor = $room->getWest();
-        if (strpos($destinationRoomAnchor,':')) {
+        if (strpos($destinationRoomAnchor, ':')) {
             // если якорь содержит ссылку на другую зону
             list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
         } else {
@@ -251,6 +288,17 @@ class CommandActionService {
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
+
+        // Оповещение всех в комнате
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["3rd"] = $playersInRoom;
+            $result["3rdecho"] = array();
+            $result["3rdecho"]["message"] = "1:3:4";  // ушел на запад
+            $result["3rdecho"]["who"] = $charName;
+        }
 
         return $result;
     }
@@ -262,9 +310,10 @@ class CommandActionService {
      */
     public function up(Player $char) {
         $room = $char->getRoom();
+        $charName = $char->getUsername();
         /** @var Room $room */
         $destinationRoomAnchor = $room->getUp();
-        if (strpos($destinationRoomAnchor,':')) {
+        if (strpos($destinationRoomAnchor, ':')) {
             // если якорь содержит ссылку на другую зону
             list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
         } else {
@@ -283,6 +332,17 @@ class CommandActionService {
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
+
+        // Оповещение всех в комнате
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["3rd"] = $playersInRoom;
+            $result["3rdecho"] = array();
+            $result["3rdecho"]["message"] = "1:3:5";  // ушел наверх
+            $result["3rdecho"]["who"] = $charName;
+        }
 
         return $result;
     }
@@ -294,9 +354,10 @@ class CommandActionService {
      */
     public function down(Player $char) {
         $room = $char->getRoom();
+        $charName = $char->getUsername();
         /** @var Room $room */
         $destinationRoomAnchor = $room->getDown();
-        if (strpos($destinationRoomAnchor,':')) {
+        if (strpos($destinationRoomAnchor, ':')) {
             // если якорь содержит ссылку на другую зону
             list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
         } else {
@@ -315,6 +376,17 @@ class CommandActionService {
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         $this->techGotoRoom($char, $destinationRoom[0]);
         $result = $this->techLook($destinationRoom[0], $char->getId());
+
+        // Оповещение всех в комнате
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["3rd"] = $playersInRoom;
+            $result["3rdecho"] = array();
+            $result["3rdecho"]["message"] = "1:3:6";  // ушел вниз
+            $result["3rdecho"]["who"] = $charName;
+        }
 
         return $result;
     }

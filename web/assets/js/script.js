@@ -116,6 +116,19 @@ $(document).ready(function () {
             game.append("<br><span class='plaintext'>Вы осмотрелись.</span><br><br>");
         } else if (data['message'] == "1:2") {
             game.append("<br><span class='plaintext'>Вы обратили взгляд на объект.</span><br><br>");
+        // уходит/приходит
+        } else if (data['message'] == "1:3:1") {
+            game.append("<span class='plaintext'>" + data['who'] + " ушел на север.</span><br><br>");
+        } else if (data['message'] == "1:3:2") {
+            game.append("<span class='plaintext'>" + data['who'] + " ушел на восток.</span><br><br>");
+        } else if (data['message'] == "1:3:3") {
+            game.append("<span class='plaintext'>" + data['who'] + " ушел на юг.</span><br><br>");
+        } else if (data['message'] == "1:3:4") {
+            game.append("<span class='plaintext'>" + data['who'] + " ушел на запад.</span><br><br>");
+        } else if (data['message'] == "1:3:5") {
+            game.append("<span class='plaintext'>" + data['who'] + " ушел наверх.</span><br><br>");
+        } else if (data['message'] == "1:3:6") {
+            game.append("<span class='plaintext'>" + data['who'] + " ушел вниз.</span><br><br>");
         }
 
         if (data['roomname']) {

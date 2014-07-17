@@ -60,15 +60,15 @@ class DataChannelService {
 
     /**
      * Возвращает список ID игроков онлайн
-     * @param $charId
+     * @param $charIdToIgnore
      * @return array
      */
-    public function getOnlineIds($charId) {
+    public function getOnlineIds($charIdToIgnore) {
         $charsIds = array();
 
         foreach ($this->clients as $user) {
             $userId = $user->getId();
-            if ($userId != $charId) {
+            if ($userId != $charIdToIgnore) {
                 $charsIds[] = $user->getId();
             }
         }
