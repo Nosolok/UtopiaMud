@@ -35,7 +35,7 @@ class WebsocketPusherService implements WampServerInterface {
 
     public function onOpen(ConnectionInterface $conn) {
         $this->onlineChars->attach($conn);
-        echo "New connection! ({$conn->resourceId})\n";
+        echo "Новое соединение! ({$conn->resourceId})\n";
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -43,7 +43,7 @@ class WebsocketPusherService implements WampServerInterface {
         $whoQuits = $this->onlineChars->offsetGet($conn);
         $this->clients->remove($whoQuits);
         $this->onlineChars->detach($conn);
-        echo "Connection {$conn->resourceId} has disconnected\n";
+        echo "Соединение {$conn->resourceId} разорвано\n";
     }
 
     public function onCall(ConnectionInterface $conn, $id, $topic, array $params) {
@@ -64,6 +64,8 @@ class WebsocketPusherService implements WampServerInterface {
 
             // Если передана команда
             if (array_key_exists("CMD", $event)) {
+                echo "$channel [CMD] ";
+
                 $command = $event["CMD"];
                 $result = $this->container->get('command')->execute($command, $char);
 

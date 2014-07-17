@@ -5,7 +5,7 @@
 $(document).ready(function () {
     var chat = $('#chatinput');
     var game = $('#game');
-    var conn = new ab.Session('ws://localhost:8080',
+    var conn = new ab.Session('ws://localhost:6661',
         //    var conn = new ab.Session('ws://74.122.199.113:8080',
         function () {
             console.log("Соединение установлено");
@@ -35,7 +35,6 @@ $(document).ready(function () {
 
                 // Очистка чата
                 chat.val('');
-//                session.publish('personal.' + hash, ['CMD', lastcommand]);
                 conn.publish('personal.' + hash, {'CMD': lastcommand});
                 // Эхо введенной команды
                 game.append("<span class='command'>" + lastcommand + "</span><br>");
@@ -50,7 +49,7 @@ $(document).ready(function () {
             var timercount = 1;
             scroll();
 
-            var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
+            var counter = setInterval(timer, 1000);
 
             function timer() {
                 var rebootcounter = $("#rebootcounter");
