@@ -93,8 +93,10 @@ $(document).ready(function () {
         //*** ответ от сервера: ошибки
         if (data['message'] == "0:1") {
             game.append("<br><span class='plaintext'>Команда не найдена!</span><br><br>");
+        } else if (data['message'] == "0:2:1") {
+            game.append("<br><span class='plaintext'>Ты не видишь ничего похожего на &quot;" + data['object'] + "&quot;.</span><br><br>");
         } else if (data['message'] == "0:3") {
-            game.append("<br><span class='plaintext'>Вы не можете двигаться в данном направлении.</span><br><br>");
+            game.append("<br><span class='plaintext'>Ты не можешь двигаться в данном направлении.</span><br><br>");
         } else if (data['message'] == "0:4:1") {
             game.append("<br><span class='plaintext'>Что ты хочешь сказать?</span><br><br>");
         }
@@ -105,14 +107,14 @@ $(document).ready(function () {
             $(location).attr('href', url);
         }
         if (data['message'] == "0:5:1") {
-            game.append("<br><span class='plaintext'>Для выхода введите команду &quot;конец&quot; (quit) целиком.</span><br><br>");
+            game.append("<br><span class='plaintext'>Для выхода введи команду &quot;конец&quot; (quit) целиком.</span><br><br>");
         }
 
         //*** ответ от сервера: результаты команд
         if (data['message'] == "1:1") {
-            game.append("<br><span class='plaintext'>Вы осмотрелись.</span><br><br>");
+            game.append("<br><span class='plaintext'>Ты осмотрелся.</span><br><br>");
         } else if (data['message'] == "1:2") {
-            game.append("<br><span class='plaintext'>Вы обратили взгляд на объект.</span><br><br>");
+            game.append("<br><span class='plaintext'>Ты обратил взгляд на " + data['object'] + ".</span><br>" + data['desc'] + "<br><br>");
         // уходит
         } else if (data['message'] == "1:3:1") {
             game.append("<span class='plaintext'>" + data['who'] + " ушел на север.</span><br><br>");

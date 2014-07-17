@@ -3,6 +3,7 @@
 #####################
 
 commands:
+    # Перемещение
     north:
         type: action
         alias:
@@ -35,22 +36,30 @@ commands:
         - down
         - вниз
         - низ
+
+    # Осмотр окружающей местности
     look:
         type: action
         alias:
         - look
         - смотреть
         - взглянуть
+
+    # Выход из игры
     quit:
         type: system
         alias:
         - quit
         - конец
+
+    # Импорт зон и рас из файлов
     import:
         type: system
         alias:
         - import
         - импорт
+
+    # Чат
     say:
         type: action
         alias:

@@ -113,9 +113,46 @@ class CommandActionService {
     /**
      * Command: look
      * @param Player $char
+     * @param        $arguments
      * @return array
      */
-    public function look(Player $char) {
+    public function look(Player $char, $arguments) {
+        $result = array();
+        /** @var Room $room */
+        $room = $char->getRoom();
+        $roomId = $room->getId();
+
+        // если персонаж посмотрел на что-то
+        if ($arguments) {
+            $arguments = $arguments[1];
+
+            // персонажи в комнате
+            $playersOnline = $this->container->get('datachannel')->getOnlineIds(0);
+            $playersInRoom = $this->roomRepository->findPlayersInRoom($roomId, $playersOnline);
+
+            $result["message"] = "0:2:1";
+            $result["object"] = $arguments;
+
+            if ($playersInRoom) {
+                foreach ($playersInRoom as $player) {
+                    /** @var Player $player */
+                    $playerName = $player->getUsername();
+
+                    echo "$playerName, $arguments\n";
+
+                    // проверка наличия имени
+                    if (strpos($playerName, $arguments) !== false) {
+                        $playerDesc = $player->getLongDesc();
+                        $result["message"] = "1:2";
+                        $result["object"] = $playerName;
+                        $result["desc"] = $playerDesc;
+                    }
+                }
+            }
+
+            return $result;
+        }
+
         // получение описания комнаты в которой находится персонаж
         $room = $char->getRoom();
 
@@ -491,7 +528,7 @@ class CommandActionService {
             $result["3rdecho"] = array(
                 "message" => $result["message"],
                 "who"     => $charName,
-                "say" => $phrase,
+                "say"     => $phrase,
             );
         }
 

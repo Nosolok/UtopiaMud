@@ -37,6 +37,13 @@ class Player extends BaseUser {
     private $sex;
 
     /**
+     * Описание персонажа
+     * @var string
+     * @ORM\Column(name="long_desc", type="string", length=500)
+     */
+    private $longDesc = "Ничем не примечательная личность.";
+
+    /**
      * Последний токен персонажа
      * @var string
      * @ORM\Column(name="hash", type="string", length=26, nullable=true)
@@ -50,6 +57,19 @@ class Player extends BaseUser {
      */
     private $room;
 
+    /**
+     * @param string $longDesc
+     */
+    public function setLongDesc($longDesc) {
+        $this->longDesc = $longDesc;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLongDesc() {
+        return $this->longDesc;
+    }
 
     public function getRace() {
         return $this->race;
@@ -83,22 +103,18 @@ class Player extends BaseUser {
 
     /**
      * Get id
-     *
-     * @return integer 
+     * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * Set hash
-     *
      * @param string $hash
      * @return Player
      */
-    public function setHash($hash)
-    {
+    public function setHash($hash) {
         $this->hash = $hash;
 
         return $this;
@@ -106,11 +122,9 @@ class Player extends BaseUser {
 
     /**
      * Get hash
-     *
-     * @return string 
+     * @return string
      */
-    public function getHash()
-    {
+    public function getHash() {
         return $this->hash;
     }
 }
