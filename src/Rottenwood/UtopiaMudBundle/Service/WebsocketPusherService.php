@@ -76,9 +76,6 @@ class WebsocketPusherService implements WampServerInterface {
                 $command = $event["CMD"];
                 $result = $this->container->get('command')->execute($command, $char);
 
-//                // Отправка результата клиенту
-//                $topic->broadcast($result);
-
                 // Отправка результата связанным участникам
                 if (array_key_exists("3rd", $result)) {
                     // Список респондентов
@@ -104,20 +101,12 @@ class WebsocketPusherService implements WampServerInterface {
                                 $personalTopic->broadcast($thirdEcho);
 
                             }
-
-//                            var_dump($obj);
-//                            var_dump($assoc_key);
                         }
-
                     }
                 }
 
                 // Отправка результата клиенту
                 $topic->broadcast($result);
-
-
-//                var_dump($this->topics);
-
             }
         }
 

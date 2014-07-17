@@ -92,9 +92,6 @@ $(document).ready(function () {
 
     // Обработка входящей информации
     function render(data) {
-        console.log("Входные данные для рендера:");
-        console.log(data);
-
         //*** ответ от сервера: ошибки
         if (data['message'] == "0:1") {
             game.append("<br><span class='plaintext'>Команда не найдена!</span><br><br>");
