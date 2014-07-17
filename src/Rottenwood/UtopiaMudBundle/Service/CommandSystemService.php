@@ -120,7 +120,15 @@ class CommandSystemService {
             $result["system"] = "Зона была успешно импортирована.";
         } else {
             // зоны не существует
-            $result["system"] = "Зона для импорта не найдена.";
+            $result["system"] = "Зона для импорта не найдена!";
+        }
+
+        // Импорт рас
+        $setRaces = $this->setRaces();
+        if ($setRaces) {
+            $result["system2"] = "Расы были успешно импортированы.";
+        } else {
+            $result["system2"] = "Расы не импортированы!";
         }
 
         return $result;

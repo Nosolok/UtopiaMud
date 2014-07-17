@@ -152,6 +152,9 @@ $(document).ready(function () {
         if (data['system']) {
             game.append("<br><span class='plaintext'>" + data['system'] + "</span><br><br>");
         }
+        if (data['system2']) {
+            game.append("<br><span class='plaintext'>" + data['system2'] + "</span><br><br>");
+        }
 
         scroll();
     }
