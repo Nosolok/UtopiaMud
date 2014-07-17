@@ -18,8 +18,6 @@ $(document).ready(function () {
 
                 // обработка входящей информации
                 render(data);
-
-
             });
 
             var send = {};
@@ -113,7 +111,7 @@ $(document).ready(function () {
             game.append("<br><span class='plaintext'>Вы осмотрелись.</span><br><br>");
         } else if (data['message'] == "1:2") {
             game.append("<br><span class='plaintext'>Вы обратили взгляд на объект.</span><br><br>");
-        // уходит/приходит
+        // уходит
         } else if (data['message'] == "1:3:1") {
             game.append("<span class='plaintext'>" + data['who'] + " ушел на север.</span><br><br>");
         } else if (data['message'] == "1:3:2") {
@@ -126,7 +124,21 @@ $(document).ready(function () {
             game.append("<span class='plaintext'>" + data['who'] + " ушел наверх.</span><br><br>");
         } else if (data['message'] == "1:3:6") {
             game.append("<span class='plaintext'>" + data['who'] + " ушел вниз.</span><br><br>");
+        // приходит
+        } else if (data['message'] == "1:4:1") {
+            game.append("<span class='plaintext'>" + data['who'] + " пришел с юга.</span><br><br>");
+        } else if (data['message'] == "1:4:2") {
+            game.append("<span class='plaintext'>" + data['who'] + " пришел с запада.</span><br><br>");
+        } else if (data['message'] == "1:4:3") {
+            game.append("<span class='plaintext'>" + data['who'] + " пришел с севера.</span><br><br>");
+        } else if (data['message'] == "1:4:4") {
+            game.append("<span class='plaintext'>" + data['who'] + " пришел с востока.</span><br><br>");
+        } else if (data['message'] == "1:4:5") {
+            game.append("<span class='plaintext'>" + data['who'] + " пришел снизу.</span><br><br>");
+        } else if (data['message'] == "1:4:6") {
+            game.append("<span class='plaintext'>" + data['who'] + " пришел сверху.</span><br><br>");
         }
+
 
         if (data['roomname']) {
             game.append("<br><span class='roomname'>" + data['roomname'] + "</span><br><span class='roomdesc'>" + data['roomdesc'] + "</span><br><br>");

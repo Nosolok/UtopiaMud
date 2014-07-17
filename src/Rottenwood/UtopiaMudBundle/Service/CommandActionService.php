@@ -153,8 +153,10 @@ class CommandActionService {
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0], $char->getId());
+        /** @var Room $destinationRoom */
+        $destinationRoom = $destinationRoom[0];
+        $this->techGotoRoom($char, $destinationRoom);
+        $result = $this->techLook($destinationRoom, $char->getId());
 
         // Оповещение всех в комнате
         $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
@@ -165,6 +167,16 @@ class CommandActionService {
             $result["3rdecho"] = array();
             $result["3rdecho"]["message"] = "1:3:1";  // ушел на север
             $result["3rdecho"]["who"] = $charName;
+        }
+
+        // Оповещение всех в комнате назначения
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["4rd"] = $playersInRoom;
+            $result["4rdecho"] = array();
+            $result["4rdecho"]["message"] = "1:4:1";  // пришел с юга
+            $result["4rdecho"]["who"] = $charName;
         }
 
         return $result;
@@ -197,8 +209,10 @@ class CommandActionService {
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0], $char->getId());
+        /** @var Room $destinationRoom */
+        $destinationRoom = $destinationRoom[0];
+        $this->techGotoRoom($char, $destinationRoom);
+        $result = $this->techLook($destinationRoom, $char->getId());
 
         // Оповещение всех в комнате
         $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
@@ -209,6 +223,16 @@ class CommandActionService {
             $result["3rdecho"] = array();
             $result["3rdecho"]["message"] = "1:3:3";  // ушел на юг
             $result["3rdecho"]["who"] = $charName;
+        }
+
+        // Оповещение всех в комнате назначения
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["4rd"] = $playersInRoom;
+            $result["4rdecho"] = array();
+            $result["4rdecho"]["message"] = "1:4:3";  // пришел с юга
+            $result["4rdecho"]["who"] = $charName;
         }
 
         return $result;
@@ -241,8 +265,10 @@ class CommandActionService {
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0], $char->getId());
+        /** @var Room $destinationRoom */
+        $destinationRoom = $destinationRoom[0];
+        $this->techGotoRoom($char, $destinationRoom);
+        $result = $this->techLook($destinationRoom, $char->getId());
 
         // Оповещение всех в комнате
         $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
@@ -253,6 +279,16 @@ class CommandActionService {
             $result["3rdecho"] = array();
             $result["3rdecho"]["message"] = "1:3:2";  // ушел на восток
             $result["3rdecho"]["who"] = $charName;
+        }
+
+        // Оповещение всех в комнате назначения
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["4rd"] = $playersInRoom;
+            $result["4rdecho"] = array();
+            $result["4rdecho"]["message"] = "1:4:2";  // пришел с юга
+            $result["4rdecho"]["who"] = $charName;
         }
 
         return $result;
@@ -286,8 +322,10 @@ class CommandActionService {
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0], $char->getId());
+        /** @var Room $destinationRoom */
+        $destinationRoom = $destinationRoom[0];
+        $this->techGotoRoom($char, $destinationRoom);
+        $result = $this->techLook($destinationRoom, $char->getId());
 
         // Оповещение всех в комнате
         $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
@@ -298,6 +336,16 @@ class CommandActionService {
             $result["3rdecho"] = array();
             $result["3rdecho"]["message"] = "1:3:4";  // ушел на запад
             $result["3rdecho"]["who"] = $charName;
+        }
+
+        // Оповещение всех в комнате назначения
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["4rd"] = $playersInRoom;
+            $result["4rdecho"] = array();
+            $result["4rdecho"]["message"] = "1:4:4";  // пришел с юга
+            $result["4rdecho"]["who"] = $charName;
         }
 
         return $result;
@@ -330,8 +378,10 @@ class CommandActionService {
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0], $char->getId());
+        /** @var Room $destinationRoom */
+        $destinationRoom = $destinationRoom[0];
+        $this->techGotoRoom($char, $destinationRoom);
+        $result = $this->techLook($destinationRoom, $char->getId());
 
         // Оповещение всех в комнате
         $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
@@ -342,6 +392,16 @@ class CommandActionService {
             $result["3rdecho"] = array();
             $result["3rdecho"]["message"] = "1:3:5";  // ушел наверх
             $result["3rdecho"]["who"] = $charName;
+        }
+
+        // Оповещение всех в комнате назначения
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["4rd"] = $playersInRoom;
+            $result["4rdecho"] = array();
+            $result["4rdecho"]["message"] = "1:4:5";  // пришел с юга
+            $result["4rdecho"]["who"] = $charName;
         }
 
         return $result;
@@ -374,8 +434,10 @@ class CommandActionService {
         // перемещение в комнату назначения
         /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        $this->techGotoRoom($char, $destinationRoom[0]);
-        $result = $this->techLook($destinationRoom[0], $char->getId());
+        /** @var Room $destinationRoom */
+        $destinationRoom = $destinationRoom[0];
+        $this->techGotoRoom($char, $destinationRoom);
+        $result = $this->techLook($destinationRoom, $char->getId());
 
         // Оповещение всех в комнате
         $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
@@ -386,6 +448,16 @@ class CommandActionService {
             $result["3rdecho"] = array();
             $result["3rdecho"]["message"] = "1:3:6";  // ушел вниз
             $result["3rdecho"]["who"] = $charName;
+        }
+
+        // Оповещение всех в комнате назначения
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["4rd"] = $playersInRoom;
+            $result["4rdecho"] = array();
+            $result["4rdecho"]["message"] = "1:4:6";  // пришел с юга
+            $result["4rdecho"]["who"] = $charName;
         }
 
         return $result;

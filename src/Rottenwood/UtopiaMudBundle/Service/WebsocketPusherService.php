@@ -105,6 +105,34 @@ class WebsocketPusherService implements WampServerInterface {
                     }
                 }
 
+                if (array_key_exists("4rd", $result)) {
+                    // Список респондентов
+                    $whomToTell = $result["4rd"];
+
+                    // Сообщение для респондентов
+                    $thirdEcho = $result["4rdecho"];
+                    unset($result["4rd"]);
+                    unset($result["4rdecho"]);
+
+                    // Поиск каналов данных нужных респондентов
+                    /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $player */
+                    foreach ($whomToTell as $player) {
+
+                        foreach ($this->onlineChars as $value) {
+                            $obj = $this->onlineChars->current(); // current object
+                            $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
+                            $playerHash = $player->getHash();
+                            $personalChannel = "personal." . $playerHash;
+                            if ($assoc_key == $playerHash) {
+                                $personalTopic = $this->topics[$personalChannel];
+                                /** @var Topic $personalTopic */
+                                $personalTopic->broadcast($thirdEcho);
+
+                            }
+                        }
+                    }
+                }
+
                 // Отправка результата клиенту
                 $topic->broadcast($result);
             }
