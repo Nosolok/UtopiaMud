@@ -34,9 +34,10 @@ $(document).ready(function () {
                 // Очистка чата
                 chat.val('');
                 conn.publish('personal.' + hash, {'CMD': lastcommand});
+
                 // Эхо введенной команды
-                game.append("<span class='command'>" + lastcommand + "</span><br>");
-                scroll();
+//                game.append("<span class='command'>" + lastcommand + "</span><br>");
+//                scroll();
             });
         },
         function () {
