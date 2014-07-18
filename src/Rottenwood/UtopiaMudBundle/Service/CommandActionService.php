@@ -110,6 +110,78 @@ class CommandActionService {
         return true;
     }
 
+    public function techMove(Player $char, $direction ,$destinationRoomAnchor) {
+        $result = array();
+        $room = $char->getRoom();
+        $charName = $char->getUsername();
+
+        // если выхода не найдено
+        if ($destinationRoomAnchor == null) {
+            $result["message"] = "0:3"; // нет выхода
+            return $result;
+        }
+
+        /** @var Room $room */
+        if (strpos($destinationRoomAnchor, ':')) {
+            // если якорь содержит ссылку на другую зону
+            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
+        } else {
+            $zone = $room->getZone();
+        }
+
+        // сообщение о перемещении
+        if ($direction == "north") {
+        	$directionMessageEnter = "1:3:1"; // ушел на север
+        	$directionMessageLeave = "1:4:1"; // пришел с юга
+        } elseif ($direction == "east") {
+            $directionMessageEnter = "1:3:2"; // ушел на восток
+            $directionMessageLeave = "1:4:2"; // пришел с востока
+        } elseif ($direction == "south") {
+            $directionMessageEnter = "1:3:3"; // ушел на юг
+            $directionMessageLeave = "1:4:3"; // пришел с юга
+        } elseif ($direction == "west") {
+            $directionMessageEnter = "1:3:4"; // ушел на запад
+            $directionMessageLeave = "1:4:4"; // пришел с запада
+        } elseif ($direction == "down") {
+            $directionMessageEnter = "1:3:6"; // ушел вниз
+            $directionMessageLeave = "1:4:6"; // пришел снизу
+        } else {
+            $directionMessageEnter = "1:3:5"; // ушел наверх
+            $directionMessageLeave = "1:4:5"; // пришел сверху
+        }
+
+        // перемещение в комнату назначения
+        /** @method Repository\RoomRepository findByAnchor() */
+        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
+        /** @var Room $destinationRoom */
+        $destinationRoom = $destinationRoom[0];
+        $this->techGotoRoom($char, $destinationRoom);
+        $result = $this->techLook($destinationRoom, $char->getId());
+
+        // оповещение всех в комнате
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["3rd"] = $playersInRoom;
+            $result["3rdecho"] = array();
+            $result["3rdecho"]["message"] = $directionMessageEnter;
+            $result["3rdecho"]["who"] = $charName;
+        }
+
+        // оповещение всех в комнате назначения
+        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
+
+        if ($playersInRoom) {
+            $result["4rd"] = $playersInRoom;
+            $result["4rdecho"] = array();
+            $result["4rdecho"]["message"] = $directionMessageLeave;
+            $result["4rdecho"]["who"] = $charName;
+        }
+
+        return $result;
+    }
+
     /**
      * Command: look
      * @param Player $char
@@ -124,24 +196,24 @@ class CommandActionService {
 
         // если персонаж посмотрел на что-то
         if ($arguments) {
-            $arguments = $arguments[1];
+            $argument = $arguments[1];
 
             // персонажи в комнате
             $playersOnline = $this->container->get('datachannel')->getOnlineIds(0);
             $playersInRoom = $this->roomRepository->findPlayersInRoom($roomId, $playersOnline);
 
             $result["message"] = "0:2:1";
-            $result["object"] = $arguments;
+            $result["object"] = $argument;
 
             if ($playersInRoom) {
                 foreach ($playersInRoom as $player) {
                     /** @var Player $player */
                     $playerName = $player->getUsername();
 
-                    echo "$playerName, $arguments\n";
+                    echo "$playerName, $argument\n";
 
                     // проверка наличия имени
-                    if (strpos($playerName, $arguments) !== false) {
+                    if (strpos($playerName, $argument) !== false) {
                         $playerDesc = $player->getLongDesc();
                         $result["message"] = "1:2";
                         $result["object"] = $playerName;
@@ -149,12 +221,8 @@ class CommandActionService {
                     }
                 }
             }
-
             return $result;
         }
-
-        // получение описания комнаты в которой находится персонаж
-        $room = $char->getRoom();
 
         $result = $this->techLook($room, 0);
         $result["message"] = "1:1"; // вы осмотрелись
@@ -162,340 +230,56 @@ class CommandActionService {
         return $result;
     }
 
-    /**
-     * Command: north
-     * @param Player $char
-     * @return array
-     */
     public function north(Player $char) {
-        $room = $char->getRoom();
-        $charName = $char->getUsername();
         /** @var Room $room */
+        $room = $char->getRoom();
         $destinationRoomAnchor = $room->getNorth();
-        if (strpos($destinationRoomAnchor, ':')) {
-            // если якорь содержит ссылку на другую зону
-            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
-        } else {
-            $zone = $room->getZone();
-        }
-
-        $result = array();
-
-        // если выхода не найдено
-        if ($destinationRoomAnchor == null) {
-            $result["message"] = "0:3"; // нет выхода
-            return $result;
-        }
-
-        // перемещение в комнату назначения
-        /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        /** @var Room $destinationRoom */
-        $destinationRoom = $destinationRoom[0];
-        $this->techGotoRoom($char, $destinationRoom);
-        $result = $this->techLook($destinationRoom, $char->getId());
-
-        // оповещение всех в комнате
-        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["3rd"] = $playersInRoom;
-            $result["3rdecho"] = array();
-            $result["3rdecho"]["message"] = "1:3:1"; // ушел на север
-            $result["3rdecho"]["who"] = $charName;
-        }
-
-        // оповещение всех в комнате назначения
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["4rd"] = $playersInRoom;
-            $result["4rdecho"] = array();
-            $result["4rdecho"]["message"] = "1:4:1"; // пришел с юга
-            $result["4rdecho"]["who"] = $charName;
-        }
+        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
 
         return $result;
     }
 
-    /**
-     * Command: south
-     * @param Player $char
-     * @return array
-     */
-    public function south(Player $char) {
-        $room = $char->getRoom();
-        $charName = $char->getUsername();
-        /** @var Room $room */
-        $destinationRoomAnchor = $room->getSouth();
-        if (strpos($destinationRoomAnchor, ':')) {
-            // если якорь содержит ссылку на другую зону
-            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
-        } else {
-            $zone = $room->getZone();
-        }
-        $result = array();
-
-        // если выхода не найдено
-        if ($destinationRoomAnchor == null) {
-            $result["message"] = "0:3"; // нет выхода
-            return $result;
-        }
-
-        // перемещение в комнату назначения
-        /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        /** @var Room $destinationRoom */
-        $destinationRoom = $destinationRoom[0];
-        $this->techGotoRoom($char, $destinationRoom);
-        $result = $this->techLook($destinationRoom, $char->getId());
-
-        // оповещение всех в комнате
-        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["3rd"] = $playersInRoom;
-            $result["3rdecho"] = array();
-            $result["3rdecho"]["message"] = "1:3:3"; // ушел на юг
-            $result["3rdecho"]["who"] = $charName;
-        }
-
-        // оповещение всех в комнате назначения
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["4rd"] = $playersInRoom;
-            $result["4rdecho"] = array();
-            $result["4rdecho"]["message"] = "1:4:3"; // пришел с юга
-            $result["4rdecho"]["who"] = $charName;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Command: east
-     * @param Player $char
-     * @return array
-     */
     public function east(Player $char) {
-        $room = $char->getRoom();
-        $charName = $char->getUsername();
         /** @var Room $room */
+        $room = $char->getRoom();
         $destinationRoomAnchor = $room->getEast();
-        if (strpos($destinationRoomAnchor, ':')) {
-            // если якорь содержит ссылку на другую зону
-            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
-        } else {
-            $zone = $room->getZone();
-        }
-        $result = array();
-
-        // если выхода не найдено
-        if ($destinationRoomAnchor == null) {
-            $result["message"] = "0:3"; // нет выхода
-            return $result;
-        }
-
-        // перемещение в комнату назначения
-        /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        /** @var Room $destinationRoom */
-        $destinationRoom = $destinationRoom[0];
-        $this->techGotoRoom($char, $destinationRoom);
-        $result = $this->techLook($destinationRoom, $char->getId());
-
-        // оповещение всех в комнате
-        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["3rd"] = $playersInRoom;
-            $result["3rdecho"] = array();
-            $result["3rdecho"]["message"] = "1:3:2"; // ушел на восток
-            $result["3rdecho"]["who"] = $charName;
-        }
-
-        // оповещение всех в комнате назначения
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["4rd"] = $playersInRoom;
-            $result["4rdecho"] = array();
-            $result["4rdecho"]["message"] = "1:4:2"; // пришел с юга
-            $result["4rdecho"]["who"] = $charName;
-        }
+        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
 
         return $result;
     }
 
-    /**
-     * Command: west
-     * @param Player $char
-     * @return array
-     */
+    public function south(Player $char) {
+        /** @var Room $room */
+        $room = $char->getRoom();
+        $destinationRoomAnchor = $room->getSouth();
+        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
+
+        return $result;
+    }
+
     public function west(Player $char) {
-        $room = $char->getRoom();
-        $charName = $char->getUsername();
         /** @var Room $room */
+        $room = $char->getRoom();
         $destinationRoomAnchor = $room->getWest();
-        if (strpos($destinationRoomAnchor, ':')) {
-            // если якорь содержит ссылку на другую зону
-            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
-        } else {
-            $zone = $room->getZone();
-        }
-
-        $result = array();
-
-        // если выхода не найдено
-        if ($destinationRoomAnchor == null) {
-            $result["message"] = "0:3"; // нет выхода
-            return $result;
-        }
-
-        // перемещение в комнату назначения
-        /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        /** @var Room $destinationRoom */
-        $destinationRoom = $destinationRoom[0];
-        $this->techGotoRoom($char, $destinationRoom);
-        $result = $this->techLook($destinationRoom, $char->getId());
-
-        // оповещение всех в комнате
-        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["3rd"] = $playersInRoom;
-            $result["3rdecho"] = array();
-            $result["3rdecho"]["message"] = "1:3:4"; // ушел на запад
-            $result["3rdecho"]["who"] = $charName;
-        }
-
-        // оповещение всех в комнате назначения
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["4rd"] = $playersInRoom;
-            $result["4rdecho"] = array();
-            $result["4rdecho"]["message"] = "1:4:4"; // пришел с юга
-            $result["4rdecho"]["who"] = $charName;
-        }
+        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
 
         return $result;
     }
 
-    /**
-     * Command: up
-     * @param Player $char
-     * @return array
-     */
     public function up(Player $char) {
-        $room = $char->getRoom();
-        $charName = $char->getUsername();
         /** @var Room $room */
+        $room = $char->getRoom();
         $destinationRoomAnchor = $room->getUp();
-        if (strpos($destinationRoomAnchor, ':')) {
-            // если якорь содержит ссылку на другую зону
-            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
-        } else {
-            $zone = $room->getZone();
-        }
-        $result = array();
-
-        // если выхода не найдено
-        if ($destinationRoomAnchor == null) {
-            $result["message"] = "0:3"; // нет выхода
-            return $result;
-        }
-
-        // перемещение в комнату назначения
-        /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        /** @var Room $destinationRoom */
-        $destinationRoom = $destinationRoom[0];
-        $this->techGotoRoom($char, $destinationRoom);
-        $result = $this->techLook($destinationRoom, $char->getId());
-
-        // оповещение всех в комнате
-        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["3rd"] = $playersInRoom;
-            $result["3rdecho"] = array();
-            $result["3rdecho"]["message"] = "1:3:5"; // ушел наверх
-            $result["3rdecho"]["who"] = $charName;
-        }
-
-        // оповещение всех в комнате назначения
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["4rd"] = $playersInRoom;
-            $result["4rdecho"] = array();
-            $result["4rdecho"]["message"] = "1:4:5"; // пришел с юга
-            $result["4rdecho"]["who"] = $charName;
-        }
+        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
 
         return $result;
     }
 
-    /**
-     * Command: down
-     * @param Player $char
-     * @return array
-     */
     public function down(Player $char) {
-        $room = $char->getRoom();
-        $charName = $char->getUsername();
         /** @var Room $room */
+        $room = $char->getRoom();
         $destinationRoomAnchor = $room->getDown();
-        if (strpos($destinationRoomAnchor, ':')) {
-            // если якорь содержит ссылку на другую зону
-            list($destinationRoomAnchor, $zone) = explode(":", $destinationRoomAnchor);
-        } else {
-            $zone = $room->getZone();
-        }
-        $result = array();
-
-        // если выхода не найдено
-        if ($destinationRoomAnchor == null) {
-            $result["message"] = "0:3"; // нет выхода
-            return $result;
-        }
-
-        // перемещение в комнату назначения
-        /** @method Repository\RoomRepository findByAnchor() */
-        $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
-        /** @var Room $destinationRoom */
-        $destinationRoom = $destinationRoom[0];
-        $this->techGotoRoom($char, $destinationRoom);
-        $result = $this->techLook($destinationRoom, $char->getId());
-
-        // оповещение всех в комнате
-        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($room->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["3rd"] = $playersInRoom;
-            $result["3rdecho"] = array();
-            $result["3rdecho"]["message"] = "1:3:6"; // ушел вниз
-            $result["3rdecho"]["who"] = $charName;
-        }
-
-        // оповещение всех в комнате назначения
-        $playersInRoom = $this->roomRepository->findPlayersInRoom($destinationRoom->getId(), $playersOnline);
-
-        if ($playersInRoom) {
-            $result["4rd"] = $playersInRoom;
-            $result["4rdecho"] = array();
-            $result["4rdecho"]["message"] = "1:4:6"; // пришел с юга
-            $result["4rdecho"]["who"] = $charName;
-        }
+        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
 
         return $result;
     }
