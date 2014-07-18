@@ -7,3 +7,8 @@ Rottenwood\UtopiaMudBundle\Entity\Player:
     properties:
         email:
             - Email: ~
+        username:
+            - Regex:
+                pattern: "/\d/"
+                match:   false
+                message: Your name cannot contain a number

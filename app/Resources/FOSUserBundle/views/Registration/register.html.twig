@@ -1,4 +1,4 @@
-{#{% extends "RottenwoodUtopiaMudBundle:Default:index.html.twig" %}#}
+{% extends "RottenwoodUtopiaMudBundle:Default:layout.html.twig" %}
 
 
 {% block headjscripts %}
@@ -15,11 +15,10 @@
     <link type="text/css" href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
 {% endblock styles %}
 
-{% trans_default_domain 'FOSUserBundle' %}
+{#{% trans_default_domain 'translate' %}#}
 
-
-{% block game %}
-
+{% block content %}
+<div id="gamelogin">
     {% block fos_user_content %}
 
         <div id="form">
@@ -37,7 +36,6 @@
                         </div>
                     </div>
                     {{ form_start(form) }}
-                    {{ form_errors(form) }}
                     <div class="row">
                         <div class="span3 offset2 text-justify">
                             <div class="registrationformfield">
@@ -50,6 +48,9 @@
                             </div>
                         </div>
                     </div>
+                            <div class="errorbox">
+                                {{ form_errors(form.username) }}
+                            </div>
                     <div class="row">
                         <div class="span3 offset2 text-justify">
                             <div class="registrationformfield">
@@ -61,6 +62,9 @@
                                 {{ form_widget(form.email) }}
                             </div>
                         </div>
+                    </div>
+                    <div class="errorbox">
+                        {{ form_errors(form.email) }}
                     </div>
                     <div class="row">
                         <div class="span3 offset2 text-justify">
@@ -85,6 +89,10 @@
                                 {{ form_widget(form.plainPassword.second) }}
                             </div>
                         </div>
+                    </div>
+                    <div class="errorbox">
+                        {{ form_errors(form.plainPassword.first) }}
+                        {{ form_errors(form.plainPassword.second) }}
                     </div>
                     <div class="row">
                         <div class="span3 offset2 text-justify">
@@ -123,6 +131,8 @@
                             {#</div>#}
                         {#</div>#}
                     {#</div>#}
+
+
                     <div id="registerbutton" class="registerbutton">
                         В игру!
                     </div>
@@ -132,7 +142,7 @@
         </div>
 
     {% endblock fos_user_content %}
-
-{% endblock game %}
+</div>
+{% endblock content %}
 
 {% block chat %}{% endblock chat %}

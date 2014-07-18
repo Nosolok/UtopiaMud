@@ -8,6 +8,7 @@ namespace Rottenwood\UtopiaMudBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -22,6 +23,13 @@ class Player extends BaseUser {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @Assert\NotBlank(message="registration.username.notrussian", groups={"Registration"})
+     * @Assert\Regex(pattern = "/^[абвгдежзиклмнопрстуфхцчшщьыъэюяАБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ]+$/i", message="registration.username.notrussian",
+     * groups={"Registration"})
+     */
+    protected $username;
 
     /**
      * Раса персонажа

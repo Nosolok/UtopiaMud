@@ -1,0 +1,3 @@
+registration:
+    username:
+        notrussian: "Имя должно состоять из русских букв"
