@@ -2,52 +2,52 @@
 #   Список типов комнат   #
 ###########################
 
-roomtypes:
+roomtypes:                      # типы комнат в алфавитном порядке
     inside:                     # название типа комнаты
         desc: "в помещении"     # ответ на вопрос: "где я нахожусь?"
-    town:
-        desc: "в городе"
-    water:
-        desc: "в воде"
-    underwater:
-        desc: "под водой"
-    field:
-        desc: "на равнине"
-    forest:
-        desc: "в лесу"
-    deadfall:
-        desc: "в непроходимом лесу"
-    hills:
-        desc: "среди холмов"
-    highland:
-        desc: "на плоскогорье"
-    mountain:
-        desc: "среди гор"
     air:
         desc: "в воздухе"
     cave:
         desc: "в пещере"
-    swamp:
-        desc: "посреди болота"
+    deadfall:
+        desc: "в непроходимом лесу"
+    desert:
+        desc: "в пустыне"
+    dungeon:
+        desc: "в подземелье"
+    field:
+        desc: "на равнине"
+    forest:
+        desc: "в лесу"
+    glacier:
+        desc: "среди льдов"
+    highland:
+        desc: "на плоскогорье"
+    hills:
+        desc: "среди холмов"
+    mountain:
+        desc: "среди гор"
     road:
         desc: "на дороге"
     savanna:
         desc: "в саванне"
-    desert:
-        desc: "в пустыне"
+    swamp:
+        desc: "посреди болота"
+    town:
+        desc: "в городе"
     tundra:
         desc: "в тундре"
-    glacier:
-        desc: "среди льдов"
     underground:
         desc: "под землей"
-    air:
-        desc: "в воздухе"
+    underwater:
+        desc: "под водой"
+    water:
+        desc: "в воде"
 
     # Sci-Fi
     cosmos:
         desc: "в космосе"
-    starship:
-        desc: "на борту звездолета"
     mech:
         desc: "внутри механизма"
+    starship:
+        desc: "на борту звездолета"
