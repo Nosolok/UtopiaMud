@@ -32,7 +32,7 @@ class WebsocketPusherService implements WampServerInterface {
 
         foreach ($startCommands as $startComandResult) {
             echo "$startComandResult\n";
-        }   
+        }
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {

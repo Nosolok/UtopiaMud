@@ -39,3 +39,11 @@ roomtypes:
         desc: "в тундре"
     glacier:
         desc: "среди льдов"
+
+    # Sci-Fi
+    cosmos:
+        desc: "в космосе"
+    starship:
+        desc: "на борту звездолета"
+    mech:
+        desc: "внутри механизма"
