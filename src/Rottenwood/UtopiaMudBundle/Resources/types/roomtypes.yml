@@ -7,7 +7,35 @@ roomtypes:
         desc: "в помещении"     # ответ на вопрос: "где я нахожусь?"
     city:
         desc: "в городе"
-    sea:
-        desc: "в море"
+    water:
+        desc: "в воде"
     underwater:
         desc: "под водой"
+    field:
+        desc: "на равнине"
+    forest:
+        desc: "в лесу"
+    deadfall:
+        desc: "в непроходимом лесу"
+    hills:
+        desc: "среди холмов"
+    highland:
+        desc: "на плоскогорье"
+    mountain:
+        desc: "среди гор"
+    air:
+        desc: "в воздухе"
+    cave:
+        desc: "в пещере"
+    swamp:
+        desc: "посреди болота"
+    road:
+        desc: "на дороге"
+    savanna:
+        desc: "в саванне"
+    desert:
+        desc: "в пустыне"
+    tundra:
+        desc: "в тундре"
+    glacier:
+        desc: "среди льдов"
