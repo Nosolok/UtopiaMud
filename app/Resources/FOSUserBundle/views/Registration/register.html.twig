@@ -5,6 +5,8 @@
     <script type="text/javascript" src="{{ asset('assets/js/register.js') }}"></script>
 {% endblock headjscripts %}
 
+{% block mapdiv %}{% endblock mapdiv %}
+
 {% block styles %}
     <link type="text/css" href="{{ asset('assets/css/login.css') }}" rel="stylesheet"/>
     <link type="text/css" href="{{ asset('assets/css/css-reset.css') }}" rel="stylesheet"/>
@@ -14,6 +16,7 @@
 {% endblock styles %}
 
 {% trans_default_domain 'FOSUserBundle' %}
+
 
 {% block game %}
 

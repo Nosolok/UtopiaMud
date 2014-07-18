@@ -48,6 +48,22 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
 	overflow: auto;
 }
 
+#gamelogin {
+    background-color:black;
+    position:absolute;
+    padding:10px;
+    right:0;
+    left:0;
+    top:0;
+    bottom:0;
+    text-align:left;
+    font-size:12pt;
+    color:#FFFFFF;
+    font-family: "Courier New", monospace;
+    /*font-family: monospace;*/
+    overflow: auto;
+}
+
 #map {
     background-color:#191919;
     position:absolute;
