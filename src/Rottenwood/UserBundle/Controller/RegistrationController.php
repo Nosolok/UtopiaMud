@@ -150,7 +150,7 @@ class RegistrationController extends ContainerAware
         $this->container->get('doctrine.orm.entity_manager')->getRepository('RottenwoodUtopiaMudBundle:Player')
             ->saveHash($user, $session);
 
-        // ID юзера
+        // ID и юзернейм юзера
         $userId = $user->getId();
 
         // Назначение стартовой комнаты
@@ -158,7 +158,14 @@ class RegistrationController extends ContainerAware
         $room = $this->container->get('doctrine.orm.entity_manager')->getRepository('RottenwoodUtopiaMudBundle:Room')->find(1);
         $userObject->setRoom($room);
 
+        // Приведение имени к нужному регистру
+        $oldName = $userObject->getUsernameCanonical();
+        $newName = mb_convert_case($oldName, MB_CASE_TITLE, "UTF-8");
+        $userObject->setUsername($newName);
+
         $this->container->get('doctrine.orm.entity_manager')->persist($userObject);
+
+        // Запись в базу
         $this->container->get('doctrine.orm.entity_manager')->flush();
 
         // Перенаправление на главный экран после регистрации

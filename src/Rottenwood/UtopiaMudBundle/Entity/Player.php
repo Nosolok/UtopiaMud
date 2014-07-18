@@ -25,7 +25,6 @@ class Player extends BaseUser {
     protected $id;
 
     /**
-     * @Assert\NotBlank(message="registration.username.notrussian", groups={"Registration"})
      * @Assert\Regex(pattern = "/^[абвгдежзиклмнопрстуфхцчшщьыъэюяАБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ]+$/i", message="registration.username.notrussian",
      * groups={"Registration"})
      */

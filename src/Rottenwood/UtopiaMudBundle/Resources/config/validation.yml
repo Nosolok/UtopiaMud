@@ -1,14 +1,8 @@
 Rottenwood\UtopiaMudBundle\Entity\Player:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+#        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: { fields: email, message: "registration.email.alreadytaken"}
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: emailCanonical
 #        - Callback:
 #            methods:
 #                - [Rottenwood\UtopiaMudBundle\Validator\Validator, isEmailValid]
-    properties:
-        email:
-            - Email: ~
-        username:
-            - Regex:
-                pattern: "/\d/"
-                match:   false
-                message: Your name cannot contain a number

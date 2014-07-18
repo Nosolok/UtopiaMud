@@ -1,3 +1,7 @@
 registration:
     username:
         notrussian: "Имя должно состоять из русских букв"
+    email:
+        alreadytaken: "Этот e-mail уже используется"
+41: "test"
+fos_user.email.already_used: "test"
