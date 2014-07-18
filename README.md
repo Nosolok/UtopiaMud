@@ -39,11 +39,11 @@
 * Автоопределение сокращенных команд. Игрок может как угодно сократить команду, в то время как сервер поймет ее. При этом реализована возможность некоторым командам не сокращаться (например "quit").
 
 ### Конфигурационные файлы
-[Команды](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/config/commands.yml)
-[Расы](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/races/races.yml)
-[Список зон](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/zones/zonelist.yml)
-[Пример зоны "Средневековый город"](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/zones/medievaltown/rooms.yml)
-[Типы комнат](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/types/roomtypes.yml)
+* [Команды](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/config/commands.yml)
+* [Расы](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/races/races.yml)
+* [Список зон](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/zones/zonelist.yml)
+* [Пример зоны "Средневековый город"](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/zones/medievaltown/rooms.yml)
+* [Типы комнат](https://github.com/Rottenwood/UtopiaMud/blob/master/src/Rottenwood/UtopiaMudBundle/Resources/types/roomtypes.yml)
 
 ### Настройки
 *В данном разделе будут собираться и описываться необходимые пользовательские настройки [on/off]*
