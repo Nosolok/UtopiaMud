@@ -9,7 +9,7 @@
         {% block game %}
             {% block websocket %}
                 <script type="text/javascript">var hash = '{{ hash }}';</script>
-                <script type="text/javascript">var serverip = '{{ app.request.server.get("REMOTE_ADDR") }}';</script>
+                <script type="text/javascript">var serverip = '{{ serverip }}';</script>
             {% endblock websocket %}
         {% endblock game %}
     </div>

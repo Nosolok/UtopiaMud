@@ -20,6 +20,7 @@ class DefaultController extends Controller {
 
         $data = array();
         $data['hash'] = $session;
+        $data['serverip'] = $_SERVER["SERVER_ADDR"];
 
         return $this->render('RottenwoodUtopiaMudBundle:Default:index.html.twig', $data);
     }
