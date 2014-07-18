@@ -234,8 +234,7 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getNorth();
-        $caller = array_shift(debug_backtrace());
-        $dir = $caller['function'];
+        $dir = preg_replace('~.*?:~', '', __METHOD__);
 
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
@@ -246,8 +245,7 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getEast();
-        $caller = array_shift(debug_backtrace());
-        $dir = $caller['function'];
+        $dir = preg_replace('~.*?:~', '', __METHOD__);
 
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
@@ -258,8 +256,7 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getSouth();
-        $caller = array_shift(debug_backtrace());
-        $dir = $caller['function'];
+        $dir = preg_replace('~.*?:~', '', __METHOD__);
 
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
@@ -270,8 +267,7 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getWest();
-        $caller = array_shift(debug_backtrace());
-        $dir = $caller['function'];
+        $dir = preg_replace('~.*?:~', '', __METHOD__);
 
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
@@ -282,8 +278,7 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getUp();
-        $caller = array_shift(debug_backtrace());
-        $dir = $caller['function'];
+        $dir = preg_replace('~.*?:~', '', __METHOD__);
 
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
@@ -294,8 +289,7 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getDown();
-        $caller = array_shift(debug_backtrace());
-        $dir = $caller['function'];
+        $dir = preg_replace('~.*?:~', '', __METHOD__);
 
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
