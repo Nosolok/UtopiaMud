@@ -22,10 +22,17 @@ class WebsocketPusherService implements WampServerInterface {
     public function __construct(Container $container) {
         $this->container = $container;
         $this->em = $container->get('doctrine.orm.entity_manager');
+
         // Создаю коллекцию подписчиков
         $this->clients = $this->container->get('datachannel');
         $this->onlineChars = new \SplObjectStorage;
-//        $this->topics = new \SplObjectStorage;
+
+        // Команды выполняемые при загрузке сервера
+        $startCommands = $container->get('commandsystem')->import();
+
+        foreach ($startCommands as $startComandResult) {
+            echo "$startComandResult\n";
+        }   
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
