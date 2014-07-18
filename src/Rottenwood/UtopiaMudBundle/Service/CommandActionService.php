@@ -234,7 +234,10 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getNorth();
-        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
+        $caller = array_shift(debug_backtrace());
+        $dir = $caller['function'];
+
+        $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
         return $result;
     }
@@ -243,7 +246,10 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getEast();
-        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
+        $caller = array_shift(debug_backtrace());
+        $dir = $caller['function'];
+
+        $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
         return $result;
     }
@@ -252,7 +258,10 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getSouth();
-        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
+        $caller = array_shift(debug_backtrace());
+        $dir = $caller['function'];
+
+        $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
         return $result;
     }
@@ -261,7 +270,10 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getWest();
-        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
+        $caller = array_shift(debug_backtrace());
+        $dir = $caller['function'];
+
+        $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
         return $result;
     }
@@ -270,7 +282,10 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getUp();
-        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
+        $caller = array_shift(debug_backtrace());
+        $dir = $caller['function'];
+
+        $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
         return $result;
     }
@@ -279,7 +294,10 @@ class CommandActionService {
         /** @var Room $room */
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getDown();
-        $result = $this->techMove($char, __METHOD__, $destinationRoomAnchor);
+        $caller = array_shift(debug_backtrace());
+        $dir = $caller['function'];
+
+        $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
         return $result;
     }
