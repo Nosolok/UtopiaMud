@@ -5,8 +5,7 @@
 $(document).ready(function () {
     var chat = $('#chatinput');
     var game = $('#game');
-    var conn = new ab.Session('ws://localhost:6661',
-        //    var conn = new ab.Session('ws://74.122.199.113:8080',
+    var conn = new ab.Session('ws://' + serverip + ':6661',
         function () {
             console.log("Соединение установлено");
             conn.subscribe('system.channel', function (topic, data) {
