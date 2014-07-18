@@ -39,6 +39,10 @@ roomtypes:
         desc: "в тундре"
     glacier:
         desc: "среди льдов"
+    underground:
+        desc: "под землей"
+    air:
+        desc: "в воздухе"
 
     # Sci-Fi
     cosmos:
