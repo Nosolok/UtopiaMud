@@ -196,7 +196,7 @@ $(document).ready(function () {
         console.log(data);
         jQuery.each(data, function (name, data) {
             console.log(data);
-            game.append("<span class='players'>" + name + ", " + data["race"] + "</span><br>");
+            game.append("<span class='players'>" + name + ", " + data["race"] + " стоит тут.</span><br>");
             return (this != "three"); // will stop running after "three"
         });
 
