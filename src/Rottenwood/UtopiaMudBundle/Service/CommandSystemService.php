@@ -158,6 +158,12 @@ class CommandSystemService {
 
         // цикл создания и записи в базу рас
         foreach ($races["races"] as $race => $raceData) {
+
+            // если раса недоступна игрокам
+            if (array_key_exists("npconly", $raceData) && $raceData["npconly"] == "true") {
+                continue;
+            }
+
             /** @var Repository\RaceRepository $raceRepository */
             $raceRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Race');
             $oldRace = $raceRepository->findByAnchor($race);

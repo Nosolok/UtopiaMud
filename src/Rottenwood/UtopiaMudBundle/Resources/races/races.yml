@@ -58,7 +58,7 @@ races:
         HT: 14
         skills:
             - rockeater
-        npconly: yes
+        npconly: true
 
     reptile:
         name: ящер
