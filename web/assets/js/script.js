@@ -105,9 +105,12 @@ $(document).ready(function () {
         if (data['message'] == "0:5") {
             var url = "logout";
             $(location).attr('href', url);
-        }
-        if (data['message'] == "0:5:1") {
+        } else if (data['message'] == "0:5:1") {
             game.append("<br><span class='plaintext'>Для выхода введи команду &quot;конец&quot; (quit) целиком.</span><br><br>");
+        } else if (data['message'] == "0:6:1") {
+            game.append("<span class='plaintext'>" + data['who'] + " вошел в наш мир.</span><br><br>");
+        } else if (data['message'] == "0:6:2") {
+            game.append("<span class='plaintext'>" + data['who'] + " покинул этот мир.</span><br><br>");
         }
 
         //*** ответ от сервера: результаты команд

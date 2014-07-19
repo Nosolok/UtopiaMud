@@ -55,6 +55,18 @@ class WebsocketPusherService implements WampServerInterface {
     public function onClose(ConnectionInterface $conn) {
         // Удаление вышедшего клиента из списка юзеров
         $whoQuits = $this->onlineChars->offsetGet($conn);
+
+        $hash = $whoQuits;
+        /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
+        $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
+        $char = $char[0];
+
+        // Сообщение всем о дисконнекте
+        $message = array();
+        $message["message"] = "0:6:2";
+        $message["who"] = $char->getUsername();
+        $this->sendToAll($message);
+
         $this->clients->remove($whoQuits);
         $this->onlineChars->detach($conn);
         echo "Соединение {$conn->resourceId} разорвано\n";
@@ -175,6 +187,12 @@ class WebsocketPusherService implements WampServerInterface {
 
                     // Добавление клиента в список юзеров онлайн
                     $this->clients->add($hash, $char);
+
+                    // Сообщение всем о новом коннекте
+                    $message = array();
+                    $message["message"] = "0:6:1";
+                    $message["who"] = $char->getUsername();
+                    $this->sendToAll($message);
                 }
             }
         }
@@ -197,4 +215,40 @@ class WebsocketPusherService implements WampServerInterface {
 
         return $onlineList;
     }
+
+    /**
+     * Отправка сообщений в нужные дата-каналы
+     * @param array $playersToMessage Players
+     * @param       $broadcast
+     */
+    public function sendToList($playersToMessage, $broadcast) {
+        // Поиск каналов данных нужных респондентов
+        /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $player */
+        foreach ($playersToMessage as $player) {
+
+            foreach ($this->onlineChars as $value) {
+                $obj = $this->onlineChars->current(); // current object
+                $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
+                $playerHash = $player->getHash();
+                $personalChannel = "personal." . $playerHash;
+                if ($assoc_key == $playerHash) {
+                    $personalTopic = $this->topics[$personalChannel];
+                    /** @var Topic $personalTopic */
+                    $personalTopic->broadcast($broadcast);
+
+                }
+            }
+        }
+    }
+
+    public function sendToAll($broadcast) {
+        foreach ($this->onlineChars as $value) {
+            $hash = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
+            $personalChannel = "personal." . $hash;
+            $personalTopic = $this->topics[$personalChannel];
+            /** @var Topic $personalTopic */
+            $personalTopic->broadcast($broadcast);
+        }
+    }
+
 }
