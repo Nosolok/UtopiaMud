@@ -47,14 +47,22 @@ class CommandSystemService {
         }
         $zones = Yaml::parse(file_get_contents($path));
 
+        echo "Загрузка компонентов:\n";
         // Обработка каждой зоны
         foreach ($zones["zonelist"] as $zoneanchor => $zone) {
-            // парсинг выбранной зоны
-            $zonepath = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/zones/" . $zoneanchor . "/rooms.yml");
-            if (!is_string($zonepath)) {
-                throw new Exception("Type of $zonepath must be string.");
+
+            // если зона размещена на удаленном хосте.
+            if (array_key_exists("url", $zone)) {
+                echo $zoneanchor, ": зона зоны на удаленном хосте.\n";
+                $zone = Yaml::parse(file_get_contents($zone["url"]));
+            } else {
+                echo $zoneanchor, ": загрузка локальной зоны.\n";
+                $zonepath = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/zones/" . $zoneanchor . "/rooms.yml");
+                if (!is_string($zonepath)) {
+                    throw new Exception("Type of $zonepath must be string.");
+                }
+                $zone = Yaml::parse(file_get_contents($zonepath));
             }
-            $zone = Yaml::parse(file_get_contents($zonepath));
 
             /** @var Repository\RoomRepository $roomRepository */
             $roomRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');

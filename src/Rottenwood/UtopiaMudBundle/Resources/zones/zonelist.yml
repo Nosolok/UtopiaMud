@@ -7,3 +7,4 @@ zonelist:
         name: "Средневековый город"
     townlake:
         name: "Озеро у города"
+        url: "https://raw.githubusercontent.com/Rottenwood/UtopiaMud/master/src/Rottenwood/UtopiaMudBundle/Resources/zones/townlake/rooms.yml"
