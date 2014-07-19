@@ -1,7 +1,7 @@
 {
     "name": "rottenwood/utopiamud",
     "description": "Web-based PHP MUD Engine",
-    "version": "0.0.1-dev",
+    "version": "0.1.0-dev",
     "type": "project",
     "keywords": ["mud", "rpg", "game", "mmorpg", "roguelike", "text game"],
     "homepage": "https://github.com/Rottenwood/UtopiaMud",
