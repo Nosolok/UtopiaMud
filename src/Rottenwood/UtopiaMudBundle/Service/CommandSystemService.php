@@ -53,8 +53,16 @@ class CommandSystemService {
 
             // если зона размещена на удаленном хосте.
             if (array_key_exists("url", $zone)) {
-                echo $zoneanchor, ": зона зоны на удаленном хосте.\n";
-                $zone = Yaml::parse(file_get_contents($zone["url"]));
+                $yamlRemote = @file_get_contents($zone["url"]);
+
+                if ($yamlRemote) {
+                    echo $zoneanchor, ": зона зоны на удаленном хосте загружена.\n";
+                    $zone = Yaml::parse($yamlRemote);
+                } else {
+                    echo $zoneanchor, ": зона зоны на удаленном хосте НЕ загружена!\n";
+                    continue;
+                }
+
             } else {
                 echo $zoneanchor, ": загрузка локальной зоны.\n";
                 $zonepath = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/zones/" . $zoneanchor . "/rooms.yml");
