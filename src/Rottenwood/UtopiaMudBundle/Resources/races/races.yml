@@ -104,3 +104,16 @@ races:
         HT: 9
         skills:
             - mechanics
+
+    warg:
+        name: варг
+        namef: варга
+        size: 6
+        ST: 12
+        DX: 11
+        IQ: 8
+        HT: 10
+        skills:
+            - berserk
+            - tear
+            - hunt
