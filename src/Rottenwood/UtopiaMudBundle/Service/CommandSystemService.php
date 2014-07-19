@@ -56,10 +56,10 @@ class CommandSystemService {
                 $yamlRemote = @file_get_contents($zone["url"]);
 
                 if ($yamlRemote) {
-                    echo $zoneanchor, ": зона зоны на удаленном хосте загружена.\n";
+                    echo $zoneanchor, ": зона на удаленном хосте загружена.\n";
                     $zone = Yaml::parse($yamlRemote);
                 } else {
-                    echo $zoneanchor, ": зона зоны на удаленном хосте НЕ загружена!\n";
+                    echo $zoneanchor, ": зона на удаленном хосте НЕ загружена!\n";
                     continue;
                 }
 
