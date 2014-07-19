@@ -39,7 +39,6 @@ class CommandSystemService {
     // форматирование списка зон, перевод зон из YAML в БД и наоборот
     public function import() {
         $result = array();
-        $zoneanchor = "medievaltown";
 
         // парсинг файла списка зон
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/zones/zonelist.yml");
@@ -48,8 +47,8 @@ class CommandSystemService {
         }
         $zones = Yaml::parse(file_get_contents($path));
 
-        // проверка наличия искомой зоны в файле списка зон
-        if (array_key_exists($zoneanchor, $zones["zonelist"])) {
+        // Обработка каждой зоны
+        foreach ($zones["zonelist"] as $zoneanchor => $zone) {
             // парсинг выбранной зоны
             $zonepath = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/zones/" . $zoneanchor . "/rooms.yml");
             if (!is_string($zonepath)) {
@@ -110,18 +109,16 @@ class CommandSystemService {
                     $room->setDown("");
                 }
 
-                // запись объекта в БД
+                // подготовка объекта для записи в БД
                 $this->em->persist($room);
             }
-            
-            $this->em->flush();
-
-            // вывод результата
-            $result["system"] = "Зона была успешно импортирована.";
-        } else {
-            // зоны не существует
-            $result["system"] = "Зона для импорта не найдена!";
         }
+
+        // запись в БД
+        $this->em->flush();
+
+        // вывод результата
+        $result["system"] = "Зоны были успешно импортирована.";
 
         // Импорт рас
         $setRaces = $this->setRaces();

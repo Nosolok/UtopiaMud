@@ -5,4 +5,5 @@
 zonelist:
     medievaltown:
         name: "Средневековый город"
-        anchor: mtown
+    townlake:
+        name: "Озеро у города"
