@@ -11,6 +11,9 @@ races:
         DX: 10
         IQ: 10
         HT: 10
+        skills:
+            - learning
+            - freewill
 
     elf:
         name: эльф
@@ -20,6 +23,8 @@ races:
         DX: 10
         IQ: 11
         HT: 10
+        skills:
+            - bowmaster
 
     dwarf:
         name: гном
@@ -29,6 +34,8 @@ races:
         DX: 10
         IQ: 10
         HT: 10
+        skills:
+            - mining
 
     orc:
         name: орк
@@ -38,6 +45,8 @@ races:
         DX: 10
         IQ: 9
         HT: 12
+        skills:
+            - berserk
 
     ogre:
         name: огр
@@ -47,6 +56,9 @@ races:
         DX: 9
         IQ: 8
         HT: 14
+        skills:
+            - rockeater
+        npconly: yes
 
     reptile:
         name: ящер
@@ -56,6 +68,9 @@ races:
         DX: 12
         IQ: 9
         HT: 12
+        skills:
+            - venom
+            - tail
 
     halfling:
         name: хоббит
@@ -65,3 +80,16 @@ races:
         DX: 11
         IQ: 10
         HT: 11
+        skills:
+            - hide
+
+    angel:
+        name: ангел
+        namef: ангел
+        size: 5
+        ST: 10
+        DX: 14
+        IQ: 10
+        HT: 10
+        skills:
+            - fly
