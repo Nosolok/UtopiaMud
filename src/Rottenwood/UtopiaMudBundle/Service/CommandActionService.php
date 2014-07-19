@@ -103,14 +103,17 @@ class CommandActionService {
      * @return bool
      */
     public function techGotoRoom($char, $room) {
-        $char->setRoom($room);
-        $this->em->persist($char);
-        $this->em->flush();
+
+        if ($room !== null) {
+            $char->setRoom($room);
+            $this->em->persist($char);
+            $this->em->flush();
+        }
 
         return true;
     }
 
-    public function techMove(Player $char, $direction ,$destinationRoomAnchor) {
+    public function techMove(Player $char, $direction, $destinationRoomAnchor) {
         $result = array();
         $room = $char->getRoom();
         $charName = $char->getUsername();
@@ -131,8 +134,8 @@ class CommandActionService {
 
         // сообщение о перемещении
         if ($direction == "north") {
-        	$directionMessageEnter = "1:3:1"; // ушел на север
-        	$directionMessageLeave = "1:4:1"; // пришел с юга
+            $directionMessageEnter = "1:3:1"; // ушел на север
+            $directionMessageLeave = "1:4:1"; // пришел с юга
         } elseif ($direction == "east") {
             $directionMessageEnter = "1:3:2"; // ушел на восток
             $directionMessageLeave = "1:4:2"; // пришел с востока
@@ -154,6 +157,13 @@ class CommandActionService {
         /** @method Repository\RoomRepository findByAnchor() */
         $destinationRoom = $this->roomRepository->findByAnchor($destinationRoomAnchor, $zone);
         /** @var Room $destinationRoom */
+        // если комната не найдена в базе
+        if (!$destinationRoom) {
+            // TODO: добавить логирование ошибки
+            $result["message"] = "0:3"; // нет выхода
+        	return $result;
+        }
+
         $destinationRoom = $destinationRoom[0];
         $this->techGotoRoom($char, $destinationRoom);
         $result = $this->techLook($destinationRoom, $char->getId());
