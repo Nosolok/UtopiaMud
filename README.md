@@ -5,9 +5,12 @@
 
 Аналитика: [![SensioLabsInsight](https://insight.sensiolabs.com/projects/a6196715-eb57-4447-a423-71127f7ed827/mini.png)](https://insight.sensiolabs.com/projects/a6196715-eb57-4447-a423-71127f7ed827) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Rottenwood/UtopiaMud/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Rottenwood/UtopiaMud/?branch=master)
 
-[Форум](https://github.com/Rottenwood/UtopiaMud/issues?labels=%D0%9E%D0%B1%D1%81%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5&page=1&state=open) | [Wiki](https://github.com/Rottenwood/UtopiaMud/wiki) | [Легкая версия ролевых правил GURPS](https://cloud
-.mail
-.ru/public/47c25a67bed8/gurps-rules-lite.pdf)
+[Форум](https://github.com/Rottenwood/UtopiaMud/issues?labels=%D0%9E%D0%B1%D1%81%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8
+%D0%B5&page=1&state=open)
+| [Wiki](https://github.com/Rottenwood/UtopiaMud/wiki)
+| [Легкая версия ролевых правил GURPS](https://cloud.mail.ru/public/47c25a67bed8/gurps-rules-lite.pdf)
+| [Планы на будущее](https://github.com/Rottenwood/UtopiaMud/blob/master/FUTURE.md)
+| [История версий](https://github.com/Rottenwood/UtopiaMud/blob/master/CHANGELOG.md)
 
 > MUD (Multi User Dungeon) — текстовая многопользовательская компьютерная игра, в которой присутствуют элементы ролевой игры, приключений, боевой системы и обязательно чат, как правило разделённый на каналы. Традиционно для передачи сообщений используется протокол telnet.
 
