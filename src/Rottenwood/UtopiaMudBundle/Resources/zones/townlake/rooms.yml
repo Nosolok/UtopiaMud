@@ -7,7 +7,7 @@
 rooms:
     street1:
         name: "Озерная улица"
-        desc: "Улица у озера."
+        desc: "Улица ведет вдоль живописного озера."
         type: town
         exits:
             east: park1:medievaltown
