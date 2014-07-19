@@ -93,3 +93,14 @@ races:
         HT: 10
         skills:
             - fly
+
+    troll:
+        name: тролль
+        namef: троллиха
+        size: 4
+        ST: 10
+        DX: 11
+        IQ: 10
+        HT: 9
+        skills:
+            - mechanics
