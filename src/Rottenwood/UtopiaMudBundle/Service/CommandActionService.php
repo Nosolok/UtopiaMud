@@ -209,7 +209,10 @@ class CommandActionService {
 
         // если персонаж посмотрел на что-то
         if ($arguments) {
-            $argument = $arguments[1];
+            // приведение первого аргумента введенной команды в нижний регистр
+            $argument = mb_strtolower($arguments[1], 'UTF-8');
+
+            var_dump($argument);
 
             // персонажи в комнате
             $playersOnline = $this->container->get('datachannel')->getOnlineIds(0);
@@ -221,7 +224,8 @@ class CommandActionService {
             if ($playersInRoom) {
                 foreach ($playersInRoom as $player) {
                     /** @var Player $player */
-                    $playerName = $player->getUsername();
+                    $playerName = $player->getUsernameCanonical();
+                    $playerNameFull = $player->getUsername();
 
                     echo "$playerName, $argument\n";
 
@@ -229,7 +233,7 @@ class CommandActionService {
                     if (strpos($playerName, $argument) !== false) {
                         $playerDesc = $player->getLongDesc();
                         $result["message"] = "1:2";
-                        $result["object"] = $playerName;
+                        $result["object"] = $playerNameFull;
                         $result["desc"] = $playerDesc;
                     }
                 }
