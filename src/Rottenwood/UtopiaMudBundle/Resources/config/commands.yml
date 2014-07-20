@@ -60,6 +60,14 @@ commands:
         - импорт
 
     # Чат
+    chat:
+        type: action
+        alias:
+        - chat
+        - ooc
+        - чат
+        - болтать
+        - ооц
     say:
         type: action
         alias:

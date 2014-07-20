@@ -101,6 +101,8 @@ $(document).ready(function () {
             game.append("<br><span class='plaintext'>Что ты хочешь сказать?</span><br><br>");
         } else if (data['message'] == "0:4:2") {
             game.append("<br><span class='plaintext'>Что ты хочешь крикнуть?</span><br><br>");
+        } else if (data['message'] == "0:4:3") {
+            game.append("<br><span class='plaintext'>О чем ты хочешь написать в общий чат?</span><br><br>");
         }
 
         //*** ответ от сервера: системные действия
@@ -152,6 +154,9 @@ $(document).ready(function () {
         // крикнуть
         } else if (data['message'] == "2:2") {
             game.append("<span class='plaintext'>" + data['who'] + " крикнул: <span class='chatshoutphrase'>" + data['shout'] + "</span></span><br><br>");
+        // общий чат
+        } else if (data['message'] == "2:3") {
+            game.append("<span class='plaintext'>[" + data['who'] + "]: <span class='chatoocphrase'>" + data['ooc'] + "</span></span><br><br>");
         }
 
 

@@ -21,12 +21,15 @@ class CommandActionService {
     protected $user;
     protected $id;
     protected $roomRepository;
+    protected $playerRepository;
 
     public function __construct(Container $container, EntityManager $em) {
         $this->container = $container;
         $this->em = $em;
         /** @var Repository\RoomRepository $roomRepository */
         $this->roomRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
+        /** @var Repository\PlayerRepository $playerRepository */
+        $this->playerRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player');
     }
 
     /**
@@ -374,6 +377,38 @@ class CommandActionService {
             );
         }
 
+        return $result;
+    }
+
+    public function chat(Player $char, $phrase) {
+        $result = array();
+        $charName = $char->getUsername();
+
+        // сбор фразы из массива слов
+        $phrase = implode(" ", $phrase);
+
+        // если фраза не задана
+        if (!$phrase) {
+            $result["message"] = "0:4:3"; // чат: фраза не задана
+            return $result;
+        }
+
+        // оповещение всех в зоне
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
+        $playersOnlineObj = $this->playerRepository->findPlayersOnline($playersOnline);
+
+        $result["message"] = "2:3"; // сообщил в чат
+        $result["who"] = $charName;
+        $result["ooc"] = $phrase;
+
+        if ($playersOnlineObj) {
+            $result["3rd"] = $playersOnlineObj;
+            $result["3rdecho"] = array(
+                "message" => $result["message"],
+                "who" => $result["who"],
+                "ooc"     => $phrase,
+            );
+        }
 
         return $result;
     }

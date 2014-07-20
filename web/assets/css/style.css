@@ -135,3 +135,8 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
 .chatshoutphrase {
     color: #ff1013;
 }
+
+/* ooc chat*/
+.chatoocphrase {
+    color: #5d55ff;
+}
