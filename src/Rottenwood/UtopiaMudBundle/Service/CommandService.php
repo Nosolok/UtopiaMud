@@ -44,7 +44,7 @@ class CommandService {
 
         // разбитие строки на команду и аргументы
         $arguments = explode(' ',trim($command));
-        $command = $arguments[0];
+        $command = mb_strtolower($arguments[0], 'UTF-8');
         unset($arguments[0]);
 
         // разбитие команды на символы и их подсчет (хак для русских символов)
