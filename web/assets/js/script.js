@@ -99,6 +99,8 @@ $(document).ready(function () {
             game.append("<br><span class='plaintext'>Ты не можешь двигаться в данном направлении.</span><br><br>");
         } else if (data['message'] == "0:4:1") {
             game.append("<br><span class='plaintext'>Что ты хочешь сказать?</span><br><br>");
+        } else if (data['message'] == "0:4:2") {
+            game.append("<br><span class='plaintext'>Что ты хочешь крикнуть?</span><br><br>");
         }
 
         //*** ответ от сервера: системные действия
@@ -147,6 +149,9 @@ $(document).ready(function () {
         // сказать
         } else if (data['message'] == "2:1") {
             game.append("<span class='plaintext'>" + data['who'] + " сказал: <span class='chatsayphrase'>" + data['say'] + "</span></span><br><br>");
+        // крикнуть
+        } else if (data['message'] == "2:2") {
+            game.append("<span class='plaintext'>" + data['who'] + " крикнул: <span class='chatshoutphrase'>" + data['shout'] + "</span></span><br><br>");
         }
 
 

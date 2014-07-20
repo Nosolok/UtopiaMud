@@ -340,4 +340,41 @@ class CommandActionService {
 
         return $result;
     }
+
+    public function shout(Player $char, $phrase) {
+        $result = array();
+        /** @var Room $room */
+        $room = $char->getRoom();
+        $zone = $room->getZone();
+        $charName = $char->getUsername();
+
+        // сбор фразы из массива слов
+        $phrase = implode(" ", $phrase);
+
+        // если фраза не задана
+        if (!$phrase) {
+            $result["message"] = "0:4:2"; // кричать: фраза не задана
+            return $result;
+        }
+
+        // оповещение всех в зоне
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
+        $playersInZone = $this->roomRepository->findPlayersInZone($zone, $playersOnline);
+
+        $result["message"] = "2:2"; // крикнул
+        $result["who"] = "Ты";
+        $result["shout"] = $phrase;
+
+        if ($playersInZone) {
+            $result["3rd"] = $playersInZone;
+            $result["3rdecho"] = array(
+                "message" => $result["message"],
+                "who"     => $charName,
+                "shout"     => $phrase,
+            );
+        }
+
+
+        return $result;
+    }
 }
