@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class RaceRepository extends EntityRepository {
+
     public function findByAnchor($anchor) {
 
         $query = $this->getEntityManager()

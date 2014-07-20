@@ -8,6 +8,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\UtopiaMudBundle\Entity\Player;
 use Rottenwood\UtopiaMudBundle\Entity\Race;
 use Rottenwood\UtopiaMudBundle\Entity\Room;
 use Rottenwood\UtopiaMudBundle\Repository;
@@ -149,6 +150,7 @@ class CommandSystemService {
 
     // Загрузка списка рас и импорт его в базу данных
     public function setRaces() {
+        $raceArchive = array();
         // парсинг файла списка рас
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/races/races.yml");
         if (!is_string($path)) {
@@ -158,15 +160,37 @@ class CommandSystemService {
 
         // цикл создания и записи в базу рас
         foreach ($races["races"] as $race => $raceData) {
-
-            // если раса недоступна игрокам
-            if (array_key_exists("npconly", $raceData) && $raceData["npconly"] == "true") {
-                continue;
-            }
-
             /** @var Repository\RaceRepository $raceRepository */
             $raceRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Race');
             $oldRace = $raceRepository->findByAnchor($race);
+
+            // если раса недоступна игрокам
+            if (array_key_exists("npconly", $raceData) && $raceData["npconly"] == "true") {
+
+                // проверка существования расы в базе
+                if ($oldRace) {
+                    /** @var Race $oldRace */
+                    $oldRace = $oldRace[0];
+                    $oldRaceId = $oldRace->getId();
+                    // очеловечивание
+                    /** @var Repository\PlayerRepository $playerRepository */
+                    $playerRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player');
+                    $oldRacePlayers = $playerRepository->findByRace($oldRaceId);
+
+                    foreach ($oldRacePlayers as $player) {
+                        $raceHuman = $raceArchive[0];
+                        /** @var Player $player */
+                        $player->setRace($raceHuman);
+                    }
+
+                    // удалить расу из базы
+                    $this->em->remove($oldRace);
+                }
+
+
+                continue;
+            }
+
 
             if ($oldRace) {
                 // если раса уже существовала
@@ -184,6 +208,8 @@ class CommandSystemService {
             $newRace->setDX($raceData["DX"]);
             $newRace->setIQ($raceData["IQ"]);
             $newRace->setHT($raceData["HT"]);
+
+            $raceArchive[] = $newRace;
 
             // запись объекта в БД
             $this->em->persist($newRace);
