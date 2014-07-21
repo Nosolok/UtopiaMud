@@ -199,6 +199,7 @@ rooms:
         exits:
             east: crossroads
             south: weststreet2
+            down: "sewersenter:sewers"
 
     weststreet2:
         name: "Западная улица"

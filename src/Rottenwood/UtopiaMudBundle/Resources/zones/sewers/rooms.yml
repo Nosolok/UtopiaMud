@@ -1,0 +1,47 @@
+rooms:
+    sewersenter:
+        name: "Спуск в канализацию"
+        desc: "Канализационный спуск сделан из грубого камня, покрытого от сырости мхом."
+        type: inside
+        exits:
+            up: "weststreet1:medievaltown"
+            down: sewers
+
+    sewers:
+        name: "Канализация"
+        desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
+        type: inside
+        exits:
+            up: sewersenter
+            north: sewersn2
+            south: sewerss2
+            east: sewerse2
+            west: sewersw2
+
+    sewersn2:
+        name: "Канализация"
+        desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
+        type: inside
+        exits:
+            south: sewers
+
+    sewerss2:
+        name: "Канализация"
+        desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
+        type: inside
+        exits:
+            north: sewers
+
+    sewerse2:
+        name: "Канализация"
+        desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
+        type: inside
+        exits:
+            west: sewers
+
+    sewersw2:
+        name: "Канализация"
+        desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
+        type: inside
+        exits:
+            east: sewers

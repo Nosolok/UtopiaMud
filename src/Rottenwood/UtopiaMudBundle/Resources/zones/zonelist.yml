@@ -11,3 +11,6 @@ zonelist:
         name: "Озеро у города"
         # Зона размещена удаленно
         url: "https://raw.githubusercontent.com/Rottenwood/UtopiaMud/zones/src/Rottenwood/UtopiaMudBundle/Resources/zones/townlake/townlake.yml"
+
+    sewers:
+        name: "Городская канализация"
