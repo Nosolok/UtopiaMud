@@ -8,6 +8,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\UtopiaMudBundle\Entity\Mob;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
 use Rottenwood\UtopiaMudBundle\Entity\Race;
 use Rottenwood\UtopiaMudBundle\Entity\Room;
@@ -24,10 +25,16 @@ class CommandSystemService {
 
     private $kernel;
     private $em;
+    /** @var Repository\RoomRepository $roomRepository */
+    private $roomRepository;
+    /** @var Repository\MobRepository $mobRepository */
+    private $mobRepository;
 
     public function __construct(Kernel $kernel, EntityManager $em) {
         $this->kernel = $kernel;
         $this->em = $em;
+        $this->roomRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
+        $this->mobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Mob');
     }
 
     // конец (выход)
@@ -128,6 +135,40 @@ class CommandSystemService {
 
                 // подготовка объекта для записи в БД
                 $this->em->persist($room);
+            }
+
+            if (array_key_exists("mobs", $zone)) {
+                // цикл создания и записи в базу новых монстров
+                foreach ($zone["mobs"] as $mobAnchor => $mob) {
+                    $oldMob = $this->mobRepository->findByAnchor($mobAnchor, $zoneanchor);
+
+                    if ($oldMob) {
+                        // если комната уже существовала
+                        $importMob = $oldMob[0];
+                    } else {
+                        // если комнаты еще нет
+                        $importMob = new Mob();
+                    }
+
+                    $importMob->setName($mobAnchor);
+                    $importMob->setName1($mob["name"][0]);
+                    $importMob->setName2($mob["name"][1]);
+                    $importMob->setName3($mob["name"][2]);
+                    $importMob->setName4($mob["name"][3]);
+                    $importMob->setName5($mob["name"][4]);
+                    $importMob->setName6($mob["name"][5]);
+                    $importMob->setShortdesc($mob["short"]);
+                    $importMob->setLongdesc($mob["desc"]);
+                    $importMob->setRace($mob["race"]);
+                    $importMob->setST($mob["ST"]);
+                    $importMob->setDX($mob["DX"]);
+                    $importMob->setIQ($mob["IQ"]);
+                    $importMob->setHT($mob["HT"]);
+                    $importMob->setZone($zoneanchor);
+
+                    // подготовка объекта для записи в БД
+                    $this->em->persist($importMob);
+                }
             }
         }
 

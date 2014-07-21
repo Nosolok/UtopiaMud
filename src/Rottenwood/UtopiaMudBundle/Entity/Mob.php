@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Mob
  * @ORM\Table(name="mobs")
- * @ORM\Entity(repositoryClass="Rottenwood\UtopiaMudBundle\Entity\MobRepository")
+ * @ORM\Entity(repositoryClass="Rottenwood\UtopiaMudBundle\Repository\MobRepository")
  */
 class Mob {
 
@@ -68,6 +68,131 @@ class Mob {
     private $IQ;
 
     /**
+     * @var integer
+     * @ORM\Column(name="HT", type="integer", length=2)
+     */
+    private $HT;
+
+
+    /**
+     * @var string
+     * @ORM\Column(name="name1", type="string", length=255)
+     */
+    private $name1;
+
+    /**
+     * @param string $name1
+     */
+    public function setName1($name1) {
+        $this->name1 = $name1;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName1() {
+        return $this->name1;
+    }
+
+    /**
+     * @var string
+     * @ORM\Column(name="name2", type="string", length=255)
+     */
+    private $name2;
+
+    /**
+     * @var string
+     * @ORM\Column(name="name3", type="string", length=255)
+     */
+    private $name3;
+
+    /**
+     * @var string
+     * @ORM\Column(name="name4", type="string", length=255)
+     */
+    private $name4;
+
+    /**
+     * @param string $name2
+     */
+    public function setName2($name2) {
+        $this->name2 = $name2;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName2() {
+        return $this->name2;
+    }
+
+    /**
+     * @param string $name3
+     */
+    public function setName3($name3) {
+        $this->name3 = $name3;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName3() {
+        return $this->name3;
+    }
+
+    /**
+     * @param string $name4
+     */
+    public function setName4($name4) {
+        $this->name4 = $name4;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName4() {
+        return $this->name4;
+    }
+
+    /**
+     * @param string $name5
+     */
+    public function setName5($name5) {
+        $this->name5 = $name5;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName5() {
+        return $this->name5;
+    }
+
+    /**
+     * @param string $name6
+     */
+    public function setName6($name6) {
+        $this->name6 = $name6;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName6() {
+        return $this->name6;
+    }
+    /**
+     * @var string
+     * @ORM\Column(name="name5", type="string", length=255)
+     */
+    private $name5;
+    /**
+     * @var string
+     * @ORM\Column(name="name6", type="string", length=255)
+     */
+    private $name6;
+
+    /**
      * @param int $DX
      */
     public function setDX($DX) {
@@ -80,12 +205,6 @@ class Mob {
     public function getDX() {
         return $this->DX;
     }
-
-    /**
-     * @var integer
-     * @ORM\Column(name="HT", type="integer", length=2)
-     */
-    private $HT;
 
     /**
      * Get id

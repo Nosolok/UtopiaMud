@@ -1,6 +1,6 @@
 <?php
 
-namespace Rottenwood\UtopiaMudBundle\Entity;
+namespace Rottenwood\UtopiaMudBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -11,4 +11,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class MobRepository extends EntityRepository {
 
+    /**
+     * Поиск моба по якорю
+     * @param $anchor
+     * @param $zone
+     * @return array
+     */
+    public function findByAnchor($anchor, $zone) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT m FROM RottenwoodUtopiaMudBundle:Mob m WHERE m.name LIKE :anchor AND m.zone
+            LIKE :zone');
+        $query->setParameter('anchor', '%' . $anchor . '%');
+        $query->setParameter('zone', '%' . $zone . '%');
+        $query->setMaxResults(1);
+        $result = $query->getResult();
+
+        return $result;
+    }
 }
