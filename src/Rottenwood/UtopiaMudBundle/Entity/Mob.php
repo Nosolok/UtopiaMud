@@ -26,15 +26,10 @@ class Mob {
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Race")
+     * @var string
+     * @ORM\Column(name="race", type="string", length=255)
      */
     private $race;
-
-    /**
-     * @var integer
-     * @ORM\Column(name="sex", type="integer", length=1)
-     */
-    private $sex;
 
     /**
      * @var string
@@ -55,11 +50,91 @@ class Mob {
     private $zone;
 
     /**
+     * @var integer
+     * @ORM\Column(name="ST", type="integer", length=2)
+     */
+    private $ST;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="DX", type="integer", length=2)
+     */
+    private $DX;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="IQ", type="integer", length=2)
+     */
+    private $IQ;
+
+    /**
+     * @param int $DX
+     */
+    public function setDX($DX) {
+        $this->DX = $DX;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDX() {
+        return $this->DX;
+    }
+
+    /**
+     * @var integer
+     * @ORM\Column(name="HT", type="integer", length=2)
+     */
+    private $HT;
+
+    /**
      * Get id
      * @return integer
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * @param int $HT
+     */
+    public function setHT($HT) {
+        $this->HT = $HT;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHT() {
+        return $this->HT;
+    }
+
+    /**
+     * @param int $IQ
+     */
+    public function setIQ($IQ) {
+        $this->IQ = $IQ;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIQ() {
+        return $this->IQ;
+    }
+
+    /**
+     * @param int $ST
+     */
+    public function setST($ST) {
+        $this->ST = $ST;
+    }
+
+    /**
+     * @return int
+     */
+    public function getST() {
+        return $this->ST;
     }
 
     /**
@@ -98,25 +173,6 @@ class Mob {
      */
     public function getRace() {
         return $this->race;
-    }
-
-    /**
-     * Set sex
-     * @param integer $sex
-     * @return Mob
-     */
-    public function setSex($sex) {
-        $this->sex = $sex;
-
-        return $this;
-    }
-
-    /**
-     * Get sex
-     * @return integer
-     */
-    public function getSex() {
-        return $this->sex;
     }
 
     /**
