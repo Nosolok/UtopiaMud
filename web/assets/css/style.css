@@ -125,6 +125,11 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
 	color:#ffa10a;
 }
 
+/* who */
+.whoonlinelist {
+    color: #ffdd9d;
+}
+
 /*************    Чат    *************/
 /* say */
 .chatsayphrase {

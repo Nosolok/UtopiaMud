@@ -6,7 +6,7 @@ zonelist:
     medievaltown:
         name: "Средневековый город"
         url: "https://raw.githubusercontent.com/Rottenwood/UtopiaMud/master/src/Rottenwood/UtopiaMudBundle/Resources/zones/medievaltown/rooms.yml"
-        
+
     townlake:
         name: "Озеро у города"
         # Зона размещена удаленно

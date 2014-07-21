@@ -157,6 +157,13 @@ $(document).ready(function () {
         // общий чат
         } else if (data['message'] == "2:3") {
             game.append("<span class='plaintext'>[" + data['who'] + "]: <span class='chatoocphrase'>" + data['ooc'] + "</span></span><br><br>");
+        // who
+        } else if (data['message'] == "3:1") {
+            game.append("<span class='plaintext'>В данный момент в игре находятся:<br></span>");
+            jQuery.each(data['whoonline'], function (name, data) {
+                game.append("<span class='whoonlinelist'>" + data["race"] + " " + name + "</span><br>");
+            });
+            game.append("<br><span class='plaintext'>Всего игроков: " + data["whoonlinecount"] + "</span><br><br>");
         }
 
 

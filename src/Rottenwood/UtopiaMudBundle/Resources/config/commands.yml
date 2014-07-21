@@ -45,6 +45,14 @@ commands:
         - смотреть
         - взглянуть
 
+    # Список игроков онлайн
+    who:
+        type: action
+        alias:
+        - who
+        - кто
+        - онлайн
+
     # Выход из игры
     quit:
         type: system

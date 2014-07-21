@@ -4,6 +4,7 @@ namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
+use Rottenwood\UtopiaMudBundle\Entity\Race;
 use Rottenwood\UtopiaMudBundle\Entity\Room;
 use Rottenwood\UtopiaMudBundle\Repository;
 use Symfony\Component\DependencyInjection\Container;
@@ -164,7 +165,7 @@ class CommandActionService {
         if (!$destinationRoom) {
             // TODO: добавить логирование ошибки
             $result["message"] = "0:3"; // нет выхода
-        	return $result;
+            return $result;
         }
 
         $destinationRoom = $destinationRoom[0];
@@ -377,7 +378,7 @@ class CommandActionService {
             $result["3rdecho"] = array(
                 "message" => $result["message"],
                 "who"     => $charName,
-                "shout"     => $phrase,
+                "shout"   => $phrase,
             );
         }
 
@@ -397,7 +398,7 @@ class CommandActionService {
             return $result;
         }
 
-        // оповещение всех в зоне
+        // оповещение всех в мире
         $playersOnline = $this->container->get('datachannel')->getOnlineIds($char->getId());
         $playersOnlineObj = $this->playerRepository->findPlayersOnline($playersOnline);
 
@@ -409,10 +410,51 @@ class CommandActionService {
             $result["3rd"] = $playersOnlineObj;
             $result["3rdecho"] = array(
                 "message" => $result["message"],
-                "who" => $result["who"],
+                "who"     => $result["who"],
                 "ooc"     => $phrase,
             );
         }
+
+        return $result;
+    }
+
+    /**
+     * Команда "who". Список игроков онлайн
+     * @internal param \Rottenwood\UtopiaMudBundle\Entity\Player $char
+     * @return array
+     */
+    public function who() {
+
+        // Список всех игроков онлайн
+        $playersOnline = $this->container->get('datachannel')->getOnlineIds(0);
+        $playersOnlineObj = $this->playerRepository->findPlayersOnline($playersOnline);
+
+        $whoOnline = array();
+
+        $whoOnlineCount = count($playersOnlineObj);
+
+        foreach ($playersOnlineObj as $player) {
+            /** @var Player $player */
+            $playerUsername = $player->getUsername();
+            $playerSex = $player->getSex();
+            /** @var Race $playerRace */
+            $playerRace = $player->getRace();
+            if ($playerSex == 1) {
+                $playerRaceName = $playerRace->getName();
+            } else {
+                $playerRaceName = $playerRace->getNamef();
+            }
+
+            $whoOnline[$playerUsername] = array(
+                "race" => $playerRaceName,
+            );
+        }
+
+        $result = array(
+                "message"   => "3:1",
+                "whoonline" => $whoOnline,
+                "whoonlinecount" => $whoOnlineCount,
+        );
 
         return $result;
     }
