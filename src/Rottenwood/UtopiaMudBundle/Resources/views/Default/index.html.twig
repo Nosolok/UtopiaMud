@@ -3,7 +3,9 @@
 {% block content %}
     <div id="header"></div>
     {% block mapdiv %}
-        <div id="map"><img src="{{ asset('assets/img/game_map.png') }}"></div>
+        <div id="map">
+            {#<img src="{{ asset('assets/img/game_map.png') }}">#}
+        </div>
     {% endblock mapdiv %}
     <div id="{% block gamedivname %}game{% endblock gamedivname %}">
         {% block game %}

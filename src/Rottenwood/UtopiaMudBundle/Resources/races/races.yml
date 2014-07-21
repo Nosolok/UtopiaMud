@@ -117,3 +117,14 @@ races:
             - berserk
             - tear
             - hunt
+
+# NPC
+    rat:
+        name: крыса
+        namef: крыса
+        size: 2
+        ST: 2
+        DX: 4
+        IQ: 1
+        HT: 2
+        npconly: true

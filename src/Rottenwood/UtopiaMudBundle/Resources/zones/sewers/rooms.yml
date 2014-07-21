@@ -11,6 +11,8 @@ rooms:
         name: "Канализация"
         desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
         type: inside
+        mobs:
+        - rat
         exits:
             up: sewersenter
             north: sewersn2
