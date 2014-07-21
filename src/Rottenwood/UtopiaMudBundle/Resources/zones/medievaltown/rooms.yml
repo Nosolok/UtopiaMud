@@ -452,6 +452,7 @@ rooms:
         exits:
             down: castle11
             up: castle13
+            south: castle17
 
     castle11:
         name: "Казармы"
