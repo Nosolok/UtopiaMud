@@ -102,6 +102,11 @@ class CommandSystemService {
                 $room->setZone($zoneanchor);
                 $room->setType($roomData["type"]);
 
+                if (array_key_exists("mobs", $roomData)) {
+                    $room->setMobs($roomData["mobs"]);
+                } else {
+                    $room->setNorth("");
+                }
                 if (array_key_exists("north", $roomData["exits"])) {
                     $room->setNorth($roomData["exits"]["north"]);
                 } else {

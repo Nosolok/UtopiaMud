@@ -176,6 +176,11 @@ $(document).ready(function () {
         if (data['players']) {
             showplayers(data['players']);
         }
+        if (data['mobs']) {
+            showmobs(data['mobs']);
+        } else if (data['players']) {
+            game.append("<br>");
+        }
         if (data['system']) {
             game.append("<br><span class='plaintext'>" + data['system'] + "</span><br><br>");
         }
@@ -212,12 +217,21 @@ $(document).ready(function () {
 
     // Отображение персонажей
     function showplayers(data) {
-
         console.log(data);
         jQuery.each(data, function (name, data) {
             console.log(data);
             game.append("<span class='players'>" + name + ", " + data["race"] + " стоит тут.</span><br>");
             return (this != "three"); // will stop running after "three"
+        });
+
+    }
+
+    // Отображение мобов
+    function showmobs(data) {
+        console.log(data);
+        jQuery.each(data, function (name, data) {
+            console.log(data);
+            game.append("<span class='mobs'>" + data["short"] + "</span><br>");
         });
 
         game.append("<br>");

@@ -74,7 +74,11 @@ class RoomRepository extends EntityRepository {
         return $result;
     }
 
-    // ID всех комнат в зоне
+    /**
+     * ID всех комнат в зоне
+     * @param $zone
+     * @return array
+     */
     public function findAllRoomIdsInZone($zone) {
         $query = $this->getEntityManager()
             ->createQuery('SELECT r.id FROM RottenwoodUtopiaMudBundle:Room r WHERE r.zone LIKE :zone');
@@ -90,6 +94,12 @@ class RoomRepository extends EntityRepository {
         return $zoneIds;
     }
 
+    /**
+     * Поиск игроков онлайн в зоне
+     * @param $zone
+     * @param $playersOnline
+     * @return array
+     */
     public function findPlayersInZone($zone, $playersOnline) {
         $query = $this->getEntityManager()
             ->createQuery('SELECT p FROM RottenwoodUtopiaMudBundle:Player p LEFT JOIN p.room r WHERE r.zone = ?1
@@ -97,6 +107,20 @@ class RoomRepository extends EntityRepository {
         $query->setParameter(1, $zone);
         $query->setParameter('players', $playersOnline);
 
+        $result = $query->getResult();
+
+        return $result;
+    }
+
+    /**
+     * Поиск всех мобов в комнате
+     * @param $roomId
+     * @return array
+     */
+    public function findMobsInRoom($roomId) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT r FROM RottenwoodUtopiaMudBundle:Room r WHERE r.zone LIKE :zone');
+        $query->setParameter('zone', '%' . $zone . '%');
         $result = $query->getResult();
 
         return $result;

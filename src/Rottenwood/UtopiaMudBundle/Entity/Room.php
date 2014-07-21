@@ -85,6 +85,26 @@ class Room {
      */
     private $down = "";
 
+
+    /**
+     * @ORM\Column(name="mobs", type="array", nullable=true)
+     */
+    private $mobs;
+
+    /**
+     * @param string $mobs
+     */
+    public function setMobs($mobs) {
+        $this->mobs = $mobs;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobs() {
+        return $this->mobs;
+    }
+
     /**
      * Get id
      * @return integer

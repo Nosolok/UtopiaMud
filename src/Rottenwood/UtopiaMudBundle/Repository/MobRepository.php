@@ -28,4 +28,16 @@ class MobRepository extends EntityRepository {
 
         return $result;
     }
+
+    public function findMobsFromListInZone($mobList, $zone) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT m FROM RottenwoodUtopiaMudBundle:Mob m WHERE m.name IN (:moblist) AND m.zone
+            LIKE :zone');
+        $query->setParameter('moblist', $mobList);
+        $query->setParameter('zone', '%' . $zone . '%');
+        $query->setMaxResults(1);
+        $result = $query->getResult();
+
+        return $result;
+    }
 }

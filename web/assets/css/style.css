@@ -116,6 +116,16 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
 	color:#c1c1c1;
 }
 
+/****** Комната ******/
+/* игроки */
+.players {
+    color: #17c111;
+}
+/* мобы */
+.mobs {
+    color: #c1b13d;
+}
+
 .roomexits {
 	/*color:#af7e28;*/
 	color:#808080;

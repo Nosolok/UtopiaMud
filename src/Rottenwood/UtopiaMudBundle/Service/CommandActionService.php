@@ -3,6 +3,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\UtopiaMudBundle\Entity\Mob;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
 use Rottenwood\UtopiaMudBundle\Entity\Race;
 use Rottenwood\UtopiaMudBundle\Entity\Room;
@@ -21,16 +22,19 @@ class CommandActionService {
     protected $container;
     protected $user;
     protected $id;
+    /** @var Repository\RoomRepository $roomRepository */
     protected $roomRepository;
+    /** @var Repository\PlayerRepository $playerRepository */
     protected $playerRepository;
+    /** @var Repository\MobRepository $mobRepository */
+    protected $mobRepository;
 
     public function __construct(Container $container, EntityManager $em) {
         $this->container = $container;
         $this->em = $em;
-        /** @var Repository\RoomRepository $roomRepository */
         $this->roomRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
-        /** @var Repository\PlayerRepository $playerRepository */
         $this->playerRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player');
+        $this->mobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Mob');
     }
 
     /**
@@ -42,6 +46,7 @@ class CommandActionService {
      */
     public function techLook($room, $charId) {
         $roomId = $room->getId();
+        $zone = $room->getZone();
         $result = array();
         // осмотр комнаты
         $result["roomname"] = $room->getName();
@@ -64,6 +69,22 @@ class CommandActionService {
                     $getNameFunction = "getName";
                 }
                 $result["players"][$player->getUsername()]["race"] = $player->getRace()->{$getNameFunction}();
+            }
+        }
+
+        // мобы
+        $mobsInRoomAnchors = $room->getMobs();
+        $mobsInRoom = $this->mobRepository->findMobsFromListInZone($mobsInRoomAnchors, $zone);
+
+        if ($mobsInRoom) {
+            foreach ($mobsInRoom as $mob) {
+                /** @var Mob $mob */
+                $mobName1 = $mob->getName1();
+                $mobShort = $mob->getShortdesc();
+                $result["mobs"][] = array(
+                    "name" => $mobName1,
+                    "short" => $mobShort,
+                );
             }
         }
 
