@@ -110,7 +110,12 @@ $(document).ready(function () {
             var url = "logout";
             $(location).attr('href', url);
         } else if (data['message'] == "0:5:1") {
-            game.append("<br><span class='plaintext'>Для выхода введи команду &quot;конец&quot; (quit) целиком.</span><br><br>");
+            if (data['cmdlang']) {
+                game.append("<br><span class='plaintext'>Введите команду &quot;" + data['cmdlang'] + "&quot; (" + data['cmd'] + ") целиком.</span><br><br>");
+            } else {
+                game.append("<br><span class='plaintext'>Please enter full command &quot;" + data['cmd'] + "&quot;.</span><br><br>");
+
+            }
         } else if (data['message'] == "0:6:1") {
             game.append("<span class='plaintext'>" + data['who'] + " вошел в наш мир.</span><br><br>");
         } else if (data['message'] == "0:6:2") {
@@ -122,7 +127,7 @@ $(document).ready(function () {
             game.append("<br><span class='plaintext'>Ты осмотрелся.</span><br><br>");
         } else if (data['message'] == "1:2") {
             game.append("<br><span class='plaintext'>Ты обратил взгляд на " + data['object'] + ".</span><br>" + data['desc'] + "<br><br>");
-        // уходит
+            // уходит
         } else if (data['message'] == "1:3:1") {
             game.append("<span class='plaintext'>" + data['who'] + " ушел на север.</span><br><br>");
         } else if (data['message'] == "1:3:2") {
@@ -135,7 +140,7 @@ $(document).ready(function () {
             game.append("<span class='plaintext'>" + data['who'] + " ушел наверх.</span><br><br>");
         } else if (data['message'] == "1:3:6") {
             game.append("<span class='plaintext'>" + data['who'] + " ушел вниз.</span><br><br>");
-        // приходит
+            // приходит
         } else if (data['message'] == "1:4:1") {
             game.append("<span class='plaintext'>" + data['who'] + " пришел с юга.</span><br><br>");
         } else if (data['message'] == "1:4:2") {
@@ -148,16 +153,16 @@ $(document).ready(function () {
             game.append("<span class='plaintext'>" + data['who'] + " пришел снизу.</span><br><br>");
         } else if (data['message'] == "1:4:6") {
             game.append("<span class='plaintext'>" + data['who'] + " пришел сверху.</span><br><br>");
-        // сказать
+            // сказать
         } else if (data['message'] == "2:1") {
             game.append("<span class='plaintext'>" + data['who'] + " сказал: <span class='chatsayphrase'>" + data['say'] + "</span></span><br><br>");
-        // крикнуть
+            // крикнуть
         } else if (data['message'] == "2:2") {
             game.append("<span class='plaintext'>" + data['who'] + " крикнул: <span class='chatshoutphrase'>" + data['shout'] + "</span></span><br><br>");
-        // общий чат
+            // общий чат
         } else if (data['message'] == "2:3") {
             game.append("<span class='plaintext'>[" + data['who'] + "]: <span class='chatoocphrase'>" + data['ooc'] + "</span></span><br><br>");
-        // who
+            // who
         } else if (data['message'] == "3:1") {
             game.append("<span class='plaintext'>В данный момент в игре находятся:<br></span>");
             jQuery.each(data['whoonline'], function (name, data) {
