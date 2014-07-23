@@ -5,6 +5,16 @@
 $(document).ready(function () {
     var chat = $('#chatinput');
     var game = $('#game');
+
+    var N = 10;
+    var Nc = 0;
+    var command_history = new Array(N);
+    var i;
+
+    for (i = 0; i < N; i++) {
+        command_history[i] = "";
+    }
+
     var conn = new ab.Session('ws://' + serverip + ':6661',
         function () {
             console.log("Соединение установлено");
@@ -29,6 +39,7 @@ $(document).ready(function () {
             $('#chatform').submit(function (event) {
                 event.preventDefault();
                 var lastcommand = chat.val();
+                addCommandToHistory(lastcommand);
 
                 // Очистка чата
                 chat.val('');
@@ -241,4 +252,41 @@ $(document).ready(function () {
 
         game.append("<br>");
     }
+
+    //######## История команд
+
+    // добавление команды в историю
+    function addCommandToHistory(command) {
+        i = 1;
+        while (command_history[i] != "" && i < N) i++;
+        if (i == N) {
+            for (i = 0; i < N - 1; i++)
+                command_history[i] = command_history[i + 1];
+            command_history[N - 1] = command;
+            Nc = N - 1;
+        }
+        else {
+            command_history[i] = command;
+            Nc = i;
+        }
+    }
+
+    // хоткеи
+    $("body").keydown(function (key) {
+        if (key.which == 38 && Nc > 0) {
+            chat.val(command_history[Nc])
+            Nc--;
+            return false;
+        }
+        if (key.which == 40) {
+            chat.val("");
+            if (command_history[Nc + 1]) {
+                Nc++;
+                chat.val(command_history[Nc])
+                return false;
+            }
+        }
+
+    });
+
 });
