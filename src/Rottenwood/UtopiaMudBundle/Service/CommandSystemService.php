@@ -179,8 +179,6 @@ class CommandSystemService {
                     foreach ($roomData["mobs"] as $mobInRoomAnchor) {
                         $mobInRoom = $this->mobRepository->findByAnchor($mobInRoomAnchor, $zoneanchor);
 
-//                        var_dump($mobInRoom);
-
                         /** @var Mob $mobInRoom */
                         $mobInRoom = $mobInRoom[0];
                         // расчет максимального хп монстра: HT * 10
@@ -192,6 +190,7 @@ class CommandSystemService {
                         $livemob->setHp($mobHp);
 
                         $this->em->persist($livemob);
+                        $this->em->flush();
                     }
                 }
 
