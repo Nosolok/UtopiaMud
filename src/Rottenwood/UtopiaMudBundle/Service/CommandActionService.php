@@ -85,7 +85,7 @@ class CommandActionService {
                 $mobName1 = $mob->getMob()->getName1();
                 $mobShort = $mob->getMob()->getShortdesc();
                 $result["mobs"][] = array(
-                    "name" => $mobName1,
+                    "name"  => $mobName1,
                     "short" => $mobShort,
                 );
             }
@@ -237,9 +237,10 @@ class CommandActionService {
             // приведение первого аргумента введенной команды в нижний регистр
             $argument = mb_strtolower($arguments[1], 'UTF-8');
 
-            // персонажи в комнате
+            // объекты в комнате
             $playersOnline = $this->container->get('datachannel')->getOnlineIds(0);
             $playersInRoom = $this->roomRepository->findPlayersInRoom($roomId, $playersOnline);
+            $mobsInRoom = $this->livemobRepository->findMobsInRoom($room);
 
             $result["message"] = "0:2:1";
             $result["object"] = $argument;
@@ -250,8 +251,6 @@ class CommandActionService {
                     $playerName = $player->getUsernameCanonical();
                     $playerNameFull = $player->getUsername();
 
-                    echo "$playerName, $argument\n";
-
                     // проверка наличия имени
                     if (strpos($playerName, $argument) !== false) {
                         $playerDesc = $player->getLongDesc();
@@ -261,6 +260,27 @@ class CommandActionService {
                     }
                 }
             }
+
+            if ($mobsInRoom) {
+                foreach ($mobsInRoom as $mobInRoom) {
+                    /** @var Livemob $mobInRoom */
+                    /** @var Mob $mobInRoomObject */
+                    $mobInRoomObject = $mobInRoom->getMob();
+                    $mobName = $mobInRoomObject->getName1();
+                    // винительный падеж
+                    $mobName4 = $mobInRoomObject->getName4();
+
+                    // проверка наличия моба
+                    if (strpos($mobName, $argument) !== false) {
+                        $mobDesc = $mobInRoomObject->getLongdesc();
+                        $result["message"] = "1:2";
+                        $result["object"] = $mobName4;
+                        $result["desc"] = $mobDesc;
+                    }
+                }
+            }
+
+
             return $result;
         }
 
@@ -473,9 +493,9 @@ class CommandActionService {
         }
 
         $result = array(
-                "message"   => "3:1",
-                "whoonline" => $whoOnline,
-                "whoonlinecount" => $whoOnlineCount,
+            "message"        => "3:1",
+            "whoonline"      => $whoOnline,
+            "whoonlinecount" => $whoOnlineCount,
         );
 
         return $result;
