@@ -247,7 +247,7 @@ $(document).ready(function () {
         console.log(data);
         jQuery.each(data, function (name, data) {
             console.log(data);
-            game.append("<span class='mobs'>" + data["short"] + "</span><br>");
+            game.append("<span class='mobs'>" + data["short"] + "</span><span class='mobsalias'> [" + data["name"] + "]</span><br>");
         });
 
         game.append("<br>");
