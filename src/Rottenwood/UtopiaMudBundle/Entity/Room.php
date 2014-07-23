@@ -3,6 +3,7 @@
 namespace Rottenwood\UtopiaMudBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Room
@@ -84,26 +85,6 @@ class Room {
      * @ORM\Column(name="down", type="string", length=30, nullable=true)
      */
     private $down = "";
-
-
-    /**
-     * @ORM\Column(name="mobs", type="array", nullable=true)
-     */
-    private $mobs;
-
-    /**
-     * @param string $mobs
-     */
-    public function setMobs($mobs) {
-        $this->mobs = $mobs;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMobs() {
-        return $this->mobs;
-    }
 
     /**
      * Get id

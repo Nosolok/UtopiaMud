@@ -13,6 +13,7 @@ rooms:
         type: inside
         mobs:
         - rat
+        - rat
         exits:
             up: sewersenter
             north: sewersn2

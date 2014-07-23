@@ -3,6 +3,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\UtopiaMudBundle\Entity\Livemob;
 use Rottenwood\UtopiaMudBundle\Entity\Mob;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
 use Rottenwood\UtopiaMudBundle\Entity\Race;
@@ -28,6 +29,8 @@ class CommandActionService {
     protected $playerRepository;
     /** @var Repository\MobRepository $mobRepository */
     protected $mobRepository;
+    /** @var Repository\LivemobRepository $livemobRepository */
+    private $livemobRepository;
 
     public function __construct(Container $container, EntityManager $em) {
         $this->container = $container;
@@ -35,6 +38,7 @@ class CommandActionService {
         $this->roomRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
         $this->playerRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player');
         $this->mobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Mob');
+        $this->livemobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Livemob');
     }
 
     /**
@@ -73,14 +77,13 @@ class CommandActionService {
         }
 
         // мобы
-        $mobsInRoomAnchors = $room->getMobs();
-        $mobsInRoom = $this->mobRepository->findMobsFromListInZone($mobsInRoomAnchors, $zone);
+        $mobsInRoom = $this->livemobRepository->findMobsInRoom($room);
 
         if ($mobsInRoom) {
             foreach ($mobsInRoom as $mob) {
-                /** @var Mob $mob */
-                $mobName1 = $mob->getName1();
-                $mobShort = $mob->getShortdesc();
+                /** @var Livemob $mob */
+                $mobName1 = $mob->getMob()->getName1();
+                $mobShort = $mob->getMob()->getShortdesc();
                 $result["mobs"][] = array(
                     "name" => $mobName1,
                     "short" => $mobShort,
@@ -233,8 +236,6 @@ class CommandActionService {
         if ($arguments) {
             // приведение первого аргумента введенной команды в нижний регистр
             $argument = mb_strtolower($arguments[1], 'UTF-8');
-
-            var_dump($argument);
 
             // персонажи в комнате
             $playersOnline = $this->container->get('datachannel')->getOnlineIds(0);
