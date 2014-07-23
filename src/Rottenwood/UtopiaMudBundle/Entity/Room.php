@@ -3,7 +3,6 @@
 namespace Rottenwood\UtopiaMudBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Room
@@ -51,40 +50,76 @@ class Room {
     private $roomdesc;
 
     /**
-     * @var integer
+     * @var string
      * @ORM\Column(name="west", type="string", length=30, nullable=true)
      */
     private $west = "";
 
     /**
-     * @var integer
+     * @var array
+     * @ORM\Column(name="westdoor", type="array", nullable=true)
+     */
+    private $westdoor;
+
+    /**
+     * @var string
      * @ORM\Column(name="north", type="string", length=30, nullable=true)
      */
     private $north = "";
 
     /**
-     * @var integer
+     * @var array
+     * @ORM\Column(name="northdoor", type="array", nullable=true)
+     */
+    private $northdoor;
+
+    /**
+     * @var string
      * @ORM\Column(name="south", type="string", length=30, nullable=true)
      */
     private $south = "";
 
     /**
-     * @var integer
+     * @var array
+     * @ORM\Column(name="southdoor", type="array", nullable=true)
+     */
+    private $southdoor;
+
+    /**
+     * @var string
      * @ORM\Column(name="east", type="string", length=30, nullable=true)
      */
     private $east = "";
 
     /**
-     * @var integer
+     * @var array
+     * @ORM\Column(name="eastdoor", type="array", nullable=true)
+     */
+    private $eastdoor;
+
+    /**
+     * @var string
      * @ORM\Column(name="up", type="string", length=30, nullable=true)
      */
     private $up = "";
 
     /**
-     * @var integer
+     * @var array
+     * @ORM\Column(name="updoor", type="array", nullable=true)
+     */
+    private $updoor;
+
+    /**
+     * @var string
      * @ORM\Column(name="down", type="string", length=30, nullable=true)
      */
     private $down = "";
+
+    /**
+     * @var array
+     * @ORM\Column(name="downdoor", type="array", nullable=true)
+     */
+    private $downdoor;
 
     /**
      * Get id
@@ -164,12 +199,10 @@ class Room {
 
     /**
      * Set south
-     *
      * @param string $south
      * @return Room
      */
-    public function setSouth($south)
-    {
+    public function setSouth($south) {
         $this->south = $south;
 
         return $this;
@@ -177,22 +210,18 @@ class Room {
 
     /**
      * Get south
-     *
      * @return string
      */
-    public function getSouth()
-    {
+    public function getSouth() {
         return $this->south;
     }
 
     /**
      * Set east
-     *
      * @param string $east
      * @return Room
      */
-    public function setEast($east)
-    {
+    public function setEast($east) {
         $this->east = $east;
 
         return $this;
@@ -200,46 +229,38 @@ class Room {
 
     /**
      * Get east
-     *
      * @return string
      */
-    public function getEast()
-    {
+    public function getEast() {
         return $this->east;
     }
 
-    public function setUp($up)
-    {
+    public function setUp($up) {
         $this->up = $up;
 
         return $this;
     }
 
-    public function getUp()
-    {
+    public function getUp() {
         return $this->up;
     }
 
-    public function setDown($down)
-    {
+    public function setDown($down) {
         $this->down = $down;
 
         return $this;
     }
 
-    public function getDown()
-    {
+    public function getDown() {
         return $this->down;
     }
 
     /**
      * Set zone
-     *
      * @param string $zone
      * @return Room
      */
-    public function setZone($zone)
-    {
+    public function setZone($zone) {
         $this->zone = $zone;
 
         return $this;
@@ -247,22 +268,18 @@ class Room {
 
     /**
      * Get zone
-     *
-     * @return string 
+     * @return string
      */
-    public function getZone()
-    {
+    public function getZone() {
         return $this->zone;
     }
 
     /**
      * Set anchor
-     *
      * @param string $anchor
      * @return Room
      */
-    public function setAnchor($anchor)
-    {
+    public function setAnchor($anchor) {
         $this->anchor = $anchor;
 
         return $this;
@@ -270,22 +287,18 @@ class Room {
 
     /**
      * Get anchor
-     *
-     * @return string 
+     * @return string
      */
-    public function getAnchor()
-    {
+    public function getAnchor() {
         return $this->anchor;
     }
 
     /**
      * Set type
-     *
      * @param integer $type
      * @return Room
      */
-    public function setType($type)
-    {
+    public function setType($type) {
         $this->type = $type;
 
         return $this;
@@ -293,11 +306,94 @@ class Room {
 
     /**
      * Get type
-     *
-     * @return integer 
+     * @return integer
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
+
+    /**
+     * @param array $downdoor
+     */
+    public function setDowndoor($downdoor) {
+        $this->downdoor = $downdoor;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDowndoor() {
+        return $this->downdoor;
+    }
+
+    /**
+     * @param array $eastdoor
+     */
+    public function setEastdoor($eastdoor) {
+        $this->eastdoor = $eastdoor;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEastdoor() {
+        return $this->eastdoor;
+    }
+
+    /**
+     * @param array $northdoor
+     */
+    public function setNorthdoor($northdoor) {
+        $this->northdoor = $northdoor;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNorthdoor() {
+        return $this->northdoor;
+    }
+
+    /**
+     * @param array $southdoor
+     */
+    public function setSouthdoor($southdoor) {
+        $this->southdoor = $southdoor;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSouthdoor() {
+        return $this->southdoor;
+    }
+
+    /**
+     * @param array $updoor
+     */
+    public function setUpdoor($updoor) {
+        $this->updoor = $updoor;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUpdoor() {
+        return $this->updoor;
+    }
+
+    /**
+     * @param array $westdoor
+     */
+    public function setWestdoor($westdoor) {
+        $this->westdoor = $westdoor;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWestdoor() {
+        return $this->westdoor;
+    }
+
 }

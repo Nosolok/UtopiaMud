@@ -102,22 +102,54 @@ class CommandActionService {
     public function techLookExits($room) {
         $result = array();
         if ($room->getNorth()) {
-            $result["n"] = 1;
+            $door = $room->getNorthdoor();
+            $isDoor = $this->techCheckDoor($door);
+
+            if (!$isDoor) {
+                $result["n"] = 1;
+            }
+
         }
         if ($room->getSouth()) {
-            $result["s"] = 1;
+            $door = $room->getSouthdoor();
+            $isDoor = $this->techCheckDoor($door);
+
+            if (!$isDoor) {
+                $result["s"] = 1;
+            }
         }
         if ($room->getEast()) {
-            $result["e"] = 1;
+            $door = $room->getEastdoor();
+            $isDoor = $this->techCheckDoor($door);
+
+            if (!$isDoor) {
+                $result["e"] = 1;
+            }
+
         }
         if ($room->getWest()) {
-            $result["w"] = 1;
+            $door = $room->getWestdoor();
+            $isDoor = $this->techCheckDoor($door);
+
+            if (!$isDoor) {
+                $result["w"] = 1;
+            }
         }
         if ($room->getUp()) {
-            $result["u"] = 1;
+            $door = $room->getUpdoor();
+            $isDoor = $this->techCheckDoor($door);
+
+            if (!$isDoor) {
+                $result["u"] = 1;
+            }
         }
         if ($room->getDown()) {
-            $result["d"] = 1;
+            $door = $room->getDowndoor();
+            $isDoor = $this->techCheckDoor($door);
+
+            if (!$isDoor) {
+                $result["d"] = 1;
+            }
         }
 
         return $result;
@@ -221,6 +253,23 @@ class CommandActionService {
     }
 
     /**
+     * Проверка наличия двери
+     * @param $door
+     * @return array|bool
+     */
+    public function techCheckDoor($door) {
+        $result = array();
+
+        if (is_array($door) && $door["door"] == "closed") {
+            $result["message"] = "0:7:1";
+            $result["gate"] = $door["doorname"][0];
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Command: look
      * @param Player $char
      * @param        $arguments
@@ -295,6 +344,14 @@ class CommandActionService {
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getNorth();
         $dir = preg_replace('~.*?:~', '', __METHOD__);
+
+        // проверка наличия двери
+        $door = $room->getNorthdoor();
+        $isDoor = $this->techCheckDoor($door);
+
+        if ($isDoor) {
+            return $isDoor;
+        }
 
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 

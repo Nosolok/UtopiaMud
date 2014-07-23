@@ -107,7 +107,7 @@ $(document).ready(function () {
         } else if (data['message'] == "0:2:1") {
             game.append("<br><span class='plaintext'>Ты не видишь ничего похожего на &quot;" + data['object'] + "&quot;.</span><br><br>");
         } else if (data['message'] == "0:3") {
-            game.append("<br><span class='plaintext'>Ты не можешь двигаться в данном направлении.</span><br><br>");
+            game.append("<span class='plaintext'>Ты не можешь двигаться в данном направлении.</span><br><br>");
         } else if (data['message'] == "0:4:1") {
             game.append("<br><span class='plaintext'>Что ты хочешь сказать?</span><br><br>");
         } else if (data['message'] == "0:4:2") {
@@ -131,6 +131,9 @@ $(document).ready(function () {
             game.append("<span class='plaintext'>" + data['who'] + " вошел в наш мир.</span><br><br>");
         } else if (data['message'] == "0:6:2") {
             game.append("<span class='plaintext'>" + data['who'] + " покинул этот мир.</span><br><br>");
+        // закрытая дверь
+        } else if (data['message'] == "0:7:1") {
+            game.append("<span class='plaintext'>" + data['gate'] + " - закрыто.</span><br><br>");
         }
 
         //*** ответ от сервера: результаты команд

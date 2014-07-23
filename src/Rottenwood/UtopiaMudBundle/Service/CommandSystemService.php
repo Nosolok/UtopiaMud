@@ -41,6 +41,37 @@ class CommandSystemService {
         $this->livemobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Livemob');
     }
 
+    /**
+     * Технический метод создания комнаты
+     * @param string $dir
+     * @param array  $roomData
+     * @return array
+     */
+    private function techImportCreateRoomExits($dir, $roomData) {
+        $roomDir = "";
+        $roomDirDoor = array();
+        if (array_key_exists($dir, $roomData["exits"])) {
+            if (is_array($roomData["exits"][$dir]) && array_key_exists("to", $roomData["exits"][$dir])) {
+                $roomDir = $roomData["exits"][$dir]["to"];
+                if (array_key_exists("door", $roomData["exits"][$dir])) {
+                    $roomDirDoor = array(
+                        "door"     => $roomData["exits"][$dir]["door"],
+                        "doorname" => $roomData["exits"][$dir]["doorname"],
+                    );
+                }
+            } else {
+                $roomDir = $roomData["exits"][$dir];
+            }
+        }
+
+        $result = array(
+            "room" => $roomDir,
+            "door" => $roomDirDoor,
+        );
+
+        return $result;
+    }
+
     // конец (выход)
     public function quit() {
         $result = array();
@@ -128,7 +159,6 @@ class CommandSystemService {
             foreach ($zone["rooms"] as $anchor => $roomData) {
 
                 $oldRoom = $this->roomRepository->findByAnchor($anchor, $zoneanchor);
-
                 if ($oldRoom) {
                     // если комната уже существовала
                     $room = $oldRoom[0];
@@ -143,40 +173,49 @@ class CommandSystemService {
                 $room->setZone($zoneanchor);
                 $room->setType($roomData["type"]);
 
-                if (array_key_exists("north", $roomData["exits"])) {
-                    $room->setNorth($roomData["exits"]["north"]);
-                } else {
-                    $room->setNorth("");
-                }
-                if (array_key_exists("south", $roomData["exits"])) {
-                    $room->setSouth($roomData["exits"]["south"]);
-                } else {
-                    $room->setSouth("");
-                }
-                if (array_key_exists("east", $roomData["exits"])) {
-                    $room->setEast($roomData["exits"]["east"]);
-                } else {
-                    $room->setEast("");
-                }
-                if (array_key_exists("west", $roomData["exits"])) {
-                    $room->setWest($roomData["exits"]["west"]);
-                } else {
-                    $room->setWest("");
-                }
-                if (array_key_exists("up", $roomData["exits"])) {
-                    $room->setUp($roomData["exits"]["up"]);
-                } else {
-                    $room->setUp("");
-                }
-                if (array_key_exists("down", $roomData["exits"])) {
-                    $room->setDown($roomData["exits"]["down"]);
-                } else {
-                    $room->setDown("");
-                }
+                // выходы и двери
+
+                // север
+                $dir = "north";
+                $dirExits = $this->techImportCreateRoomExits($dir, $roomData);
+                $room->setNorth($dirExits["room"]);
+                $room->setNorthdoor($dirExits["door"]);
+
+                // юг
+                $dir = "south";
+                $dirExits = $this->techImportCreateRoomExits($dir, $roomData);
+                $room->setSouth($dirExits["room"]);
+                $room->setSouthdoor($dirExits["door"]);
+
+                // запад
+                $dir = "west";
+                $dirExits = $this->techImportCreateRoomExits($dir, $roomData);
+                $room->setWest($dirExits["room"]);
+                $room->setWestdoor($dirExits["door"]);
+
+                // восток
+                $dir = "east";
+                $dirExits = $this->techImportCreateRoomExits($dir, $roomData);
+                $room->setEast($dirExits["room"]);
+                $room->setEastdoor($dirExits["door"]);
+
+                // вверх
+                $dir = "up";
+                $dirExits = $this->techImportCreateRoomExits($dir, $roomData);
+                $room->setUp($dirExits["room"]);
+                $room->setUpdoor($dirExits["door"]);
+
+                // вниз
+                $dir = "down";
+                $dirExits = $this->techImportCreateRoomExits($dir, $roomData);
+                $room->setDown($dirExits["room"]);
+                $room->setDowndoor($dirExits["door"]);
 
                 // если в комнате указаны мобы
                 if (array_key_exists("mobs", $roomData)) {
+                    $i = 1;
                     foreach ($roomData["mobs"] as $mobInRoomAnchor) {
+                        $i++;
                         $mobInRoom = $this->mobRepository->findByAnchor($mobInRoomAnchor, $zoneanchor);
 
                         /** @var Mob $mobInRoom */
@@ -184,13 +223,13 @@ class CommandSystemService {
                         // расчет максимального хп монстра: HT * 10
                         $mobHp = 10 * $mobInRoom->getHT();
 
-                        $livemob = new Livemob();
-                        $livemob->setMob($mobInRoom);
-                        $livemob->setRoom($room);
-                        $livemob->setHp($mobHp);
+                        $livemob{$i} = new Livemob();
+                        $livemob{$i}->setMob($mobInRoom);
+                        $livemob{$i}->setRoom($room);
+                        $livemob{$i}->setHp($mobHp);
 
-                        $this->em->persist($livemob);
-                        $this->em->flush();
+                        $this->em->persist($livemob{$i});
+                        //                        $this->em->flush();
                     }
                 }
 

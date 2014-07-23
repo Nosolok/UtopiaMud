@@ -52,10 +52,26 @@ rooms:
         name: "Канализация"
         desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
         type: inside
-        mobs:
-        - slime
         exits:
             east: sewers
+            north:
+                to: sewersn1
+                door: closed
+                doorname:
+                - "плита"
+                - "плиту"
+
+    sewersn1:
+        name: "Канализация"
+        desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
+        type: inside
+        exits:
+            south:
+                to: sewersw2
+                door: closed
+                doorname:
+                - "плита"
+                - "плиту"
 
 #################################################
 #                                               #
