@@ -52,6 +52,9 @@ class CommandSystemService {
     public function import() {
         $result = array();
 
+        // удаление всех живых монстров
+        $this->livemobRepository->deleteAll();
+
         // парсинг файла списка зон
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/zones/zonelist.yml");
         if (!is_string($path)) {
@@ -118,8 +121,8 @@ class CommandSystemService {
                 }
             }
 
-            // удаление всех живых монстров
-            $this->livemobRepository->deleteAll();
+            // запись в БД
+            $this->em->flush();
 
             // цикл создания и записи в базу новых комнат
             foreach ($zone["rooms"] as $anchor => $roomData) {
@@ -175,6 +178,9 @@ class CommandSystemService {
                 if (array_key_exists("mobs", $roomData)) {
                     foreach ($roomData["mobs"] as $mobInRoomAnchor) {
                         $mobInRoom = $this->mobRepository->findByAnchor($mobInRoomAnchor, $zoneanchor);
+
+//                        var_dump($mobInRoom);
+
                         /** @var Mob $mobInRoom */
                         $mobInRoom = $mobInRoom[0];
                         // расчет максимального хп монстра: HT * 10
