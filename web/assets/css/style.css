@@ -152,6 +152,10 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
 }
 
 /* ooc chat*/
+.chatoocname {
+    color: #fcff4a;
+}
+
 .chatoocphrase {
     color: #5d55ff;
 }

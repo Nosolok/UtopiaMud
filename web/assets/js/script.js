@@ -172,7 +172,7 @@ $(document).ready(function () {
             game.append("<span class='plaintext'>" + data['who'] + " крикнул: <span class='chatshoutphrase'>" + data['shout'] + "</span></span><br><br>");
             // общий чат
         } else if (data['message'] == "2:3") {
-            game.append("<span class='plaintext'>[" + data['who'] + "]: <span class='chatoocphrase'>" + data['ooc'] + "</span></span><br><br>");
+            game.append("<span class='plaintext'><span class='chatoocname'>[" + data['who'] + "]</span>: <span class='chatoocphrase'>" + data['ooc'] + "</span></span><br><br>");
             // who
         } else if (data['message'] == "3:1") {
             game.append("<span class='plaintext'>В данный момент в игре находятся:<br></span>");
