@@ -161,7 +161,11 @@ class WebsocketPusherService implements WampServerInterface {
                 }
 
                 // Отправка результата клиенту
-                $topic->broadcast($result);
+                if (is_object($topic)) {
+                    $topic->broadcast($result);
+                } else {
+                    echo "$topic - не объект.";
+                }
             }
         }
 
