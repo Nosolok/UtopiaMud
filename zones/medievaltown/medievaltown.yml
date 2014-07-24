@@ -246,7 +246,7 @@ rooms:
             east: weststreet2
             west: weststreet4
             south: 
-            to: house1
+                to: house1
                 door: closed
                 doorname:
                 - "дверь"
@@ -279,7 +279,7 @@ rooms:
         type: town
         exits:
             north: 
-            to: weststreet3
+                to: weststreet3
                 door: closed
                 doorname:
                 - "дверь"
