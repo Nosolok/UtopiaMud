@@ -277,7 +277,7 @@ class Mob {
 
     /**
      * Set race
-     * @param integer $race
+     * @param string $race
      * @return Mob
      */
     public function setRace($race) {
@@ -288,7 +288,7 @@ class Mob {
 
     /**
      * Get race
-     * @return integer
+     * @return string
      */
     public function getRace() {
         return $this->race;
