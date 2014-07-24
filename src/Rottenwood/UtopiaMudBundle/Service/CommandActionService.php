@@ -44,7 +44,7 @@ class CommandActionService {
     /**
      * Техническая функция осмотра комнаты
      * @param \Rottenwood\UtopiaMudBundle\Entity\Room $room
-     * @param                                         $charId
+     * @param                                         integer $charId
      * @internal param \Rottenwood\UtopiaMudBundle\Entity\Player $char
      * @return mixed
      */

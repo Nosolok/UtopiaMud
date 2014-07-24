@@ -89,10 +89,16 @@ class Player extends BaseUser {
         return $this;
     }
 
+    /**
+     * @return Room
+     */
     public function getRoom() {
         return $this->room;
     }
 
+    /**
+     * @param Room $room
+     */
     public function setRoom($room) {
         $this->room = $room;
 
