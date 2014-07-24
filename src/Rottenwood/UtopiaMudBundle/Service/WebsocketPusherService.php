@@ -91,15 +91,11 @@ class WebsocketPusherService implements WampServerInterface {
         // Если сообщение пришло в персональный канал
         if ((substr($channel, 0, 9) == 'personal.')) {
             $this->onPublishPersonal($channel, $event, $topic);
-        } else {
-            return;
         }
 
         // Если сообщение пришло в системный канал
         if ($channel == 'system.channel') {
             $this->onPublishSystem($conn, $event);
-        } else {
-            return;
         }
     }
 
