@@ -111,18 +111,4 @@ class RoomRepository extends EntityRepository {
 
         return $result;
     }
-
-    /**
-     * Поиск всех мобов в комнате
-     * @param $roomId
-     * @return array
-     */
-    public function findMobsInRoom($roomId) {
-        $query = $this->getEntityManager()
-            ->createQuery('SELECT r FROM RottenwoodUtopiaMudBundle:Room r WHERE r.zone LIKE :zone');
-        $query->setParameter('zone', '%' . $zone . '%');
-        $result = $query->getResult();
-
-        return $result;
-    }
 }
