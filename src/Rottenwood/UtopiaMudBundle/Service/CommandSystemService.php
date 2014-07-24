@@ -117,40 +117,42 @@ class CommandSystemService {
 
             if (array_key_exists("mobs", $zone)) {
                 // цикл создания и записи в базу новых монстров
+                $i = 1;
                 foreach ($zone["mobs"] as $mobAnchor => $mob) {
                     $oldMob = $this->mobRepository->findByAnchor($mobAnchor, $zoneanchor);
-
+                    
+                    $i++;
                     if ($oldMob) {
                         // если комната уже существовала
-                        $importMob = $oldMob[0];
+                        $importMob{$i} = $oldMob[0];
                     } else {
                         // если комнаты еще нет
-                        $importMob = new Mob();
+                        $importMob{$i} = new Mob();
                     }
 
-                    $importMob->setName($mobAnchor);
-                    $importMob->setName1($mob["name"][0]);
-                    $importMob->setName2($mob["name"][1]);
-                    $importMob->setName3($mob["name"][2]);
-                    $importMob->setName4($mob["name"][3]);
-                    $importMob->setName5($mob["name"][4]);
-                    $importMob->setName6($mob["name"][5]);
-                    $importMob->setShortdesc($mob["short"]);
-                    $importMob->setLongdesc($mob["desc"]);
-                    $importMob->setRace($mob["race"]);
-                    $importMob->setST($mob["ST"]);
-                    $importMob->setDX($mob["DX"]);
-                    $importMob->setIQ($mob["IQ"]);
-                    $importMob->setHT($mob["HT"]);
-                    $importMob->setZone($zoneanchor);
+                    $importMob{$i}->setName($mobAnchor);
+                    $importMob{$i}->setName1($mob["name"][0]);
+                    $importMob{$i}->setName2($mob["name"][1]);
+                    $importMob{$i}->setName3($mob["name"][2]);
+                    $importMob{$i}->setName4($mob["name"][3]);
+                    $importMob{$i}->setName5($mob["name"][4]);
+                    $importMob{$i}->setName6($mob["name"][5]);
+                    $importMob{$i}->setShortdesc($mob["short"]);
+                    $importMob{$i}->setLongdesc($mob["desc"]);
+                    $importMob{$i}->setRace($mob["race"]);
+                    $importMob{$i}->setST($mob["ST"]);
+                    $importMob{$i}->setDX($mob["DX"]);
+                    $importMob{$i}->setIQ($mob["IQ"]);
+                    $importMob{$i}->setHT($mob["HT"]);
+                    $importMob{$i}->setZone($zoneanchor);
 
                     // подготовка объекта для записи в БД
-                    $this->em->persist($importMob);
+                    $this->em->persist($importMob{$i});
                 }
             }
 
-            // запись в БД
-            $this->em->flush();
+//            // запись в БД
+//            $this->em->flush();
 
             // цикл создания и записи в базу новых комнат
             foreach ($zone["rooms"] as $anchor => $roomData) {
