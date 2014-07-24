@@ -107,7 +107,7 @@ class CommandActionService {
             $door = $room->getNorthdoor();
             $isDoor = $this->techCheckDoor($door);
 
-            if ($isDoor) {
+            if (!$isDoor) {
                 $result["n"] = 1;
             }
 
@@ -116,7 +116,7 @@ class CommandActionService {
             $door = $room->getSouthdoor();
             $isDoor = $this->techCheckDoor($door);
 
-            if ($isDoor) {
+            if (!$isDoor) {
                 $result["s"] = 1;
             }
         }
@@ -124,7 +124,7 @@ class CommandActionService {
             $door = $room->getEastdoor();
             $isDoor = $this->techCheckDoor($door);
 
-            if ($isDoor) {
+            if (!$isDoor) {
                 $result["e"] = 1;
             }
 
@@ -133,7 +133,7 @@ class CommandActionService {
             $door = $room->getWestdoor();
             $isDoor = $this->techCheckDoor($door);
 
-            if ($isDoor) {
+            if (!$isDoor) {
                 $result["w"] = 1;
             }
         }
@@ -141,7 +141,7 @@ class CommandActionService {
             $door = $room->getUpdoor();
             $isDoor = $this->techCheckDoor($door);
 
-            if ($isDoor) {
+            if (!$isDoor) {
                 $result["u"] = 1;
             }
         }
@@ -149,7 +149,7 @@ class CommandActionService {
             $door = $room->getDowndoor();
             $isDoor = $this->techCheckDoor($door);
 
-            if ($isDoor) {
+            if (!$isDoor) {
                 $result["d"] = 1;
             }
         }
