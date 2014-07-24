@@ -26,11 +26,8 @@ class CommandSystemService {
 
     private $kernel;
     private $em;
-    /** @var Repository\RoomRepository $roomRepository */
     private $roomRepository;
-    /** @var Repository\MobRepository $mobRepository */
     private $mobRepository;
-    /** @var Repository\LivemobRepository $livemobRepository */
     private $livemobRepository;
 
     public function __construct(Kernel $kernel, EntityManager $em) {
