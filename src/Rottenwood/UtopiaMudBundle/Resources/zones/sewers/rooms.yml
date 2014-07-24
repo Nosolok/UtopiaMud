@@ -50,12 +50,18 @@ rooms:
 
     sewersw2:
         name: "Канализация"
-        desc: "Вокруг только стены из замшелого булыжника и неприятный запах. Северную стену придерживает массивная плита. Возможно за ней что-то есть?"
+        desc: "Вокруг только стены из замшелого булыжника и неприятный запах. Северную и южную стены придерживают массивныя плиты. Возможно за ними что-то есть?"
         type: inside
         exits:
             east: sewers
             north:
                 to: sewersn1
+                door: closed
+                doorname:
+                - "плита"
+                - "плиту"
+            south:
+                to: sewerss1
                 door: closed
                 doorname:
                 - "плита"
@@ -67,6 +73,18 @@ rooms:
         type: inside
         exits:
             south:
+                to: sewersw2
+                door: closed
+                doorname:
+                - "плита"
+                - "плиту"
+
+    sewerss1:
+        name: "Канализация"
+        desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
+        type: inside
+        exits:
+            north:
                 to: sewersw2
                 door: closed
                 doorname:

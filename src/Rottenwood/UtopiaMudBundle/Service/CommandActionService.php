@@ -43,7 +43,7 @@ class CommandActionService {
 
     /**
      * Техническая функция осмотра комнаты
-     * @param \Rottenwood\UtopiaMudBundle\Entity\Room $room
+     * @param \Rottenwood\UtopiaMudBundle\Entity\Room         $room
      * @param                                         integer $charId
      * @internal param \Rottenwood\UtopiaMudBundle\Entity\Player $char
      * @return mixed
@@ -261,7 +261,9 @@ class CommandActionService {
     public function techCheckDoor($door) {
         $result = array();
 
-        if (!is_array($door)) {return false;}
+        if (!is_array($door)) {
+            return false;
+        }
 
         if (array_key_exists("door", $door) && $door["door"] == "closed") {
             $result["message"] = "0:7:1";
@@ -270,6 +272,176 @@ class CommandActionService {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Техническая функция открытия дверей
+     * @param $whatToOpen
+     * @param array $doorNames
+     * @param Room  $room
+     * @param $zone
+     * @return array
+     */
+    public function techOpen($whatToOpen, $doorNames, Room $room, $zone) {
+
+        $result = array();
+        $result["message"] = "0:2:1";
+        $result["object"] = $whatToOpen;
+
+        // проверка наличия двери
+        foreach ($doorNames as $doorName) {
+
+            // проверка по направлению двери
+            $doorNameDirection = $doorName[4];
+            if (strpos($doorNameDirection, $whatToOpen) !== false) {
+                $result = $this->techOpenDir($room, $doorName, $doorNameDirection, $zone);
+                break;
+            }
+
+            $doorNameDir = $doorName[0];
+            // проверка по названию двери
+            if (strpos($doorNameDir, $whatToOpen) !== false) {
+                $result = $this->techOpenDir($room, $doorName, $doorNameDir, $zone);
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Техническая функция закрытия дверей
+     * @param $whatToOpen
+     * @param array $doorNames
+     * @param Room  $room
+     * @param $zone
+     * @return array
+     */
+    public function techClose($whatToOpen, $doorNames, Room $room, $zone) {
+
+        $result = array();
+        $result["message"] = "0:2:1";
+        $result["object"] = $whatToOpen;
+
+        // проверка наличия двери
+        foreach ($doorNames as $doorName) {
+
+            // проверка по направлению двери
+            $doorNameDirection = $doorName[4];
+            if (strpos($doorNameDirection, $whatToOpen) !== false) {
+                $result = $this->techCloseDir($room, $doorName, $doorNameDirection, $zone);
+                break;
+            }
+
+            $doorNameDir = $doorName[0];
+            // проверка по названию двери
+            if (strpos($doorNameDir, $whatToOpen) !== false) {
+                $result = $this->techCloseDir($room, $doorName, $doorNameDir, $zone);
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Техническй метод открытия двери по направлению
+     * @param $room
+     * @param $doorName
+     * @param $doorNameDir
+     * @param $zone
+     * @return array
+     */
+    public function techOpenDir($room, $doorName, $doorNameDir, $zone) {
+        $result = array();
+
+        $result["message"] = "0:7:3";
+        $result["object"] = $doorName[2];
+
+        $openDoorDir = $doorName[1];
+
+        $openDoorGet = "get{$openDoorDir}door";
+        $openDoorSet = "set{$openDoorDir}door";
+        $openDoorDirMethodRun = $room->{$openDoorGet}();
+
+        // если дверь уже открыта
+        if ($openDoorDirMethodRun["door"] == "open") {
+            $result["message"] = "0:7:5";
+            $result["object"] = $doorNameDir;
+            return $result;
+        }
+
+        $openDoorDirMethodRun["door"] = "open";
+        // изменения параметра комнаты: открыть дверь
+        $room->{$openDoorSet}($openDoorDirMethodRun);
+
+        // открытие двери в соседней комнате
+        $roomDestinationGet = "get{$openDoorDir}";
+        $roomDestinationSet = "set{$openDoorDir}";
+        /** @var Room $roomDestination */
+        $roomDestinationAnchor = $room->{$roomDestinationGet}();
+        $roomDestination = $this->roomRepository->findByAnchor($roomDestinationAnchor, $zone);
+        $roomDestination = $roomDestination[0];
+        $openDestinationDoorDir = $doorName[3];
+        $openDestinationDoorGet = "get{$openDestinationDoorDir}door";
+        $openDestinationDoorSet = "set{$openDestinationDoorDir}door";
+        $roomDestinationObj = $roomDestination->{$openDestinationDoorGet}();
+        $roomDestinationObj["door"] = "open";
+        $resultDestinationDoor = $roomDestination->{$openDestinationDoorSet}($roomDestinationObj);
+        // изменения параметра соседней комнаты: открыть дверь
+        $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
+
+        return $result;
+    }
+
+    /**
+     * Техническй метод открытия двери по направлению
+     * @param $room
+     * @param $doorName
+     * @param $doorNameDir
+     * @param $zone
+     * @return array
+     */
+    public function techCloseDir($room, $doorName, $doorNameDir, $zone) {
+        $result = array();
+
+        $result["message"] = "0:7:4";
+        $result["object"] = $doorName[2];
+
+        $openDoorDir = $doorName[1];
+
+        $openDoorGet = "get{$openDoorDir}door";
+        $openDoorSet = "set{$openDoorDir}door";
+        $openDoorDirMethodRun = $room->{$openDoorGet}();
+
+        // если дверь уже открыта
+        if ($openDoorDirMethodRun["door"] == "closed") {
+            $result["message"] = "0:7:6";
+            $result["object"] = $doorNameDir;
+            return $result;
+        }
+
+        $openDoorDirMethodRun["door"] = "closed";
+        // изменения параметра комнаты: открыть дверь
+        $room->{$openDoorSet}($openDoorDirMethodRun);
+
+        // открытие двери в соседней комнате
+        $roomDestinationGet = "get{$openDoorDir}";
+        $roomDestinationSet = "set{$openDoorDir}";
+        /** @var Room $roomDestination */
+        $roomDestinationAnchor = $room->{$roomDestinationGet}();
+        $roomDestination = $this->roomRepository->findByAnchor($roomDestinationAnchor, $zone);
+        $roomDestination = $roomDestination[0];
+        $openDestinationDoorDir = $doorName[3];
+        $openDestinationDoorGet = "get{$openDestinationDoorDir}door";
+        $openDestinationDoorSet = "set{$openDestinationDoorDir}door";
+        $roomDestinationObj = $roomDestination->{$openDestinationDoorGet}();
+        $roomDestinationObj["door"] = "closed";
+        $resultDestinationDoor = $roomDestination->{$openDestinationDoorSet}($roomDestinationObj);
+        // изменения параметра соседней комнаты: открыть дверь
+        $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
+
+        return $result;
     }
 
     /**
@@ -615,76 +787,34 @@ class CommandActionService {
         $doorNames = array();
         if (array_key_exists("doorname", $doorNorth)) {
             $doorNorthName2 = $doorNorth["doorname"][1];
-            $doorNames[$doorNorth["doorname"][0]] = array($doorNorth["doorname"][0], "North", $doorNorthName2, "South");
+            $doorNames[] = array($doorNorth["doorname"][0], "North", $doorNorthName2, "South", "север");
         }
         if (array_key_exists("doorname", $doorSouth)) {
             $doorSouthName2 = $doorSouth["doorname"][1];
-            $doorNames[$doorSouth["doorname"][0]] = array($doorSouth["doorname"][0], "South", $doorSouthName2, "North");
+            $doorNames[] = array($doorSouth["doorname"][0], "South", $doorSouthName2, "North", "юг");
         }
         if (array_key_exists("doorname", $doorWest)) {
             $doorWestName2 = $doorWest["doorname"][1];
-            $doorNames[$doorWest["doorname"][0]] = array($doorWest["doorname"][0], "West", $doorWestName2, "East");
+            $doorNames[] = array($doorWest["doorname"][0], "West", $doorWestName2, "East", "восток");
         }
         if (array_key_exists("doorname", $doorEast)) {
             $doorEastName2 = $doorEast["doorname"][1];
-            $doorNames[$doorEast["doorname"][0]] = array($doorEast["doorname"][0], "East", $doorEastName2, "West");
+            $doorNames[] = array($doorEast["doorname"][0], "East", $doorEastName2, "West", "запад");
         }
         if (array_key_exists("doorname", $doorUp)) {
             $doorUpName2 = $doorUp["doorname"][1];
-            $doorNames[$doorUp["doorname"][0]] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down");
+            $doorNames[] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down", "вниз");
         }
         if (array_key_exists("doorname", $doorDown)) {
             $doorDownName2 = $doorDown["doorname"][1];
-            $doorNames[$doorDown["doorname"][0]] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up");
+            $doorNames[] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up", "вверх");
         }
 
         if ($arguments) {
-            // приведение первого аргумента введенной команды в нижний регистр
+            // приведение первого и второго аргумента введенной команды в нижний регистр
             $whatToOpen = mb_strtolower($arguments[1], 'UTF-8');
 
-            $result["message"] = "0:2:1";
-            $result["object"] = $whatToOpen;
-
-            // проверка наличия двери
-            foreach ($doorNames as $doorNameDir => $doorName) {
-                if (strpos($doorNameDir, $whatToOpen) !== false) {
-                    $result["message"] = "0:7:3";
-                    $result["object"] = $doorName[2];
-
-                    // открытие двери
-                    $openDoorDir = $doorName[1];
-                    $openDoorGet = "get{$openDoorDir}door";
-                    $openDoorSet = "set{$openDoorDir}door";
-                    $openDoorDirMethodRun = $room->{$openDoorGet}();
-
-                    // если дверь уже открыта
-                    if ($openDoorDirMethodRun["door"] == "open") {
-                        $result["message"] = "0:7:5";
-                        $result["object"] = $doorNameDir;
-                        return $result;
-                    }
-
-                    $openDoorDirMethodRun["door"] = "open";
-                    // изменения параметра комнаты: открыть дверь
-                    $room->{$openDoorSet}($openDoorDirMethodRun);
-
-                    // открытие двери в соседней комнате
-                    $roomDestinationGet = "get{$openDoorDir}";
-                    $roomDestinationSet = "set{$openDoorDir}";
-                    /** @var Room $roomDestination */
-                    $roomDestinationAnchor = $room->{$roomDestinationGet}();
-                    $roomDestination = $this->roomRepository->findByAnchor($roomDestinationAnchor, $zone);
-                    $roomDestination = $roomDestination[0];
-                    $openDestinationDoorDir = $doorName[3];
-                    $openDestinationDoorGet = "get{$openDestinationDoorDir}door";
-                    $openDestinationDoorSet = "set{$openDestinationDoorDir}door";
-                    $roomDestinationObj = $roomDestination->{$openDestinationDoorGet}();
-                    $roomDestinationObj["door"] = "open";
-                    $resultDestinationDoor = $roomDestination->{$openDestinationDoorSet}($roomDestinationObj);
-                    // изменения параметра соседней комнаты: открыть дверь
-                    $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
-                }
-            }
+            $result = $this->techOpen($whatToOpen, $doorNames, $room, $zone);
 
         } else {
             $result["message"] = "0:7:2";
@@ -708,76 +838,34 @@ class CommandActionService {
         $doorNames = array();
         if (array_key_exists("doorname", $doorNorth)) {
             $doorNorthName2 = $doorNorth["doorname"][1];
-            $doorNames[$doorNorth["doorname"][0]] = array($doorNorth["doorname"][0], "North", $doorNorthName2, "South");
+            $doorNames[] = array($doorNorth["doorname"][0], "North", $doorNorthName2, "South", "север");
         }
         if (array_key_exists("doorname", $doorSouth)) {
             $doorSouthName2 = $doorSouth["doorname"][1];
-            $doorNames[$doorSouth["doorname"][0]] = array($doorSouth["doorname"][0], "South", $doorSouthName2, "North");
+            $doorNames[] = array($doorSouth["doorname"][0], "South", $doorSouthName2, "North", "юг");
         }
         if (array_key_exists("doorname", $doorWest)) {
             $doorWestName2 = $doorWest["doorname"][1];
-            $doorNames[$doorWest["doorname"][0]] = array($doorWest["doorname"][0], "West", $doorWestName2, "East");
+            $doorNames[] = array($doorWest["doorname"][0], "West", $doorWestName2, "East", "запад");
         }
         if (array_key_exists("doorname", $doorEast)) {
             $doorEastName2 = $doorEast["doorname"][1];
-            $doorNames[$doorEast["doorname"][0]] = array($doorEast["doorname"][0], "East", $doorEastName2, "West");
+            $doorNames[] = array($doorEast["doorname"][0], "East", $doorEastName2, "West", "восток");
         }
         if (array_key_exists("doorname", $doorUp)) {
             $doorUpName2 = $doorUp["doorname"][1];
-            $doorNames[$doorUp["doorname"][0]] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down");
+            $doorNames[] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down", "вверх");
         }
         if (array_key_exists("doorname", $doorDown)) {
             $doorDownName2 = $doorDown["doorname"][1];
-            $doorNames[$doorDown["doorname"][0]] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up");
+            $doorNames[] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up", "вниз");
         }
 
         if ($arguments) {
             // приведение первого аргумента введенной команды в нижний регистр
             $whatToOpen = mb_strtolower($arguments[1], 'UTF-8');
 
-            $result["message"] = "0:2:1";
-            $result["object"] = $whatToOpen;
-
-            // проверка наличия двери
-            foreach ($doorNames as $doorNameDir => $doorName) {
-                if (strpos($doorNameDir, $whatToOpen) !== false) {
-                    $result["message"] = "0:7:4";
-                    $result["object"] = $doorName[2];
-
-                    // закрытие двери
-                    $openDoorDir = $doorName[1];
-                    $openDoorGet = "get{$openDoorDir}door";
-                    $openDoorSet = "set{$openDoorDir}door";
-                    $openDoorDirMethodRun = $room->{$openDoorGet}();
-
-                    // если дверь уже открыта
-                    if ($openDoorDirMethodRun["door"] == "closed") {
-                        $result["message"] = "0:7:6";
-                        $result["object"] = $doorNameDir;
-                        return $result;
-                    }
-
-                    $openDoorDirMethodRun["door"] = "closed";
-                    // изменения параметра комнаты: закрыть дверь
-                    $room->{$openDoorSet}($openDoorDirMethodRun);
-
-                    // закрытие двери в соседней комнате
-                    $roomDestinationGet = "get{$openDoorDir}";
-                    $roomDestinationSet = "set{$openDoorDir}";
-                    /** @var Room $roomDestination */
-                    $roomDestinationAnchor = $room->{$roomDestinationGet}();
-                    $roomDestination = $this->roomRepository->findByAnchor($roomDestinationAnchor, $zone);
-                    $roomDestination = $roomDestination[0];
-                    $openDestinationDoorDir = $doorName[3];
-                    $openDestinationDoorGet = "get{$openDestinationDoorDir}door";
-                    $openDestinationDoorSet = "set{$openDestinationDoorDir}door";
-                    $roomDestinationObj = $roomDestination->{$openDestinationDoorGet}();
-                    $roomDestinationObj["door"] = "closed";
-                    $resultDestinationDoor = $roomDestination->{$openDestinationDoorSet}($roomDestinationObj);
-                    // изменения параметра соседней комнаты: закрыть дверь
-                    $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
-                }
-            }
+            $result = $this->techClose($whatToOpen, $doorNames, $room, $zone);
 
         } else {
             $result["message"] = "0:7:2";
