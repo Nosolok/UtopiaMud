@@ -613,20 +613,31 @@ class CommandActionService {
         $doorUp = $room->getUpdoor();
         $doorDown = $room->getDowndoor();
 
-        $doorNorthName2 = $doorNorth["doorname"][1];
-        $doorSouthName2 = $doorSouth["doorname"][1];
-        $doorWestName2 = $doorWest["doorname"][1];
-        $doorEastName2 = $doorEast["doorname"][1];
-        $doorUpName2 = $doorUp["doorname"][1];
-        $doorDownName2 = $doorDown["doorname"][1];
-
         $doorNames = array();
-        $doorNames[$doorNorth["doorname"][0]] = array($doorNorth["doorname"][0], "North", $doorNorthName2, "South");
-        $doorNames[$doorSouth["doorname"][0]] = array($doorSouth["doorname"][0], "South", $doorSouthName2, "North");
-        $doorNames[$doorWest["doorname"][0]] = array($doorWest["doorname"][0], "West", $doorWestName2, "East");
-        $doorNames[$doorEast["doorname"][0]] = array($doorEast["doorname"][0], "East", $doorEastName2, "West");
-        $doorNames[$doorUp["doorname"][0]] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down");
-        $doorNames[$doorDown["doorname"][0]] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up");
+        if (array_key_exists("doorname", $doorNorth)) {
+            $doorNorthName2 = $doorNorth["doorname"][1];
+            $doorNames[$doorNorth["doorname"][0]] = array($doorNorth["doorname"][0], "North", $doorNorthName2, "South");
+        }
+        if (array_key_exists("doorname", $doorSouth)) {
+            $doorSouthName2 = $doorSouth["doorname"][1];
+            $doorNames[$doorSouth["doorname"][0]] = array($doorSouth["doorname"][0], "South", $doorSouthName2, "North");
+        }
+        if (array_key_exists("doorname", $doorWest)) {
+            $doorWestName2 = $doorWest["doorname"][1];
+            $doorNames[$doorWest["doorname"][0]] = array($doorWest["doorname"][0], "West", $doorWestName2, "East");
+        }
+        if (array_key_exists("doorname", $doorEast)) {
+            $doorEastName2 = $doorEast["doorname"][1];
+            $doorNames[$doorEast["doorname"][0]] = array($doorEast["doorname"][0], "East", $doorEastName2, "West");
+        }
+        if (array_key_exists("doorname", $doorUp)) {
+            $doorUpName2 = $doorUp["doorname"][1];
+            $doorNames[$doorUp["doorname"][0]] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down");
+        }
+        if (array_key_exists("doorname", $doorDown)) {
+            $doorDownName2 = $doorDown["doorname"][1];
+            $doorNames[$doorDown["doorname"][0]] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up");
+        }
 
         if ($arguments) {
             // приведение первого аргумента введенной команды в нижний регистр
@@ -693,20 +704,31 @@ class CommandActionService {
         $doorUp = $room->getUpdoor();
         $doorDown = $room->getDowndoor();
 
-        $doorNorthName2 = $doorNorth["doorname"][1];
-        $doorSouthName2 = $doorSouth["doorname"][1];
-        $doorWestName2 = $doorWest["doorname"][1];
-        $doorEastName2 = $doorEast["doorname"][1];
-        $doorUpName2 = $doorUp["doorname"][1];
-        $doorDownName2 = $doorDown["doorname"][1];
-
         $doorNames = array();
-        $doorNames[$doorNorth["doorname"][0]] = array($doorNorth["doorname"][0], "North", $doorNorthName2, "South");
-        $doorNames[$doorSouth["doorname"][0]] = array($doorSouth["doorname"][0], "South", $doorSouthName2, "North");
-        $doorNames[$doorWest["doorname"][0]] = array($doorWest["doorname"][0], "West", $doorWestName2, "East");
-        $doorNames[$doorEast["doorname"][0]] = array($doorEast["doorname"][0], "East", $doorEastName2, "West");
-        $doorNames[$doorUp["doorname"][0]] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down");
-        $doorNames[$doorDown["doorname"][0]] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up");
+        if (array_key_exists("doorname", $doorNorth)) {
+            $doorNorthName2 = $doorNorth["doorname"][1];
+            $doorNames[$doorNorth["doorname"][0]] = array($doorNorth["doorname"][0], "North", $doorNorthName2, "South");
+        }
+        if (array_key_exists("doorname", $doorSouth)) {
+            $doorSouthName2 = $doorSouth["doorname"][1];
+            $doorNames[$doorSouth["doorname"][0]] = array($doorSouth["doorname"][0], "South", $doorSouthName2, "North");
+        }
+        if (array_key_exists("doorname", $doorWest)) {
+            $doorWestName2 = $doorWest["doorname"][1];
+            $doorNames[$doorWest["doorname"][0]] = array($doorWest["doorname"][0], "West", $doorWestName2, "East");
+        }
+        if (array_key_exists("doorname", $doorEast)) {
+            $doorEastName2 = $doorEast["doorname"][1];
+            $doorNames[$doorEast["doorname"][0]] = array($doorEast["doorname"][0], "East", $doorEastName2, "West");
+        }
+        if (array_key_exists("doorname", $doorUp)) {
+            $doorUpName2 = $doorUp["doorname"][1];
+            $doorNames[$doorUp["doorname"][0]] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down");
+        }
+        if (array_key_exists("doorname", $doorDown)) {
+            $doorDownName2 = $doorDown["doorname"][1];
+            $doorNames[$doorDown["doorname"][0]] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up");
+        }
 
         if ($arguments) {
             // приведение первого аргумента введенной команды в нижний регистр
