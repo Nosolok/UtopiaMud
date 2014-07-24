@@ -7,7 +7,6 @@
 namespace Rottenwood\UtopiaMudBundle\Command;
 
 use Rottenwood\UtopiaMudBundle\Entity;
-use Rottenwood\UtopiaMudBundle\Service\WebsocketPusherService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,7 +29,7 @@ class WebsocketCommand extends ContainerAwareCommand {
         // Запуск вебсокет сервера
         $webSock = new \React\Socket\Server($loop);
         $webSock->listen(6661, '0.0.0.0'); // Привязка к 0.0.0.0 позволяет коннектиться удаленно
-        $webServer = new \Ratchet\Server\IoServer(
+        new \Ratchet\Server\IoServer(
             new \Ratchet\Http\HttpServer(
                 new \Ratchet\WebSocket\WsServer(
                     new \Ratchet\Wamp\WampServer(
