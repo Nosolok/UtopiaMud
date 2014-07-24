@@ -276,10 +276,10 @@ class CommandActionService {
 
     /**
      * Техническая функция открытия дверей
-     * @param $whatToOpen
+     * @param       $whatToOpen
      * @param array $doorNames
      * @param Room  $room
-     * @param $zone
+     * @param       $zone
      * @return array
      */
     public function techOpen($whatToOpen, $doorNames, Room $room, $zone) {
@@ -295,7 +295,6 @@ class CommandActionService {
             $doorNameDirection = $doorName[4];
             if (strpos($doorNameDirection, $whatToOpen) !== false) {
                 $result = $this->techOpenDir($room, $doorName, $doorNameDirection, $zone);
-                break;
             }
 
             $doorNameDir = $doorName[0];
@@ -311,10 +310,10 @@ class CommandActionService {
 
     /**
      * Техническая функция закрытия дверей
-     * @param $whatToOpen
+     * @param       $whatToOpen
      * @param array $doorNames
      * @param Room  $room
-     * @param $zone
+     * @param       $zone
      * @return array
      */
     public function techClose($whatToOpen, $doorNames, Room $room, $zone) {
@@ -330,7 +329,6 @@ class CommandActionService {
             $doorNameDirection = $doorName[4];
             if (strpos($doorNameDirection, $whatToOpen) !== false) {
                 $result = $this->techCloseDir($room, $doorName, $doorNameDirection, $zone);
-                break;
             }
 
             $doorNameDir = $doorName[0];
@@ -389,7 +387,9 @@ class CommandActionService {
         $roomDestinationObj["door"] = "open";
         $resultDestinationDoor = $roomDestination->{$openDestinationDoorSet}($roomDestinationObj);
         // изменения параметра соседней комнаты: открыть дверь
-        $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
+        if ($resultDestinationDoor) {
+            $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
+        }
 
         return $result;
     }
@@ -439,7 +439,9 @@ class CommandActionService {
         $roomDestinationObj["door"] = "closed";
         $resultDestinationDoor = $roomDestination->{$openDestinationDoorSet}($roomDestinationObj);
         // изменения параметра соседней комнаты: открыть дверь
-        $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
+        if ($resultDestinationDoor) {
+            $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
+        }
 
         return $result;
     }
@@ -795,19 +797,19 @@ class CommandActionService {
         }
         if (array_key_exists("doorname", $doorWest)) {
             $doorWestName2 = $doorWest["doorname"][1];
-            $doorNames[] = array($doorWest["doorname"][0], "West", $doorWestName2, "East", "восток");
+            $doorNames[] = array($doorWest["doorname"][0], "West", $doorWestName2, "East", "запад");
         }
         if (array_key_exists("doorname", $doorEast)) {
             $doorEastName2 = $doorEast["doorname"][1];
-            $doorNames[] = array($doorEast["doorname"][0], "East", $doorEastName2, "West", "запад");
+            $doorNames[] = array($doorEast["doorname"][0], "East", $doorEastName2, "West", "восток");
         }
         if (array_key_exists("doorname", $doorUp)) {
             $doorUpName2 = $doorUp["doorname"][1];
-            $doorNames[] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down", "вниз");
+            $doorNames[] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down", "вверх");
         }
         if (array_key_exists("doorname", $doorDown)) {
             $doorDownName2 = $doorDown["doorname"][1];
-            $doorNames[] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up", "вверх");
+            $doorNames[] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up", "вниз");
         }
 
         if ($arguments) {
