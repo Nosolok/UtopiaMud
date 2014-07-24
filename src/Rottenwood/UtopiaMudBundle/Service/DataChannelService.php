@@ -75,12 +75,4 @@ class DataChannelService {
 
         return $charsIds;
     }
-
-    public function channelOnline($channel) {
-        if (array_key_exists($channel, $this->channels)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
