@@ -36,7 +36,12 @@ class WebsocketPusherService implements WampServerInterface {
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-        $channel = $topic->getId();
+        if (is_object($topic)) {
+            $channel = $topic->getId();
+        } else {
+            $channel = $topic;
+        }
+
         echo "Подписка на $channel\n";
 
         // Запись канала в список
@@ -49,7 +54,8 @@ class WebsocketPusherService implements WampServerInterface {
 
     public function onOpen(ConnectionInterface $conn) {
         $this->onlineChars->attach($conn);
-        echo "Новое соединение! ({$conn->resourceId})\n";
+
+        echo "Новое соединение!\n";
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -69,16 +75,18 @@ class WebsocketPusherService implements WampServerInterface {
 
         $this->clients->remove($whoQuits);
         $this->onlineChars->detach($conn);
-        echo "Соединение {$conn->resourceId} разорвано\n";
+        echo "Соединение разорвано.\n";
     }
 
     public function onCall(ConnectionInterface $conn, $id, $topic, array $params) {
-        // In this application if clients send data it's because the user hacked around in console
-        $conn->callError($id, $topic, 'You are not allowed to make calls')->close();
     }
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible) {
-        $channel = $topic->getId();
+        if (is_object($topic)) {
+            $channel = $topic->getId();
+        } else {
+            $channel = $topic;
+        }
 
         // Если сообщение пришло в персональный канал
         if ((substr($channel, 0, 9) == 'personal.')) {
@@ -110,7 +118,7 @@ class WebsocketPusherService implements WampServerInterface {
                     foreach ($whomToTell as $player) {
 
                         foreach ($this->onlineChars as $value) {
-                            $obj = $this->onlineChars->current(); // current object
+                            $this->onlineChars->current(); // current object
                             $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
                             $playerHash = $player->getHash();
                             $personalChannel = "personal." . $playerHash;
@@ -138,7 +146,7 @@ class WebsocketPusherService implements WampServerInterface {
                     foreach ($whomToTell as $player) {
 
                         foreach ($this->onlineChars as $value) {
-                            $obj = $this->onlineChars->current(); // current object
+                            $this->onlineChars->current(); // current object
                             $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
                             $playerHash = $player->getHash();
                             $personalChannel = "personal." . $playerHash;
@@ -201,11 +209,6 @@ class WebsocketPusherService implements WampServerInterface {
     public function onError(ConnectionInterface $conn, \Exception $e) {
     }
 
-    public function onReboot($incoming) {
-        $data = json_decode($incoming, true);
-        return false;
-    }
-
     // Онлайн лист
     public function getOnlinelist() {
         $onlineList = array();
@@ -227,7 +230,7 @@ class WebsocketPusherService implements WampServerInterface {
         foreach ($playersToMessage as $player) {
 
             foreach ($this->onlineChars as $value) {
-                $obj = $this->onlineChars->current(); // current object
+                $this->onlineChars->current(); // current object
                 $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
                 $playerHash = $player->getHash();
                 $personalChannel = "personal." . $playerHash;
