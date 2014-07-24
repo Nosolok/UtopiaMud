@@ -90,3 +90,10 @@ commands:
         - кричать
         - крикнуть
         - орать
+
+    # открыть
+    open:
+        type: action
+        alias:
+        - open
+        - открыть

@@ -134,6 +134,10 @@ $(document).ready(function () {
         // закрытая дверь
         } else if (data['message'] == "0:7:1") {
             game.append("<span class='plaintext'>" + data['gate'] + " - закрыто.</span><br><br>");
+        } else if (data['message'] == "0:7:2") {
+            game.append("<span class='plaintext'>Что ты хочешь открыть?</span><br><br>");
+        } else if (data['message'] == "0:7:3") {
+            game.append("<span class='plaintext'>Ты открыл " + data['object'] + ".</span><br><br>");
         }
 
         //*** ответ от сервера: результаты команд
@@ -230,6 +234,9 @@ $(document).ready(function () {
         }
         if (data['d']) {
             exitways = exitways + "вниз ";
+        }
+        if (!data['n'] && !data['s'] && !data['w'] && !data['e'] && !data['u'] && !data['d']) {
+            exitways = exitways + "нет ";
         }
         game.append("<span class='roomexits'>[ Выходы: " + exitways + "]</span><br><br>");
     }

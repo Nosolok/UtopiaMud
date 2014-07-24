@@ -58,6 +58,8 @@ class CommandActionService {
 
         if ($exits = $this->techLookExits($room)) {
             $result["exits"] = $exits;
+        } else {
+            $result["exits"] = "no";
         }
 
         // персонажи
@@ -364,6 +366,14 @@ class CommandActionService {
         $destinationRoomAnchor = $room->getEast();
         $dir = preg_replace('~.*?:~', '', __METHOD__);
 
+        // проверка наличия двери
+        $door = $room->getEastdoor();
+        $isDoor = $this->techCheckDoor($door);
+
+        if ($isDoor) {
+            return $isDoor;
+        }
+
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
         return $result;
@@ -374,6 +384,14 @@ class CommandActionService {
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getSouth();
         $dir = preg_replace('~.*?:~', '', __METHOD__);
+
+        // проверка наличия двери
+        $door = $room->getSouthdoor();
+        $isDoor = $this->techCheckDoor($door);
+
+        if ($isDoor) {
+            return $isDoor;
+        }
 
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
@@ -386,6 +404,14 @@ class CommandActionService {
         $destinationRoomAnchor = $room->getWest();
         $dir = preg_replace('~.*?:~', '', __METHOD__);
 
+        // проверка наличия двери
+        $door = $room->getWestdoor();
+        $isDoor = $this->techCheckDoor($door);
+
+        if ($isDoor) {
+            return $isDoor;
+        }
+
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
         return $result;
@@ -397,6 +423,14 @@ class CommandActionService {
         $destinationRoomAnchor = $room->getUp();
         $dir = preg_replace('~.*?:~', '', __METHOD__);
 
+        // проверка наличия двери
+        $door = $room->getUpdoor();
+        $isDoor = $this->techCheckDoor($door);
+
+        if ($isDoor) {
+            return $isDoor;
+        }
+
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
         return $result;
@@ -407,6 +441,14 @@ class CommandActionService {
         $room = $char->getRoom();
         $destinationRoomAnchor = $room->getDown();
         $dir = preg_replace('~.*?:~', '', __METHOD__);
+
+        // проверка наличия двери
+        $door = $room->getDowndoor();
+        $isDoor = $this->techCheckDoor($door);
+
+        if ($isDoor) {
+            return $isDoor;
+        }
 
         $result = $this->techMove($char, $dir, $destinationRoomAnchor);
 
@@ -523,7 +565,6 @@ class CommandActionService {
      * @return array
      */
     public function who() {
-
         // Список всех игроков онлайн
         $playersOnline = $this->container->get('datachannel')->getOnlineIds(0);
         $playersOnlineObj = $this->playerRepository->findPlayersOnline($playersOnline);
@@ -554,6 +595,81 @@ class CommandActionService {
             "whoonline"      => $whoOnline,
             "whoonlinecount" => $whoOnlineCount,
         );
+
+        return $result;
+    }
+
+    public function open(Player $char, $arguments) {
+        $result = array();
+        /** @var Room $room */
+        $room = $char->getRoom();
+        $zone = $room->getZone();
+        $doorNorth = $room->getNorthdoor();
+        $doorSouth = $room->getSouthdoor();
+        $doorWest = $room->getWestdoor();
+        $doorEast = $room->getEastdoor();
+        $doorUp = $room->getUpdoor();
+        $doorDown = $room->getDowndoor();
+
+        $doorNorthName2 = $doorNorth["doorname"][1];
+        $doorSouthName2 = $doorSouth["doorname"][1];
+        $doorWestName2 = $doorWest["doorname"][1];
+        $doorEastName2 = $doorEast["doorname"][1];
+        $doorUpName2 = $doorUp["doorname"][1];
+        $doorDownName2 = $doorDown["doorname"][1];
+
+        $doorNames = array();
+        $doorNames[$doorNorth["doorname"][0]] = array($doorNorth["doorname"][0], "North", $doorNorthName2, "South");
+        $doorNames[$doorSouth["doorname"][0]] = array($doorSouth["doorname"][0], "South", $doorSouthName2, "North");
+        $doorNames[$doorWest["doorname"][0]] = array($doorWest["doorname"][0], "West", $doorWestName2, "East");
+        $doorNames[$doorEast["doorname"][0]] = array($doorEast["doorname"][0], "East", $doorEastName2, "West");
+        $doorNames[$doorUp["doorname"][0]] = array($doorUp["doorname"][0], "Up", $doorUpName2, "Down");
+        $doorNames[$doorDown["doorname"][0]] = array($doorDown["doorname"][0], "Down", $doorDownName2, "Up");
+
+        if ($arguments) {
+            // приведение первого аргумента введенной команды в нижний регистр
+            $whatToOpen = mb_strtolower($arguments[1], 'UTF-8');
+
+            $result["message"] = "0:2:1";
+            $result["object"] = $whatToOpen;
+
+            // проверка наличия двери
+            foreach ($doorNames as $doorNameDir => $doorName) {
+                if (strpos($doorNameDir, $whatToOpen) !== false) {
+                    $result["message"] = "0:7:3";
+                    $result["object"] = $doorName[2];
+
+                    // открытие двери
+                    $openDoorDir = $doorName[1];
+                    $openDoorGet = "get{$openDoorDir}door";
+                    $openDoorSet = "set{$openDoorDir}door";
+                    $openDoorDirMethodRun = $room->{$openDoorGet}();
+                    $openDoorDirMethodRun["door"] = "open";
+                    $resultDoor = $room->{$openDoorSet}($openDoorDirMethodRun);
+
+
+                    // открытие двери в соседней комнате
+                    $roomDestinationGet = "get{$openDoorDir}";
+                    $roomDestinationSet = "set{$openDoorDir}";
+                    /** @var Room $roomDestination */
+                    $roomDestinationAnchor = $room->{$roomDestinationGet}();
+                    $roomDestination = $this->roomRepository->findByAnchor($roomDestinationAnchor, $zone);
+                    $roomDestination = $roomDestination[0];
+                    $openDestinationDoorDir = $doorName[3];
+                    $openDestinationDoorGet = "get{$openDestinationDoorDir}door";
+                    $openDestinationDoorSet = "set{$openDestinationDoorDir}door";
+                    $roomDestinationObj = $roomDestination->{$openDestinationDoorGet}();
+                    $roomDestinationObj["door"] = "open";
+                    $resultDestinationDoor = $roomDestination->{$openDestinationDoorSet}($roomDestinationObj);
+                    $resultDestinationRoom = $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
+                }
+            }
+
+        } else {
+            $result["message"] = "0:7:2";
+        }
+
+        $this->em->flush();
 
         return $result;
     }
