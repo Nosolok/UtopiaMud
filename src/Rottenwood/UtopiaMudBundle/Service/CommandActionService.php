@@ -295,6 +295,7 @@ class CommandActionService {
             $doorNameDirection = $doorName[4];
             if (strpos($doorNameDirection, $whatToOpen) !== false) {
                 $result = $this->techOpenDir($room, $doorName, $doorNameDirection, $zone);
+                break;
             }
 
             $doorNameDir = $doorName[0];
@@ -329,6 +330,7 @@ class CommandActionService {
             $doorNameDirection = $doorName[4];
             if (strpos($doorNameDirection, $whatToOpen) !== false) {
                 $result = $this->techCloseDir($room, $doorName, $doorNameDirection, $zone);
+                break;
             }
 
             $doorNameDir = $doorName[0];
