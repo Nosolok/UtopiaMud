@@ -138,6 +138,12 @@ $(document).ready(function () {
             game.append("<span class='plaintext'>Что ты хочешь открыть?</span><br><br>");
         } else if (data['message'] == "0:7:3") {
             game.append("<span class='plaintext'>Ты открыл " + data['object'] + ".</span><br><br>");
+        } else if (data['message'] == "0:7:4") {
+            game.append("<span class='plaintext'>Ты закрыл " + data['object'] + ".</span><br><br>");
+        } else if (data['message'] == "0:7:5") {
+            game.append("<span class='plaintext'>" + data['object'] + " - уже открыто.</span><br><br>");
+        } else if (data['message'] == "0:7:6") {
+            game.append("<span class='plaintext'>" + data['object'] + " - уже закрыто.</span><br><br>");
         }
 
         //*** ответ от сервера: результаты команд

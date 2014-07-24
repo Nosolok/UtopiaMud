@@ -97,3 +97,10 @@ commands:
         alias:
         - open
         - открыть
+
+    # закрыть
+    close:
+        type: action
+        alias:
+        - close
+        - закрыть
