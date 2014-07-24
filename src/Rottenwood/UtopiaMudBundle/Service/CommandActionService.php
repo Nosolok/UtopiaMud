@@ -31,9 +31,13 @@ class CommandActionService {
     public function __construct(Container $container, EntityManager $em) {
         $this->container = $container;
         $this->em = $em;
+        /** @var Repository\RoomRepository */
         $this->roomRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
+        /** @var Repository\PlayerRepository */
         $this->playerRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player');
+        /** @var Repository\MobRepository */
         $this->mobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Mob');
+        /** @var Repository\LivemobRepository */
         $this->livemobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Livemob');
     }
 
