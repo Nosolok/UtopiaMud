@@ -262,7 +262,7 @@ class CommandActionService {
     public function techCheckDoor($door) {
         $result = array();
 
-        if (is_array($door)) {return false;}
+        if (!is_array($door)) {return false;}
 
         if (array_key_exists("door", $door) && $door["door"] == "closed") {
             $result["message"] = "0:7:1";
