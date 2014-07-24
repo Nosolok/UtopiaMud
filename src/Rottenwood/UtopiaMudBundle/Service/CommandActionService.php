@@ -648,6 +648,7 @@ class CommandActionService {
                     // если дверь уже открыта
                     if ($openDoorDirMethodRun["door"] == "open") {
                         $result["message"] = "0:7:5";
+                        $result["object"] = $doorNameDir;
                         return $result;
                     }
 
@@ -723,9 +724,15 @@ class CommandActionService {
                     $openDoorGet = "get{$openDoorDir}door";
                     $openDoorSet = "set{$openDoorDir}door";
                     $openDoorDirMethodRun = $room->{$openDoorGet}();
-                    var_dump($openDoorDirMethodRun);
+
+                    // если дверь уже открыта
+                    if ($openDoorDirMethodRun["door"] == "closed") {
+                        $result["message"] = "0:7:6";
+                        $result["object"] = $doorNameDir;
+                        return $result;
+                    }
+
                     $openDoorDirMethodRun["door"] = "closed";
-                    var_dump($room);
                     $resultDoor = $room->{$openDoorSet}($openDoorDirMethodRun);
 
                     // закрытие двери в соседней комнате
