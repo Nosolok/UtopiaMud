@@ -49,7 +49,7 @@ class Livemob {
     /**
      * Set hp
      * @param integer $hp
-     * @return Livemobs
+     * @return Livemob
      */
     public function setHp($hp) {
         $this->hp = $hp;

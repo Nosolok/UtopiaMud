@@ -115,9 +115,9 @@ class CommandService {
     /**
      * Рекурсивный поиск в массиве, используя первые X символов, возвращает значение
      * Входные параметры: иголка, стог сена, количество символо
-     * @param $needle
+     * @param string $needle
      * @param $haystack
-     * @param $substr
+     * @param integer $substr
      * @internal param int $substr
      * @return string
      */

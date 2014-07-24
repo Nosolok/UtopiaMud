@@ -54,6 +54,9 @@ class PlayerRepository extends EntityRepository {
         return $result;
     }
 
+    /**
+     * @param integer $raceId
+     */
     public function findByRace($raceId) {
         $query = $this->getEntityManager()->createQuery('SELECT p FROM RottenwoodUtopiaMudBundle:Player p WHERE p.race = ?1');
         $query->setParameter(1, $raceId);
