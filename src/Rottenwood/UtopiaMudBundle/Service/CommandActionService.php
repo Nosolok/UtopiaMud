@@ -23,13 +23,9 @@ class CommandActionService {
     protected $container;
     protected $user;
     protected $id;
-    /** @var Repository\RoomRepository $roomRepository */
     protected $roomRepository;
-    /** @var Repository\PlayerRepository $playerRepository */
     protected $playerRepository;
-    /** @var Repository\MobRepository $mobRepository */
     protected $mobRepository;
-    /** @var Repository\LivemobRepository $livemobRepository */
     private $livemobRepository;
 
     public function __construct(Container $container, EntityManager $em) {
@@ -50,7 +46,6 @@ class CommandActionService {
      */
     public function techLook($room, $charId) {
         $roomId = $room->getId();
-        $zone = $room->getZone();
         $result = array();
         // осмотр комнаты
         $result["roomname"] = $room->getName();
@@ -666,7 +661,8 @@ class CommandActionService {
                     }
 
                     $openDoorDirMethodRun["door"] = "open";
-                    $resultDoor = $room->{$openDoorSet}($openDoorDirMethodRun);
+                    // изменения параметра комнаты: открыть дверь
+                    $room->{$openDoorSet}($openDoorDirMethodRun);
 
                     // открытие двери в соседней комнате
                     $roomDestinationGet = "get{$openDoorDir}";
@@ -681,7 +677,8 @@ class CommandActionService {
                     $roomDestinationObj = $roomDestination->{$openDestinationDoorGet}();
                     $roomDestinationObj["door"] = "open";
                     $resultDestinationDoor = $roomDestination->{$openDestinationDoorSet}($roomDestinationObj);
-                    $resultDestinationRoom = $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
+                    // изменения параметра соседней комнаты: открыть дверь
+                    $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
                 }
             }
 
@@ -757,7 +754,8 @@ class CommandActionService {
                     }
 
                     $openDoorDirMethodRun["door"] = "closed";
-                    $resultDoor = $room->{$openDoorSet}($openDoorDirMethodRun);
+                    // изменения параметра комнаты: закрыть дверь
+                    $room->{$openDoorSet}($openDoorDirMethodRun);
 
                     // закрытие двери в соседней комнате
                     $roomDestinationGet = "get{$openDoorDir}";
@@ -772,7 +770,8 @@ class CommandActionService {
                     $roomDestinationObj = $roomDestination->{$openDestinationDoorGet}();
                     $roomDestinationObj["door"] = "closed";
                     $resultDestinationDoor = $roomDestination->{$openDestinationDoorSet}($roomDestinationObj);
-                    $resultDestinationRoom = $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
+                    // изменения параметра соседней комнаты: закрыть дверь
+                    $roomDestination->{$roomDestinationSet}($resultDestinationDoor);
                 }
             }
 
