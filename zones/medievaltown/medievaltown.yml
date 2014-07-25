@@ -206,7 +206,7 @@ rooms:
         exits:
             south: street2
             north: park2
-            west: street1:townlake
+            west: "street1:townlake"
 
     park2:
         name: "Городской парк"
