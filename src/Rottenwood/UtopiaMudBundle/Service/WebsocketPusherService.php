@@ -88,6 +88,9 @@ class WebsocketPusherService implements WampServerInterface {
             $channel = $topic;
         }
 
+//       var_dump($conn);
+       var_dump($conn, $topic, $event);
+
         // Если сообщение пришло в персональный канал
         if ((substr($channel, 0, 9) == 'personal.')) {
             $this->onPublishPersonal($channel, $event, $topic);
