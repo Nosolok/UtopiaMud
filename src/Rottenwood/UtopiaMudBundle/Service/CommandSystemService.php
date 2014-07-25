@@ -215,7 +215,7 @@ class CommandSystemService {
                     $i = 1;
                     foreach ($roomData["mobs"] as $mobInRoomAnchor) {
                         $mobInRoom = $this->mobRepository->findByAnchor($mobInRoomAnchor, $zoneanchor);
-
+                        // TODO: разобраться получше
                         if (!$mobInRoom) {
                         	continue;
                         }
