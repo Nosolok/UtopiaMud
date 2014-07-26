@@ -23,6 +23,7 @@ class CommandActionService {
     protected $container;
     protected $user;
     protected $id;
+    /** @var Repository\RoomRepository */
     protected $roomRepository;
     protected $playerRepository;
     protected $mobRepository;
@@ -874,6 +875,19 @@ class CommandActionService {
         } else {
             $result["message"] = "0:7:2";
         }
+
+        return $result;
+    }
+
+    public function test(Player $char) {
+        $result = array();
+        $con = $this->container->get('database_connection');
+        $room = $char->getRoom();
+        $roomAnchor = $room->getAnchor();
+        $zone = $room->getZone();
+
+        $maptest = $this->roomRepository->getTypesForMap($roomAnchor, $zone, $con);
+        $result["system"] = $maptest;
 
         return $result;
     }

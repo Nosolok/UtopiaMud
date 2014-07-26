@@ -32,8 +32,8 @@ class Room {
     private $anchor;
 
     /**
-     * @var integer
-     * @ORM\Column(name="type", type="integer", length=3)
+     * @var string
+     * @ORM\Column(name="type", type="string", length=20)
      */
     private $type;
 
@@ -295,7 +295,7 @@ class Room {
 
     /**
      * Set type
-     * @param integer $type
+     * @param string $type
      * @return Room
      */
     public function setType($type) {
@@ -306,7 +306,7 @@ class Room {
 
     /**
      * Get type
-     * @return integer
+     * @return string
      */
     public function getType() {
         return $this->type;

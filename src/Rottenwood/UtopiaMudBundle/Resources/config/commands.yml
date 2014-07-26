@@ -104,3 +104,9 @@ commands:
         alias:
         - close
         - закрыть
+
+    test:
+        type: action
+        alias:
+        - test
+        - тест
