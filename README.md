@@ -1,4 +1,4 @@
-# Утопия ![Текущая версия](http://img.shields.io/badge/Текущая версия UtopiaMud- v0.1.0 -brightgreen.svg)
+# Утопия ![Текущая версия](http://img.shields.io/badge/Текущая версия UtopiaMud- v0.1.1 -brightgreen.svg)
 ## Современный веб-движок для MUD
 
 #### Рабочая версия муда: http://utopia.ml/mud
