@@ -78,7 +78,7 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
     font-family: "Courier New", monospace;
     /*font-family: monospace;*/
     overflow: auto;
-    line-height: 55px;
+    /*line-height: 55px;*/
 }
 
 .minimap div {
@@ -98,8 +98,11 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
     border: solid black 3px;
 }
 
-.minimap div#r {
+.minimap div#r img {
     border: solid yellowgreen 3px;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(50, 138, 50, 0.72);
+    -moz-box-shadow:    0px 0px 30px 0px rgba(50, 138, 50, 0.72);
+    box-shadow:         0px 0px 30px 0px rgba(50, 138, 50, 0.72);
 }
 
 #chat {
