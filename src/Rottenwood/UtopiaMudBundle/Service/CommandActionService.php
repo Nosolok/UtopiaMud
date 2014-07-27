@@ -85,6 +85,7 @@ class CommandActionService {
             foreach ($mobsInRoom as $mob) {
                 /** @var Livemob $mob */
                 $mobName1 = $mob->getMob()->getName1();
+                $mobName1 = mb_strtolower($mobName1, 'UTF-8');
                 $mobShort = $mob->getMob()->getShortdesc();
                 $result["mobs"][] = array(
                     "name"  => $mobName1,
@@ -498,6 +499,7 @@ class CommandActionService {
                     /** @var Mob $mobInRoomObject */
                     $mobInRoomObject = $mobInRoom->getMob();
                     $mobName = $mobInRoomObject->getName1();
+                    $mobName = mb_strtolower($mobName, 'UTF-8');
                     // винительный падеж
                     $mobName4 = $mobInRoomObject->getName4();
 
