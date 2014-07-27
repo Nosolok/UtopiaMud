@@ -147,7 +147,21 @@ class RoomRepository extends EntityRepository {
             neen.type as neen,
             nwwn.type as nwwn,
             sees.type as sees,
-            swws.type as swws
+            swws.type as swws,
+
+            wn.type as wn,
+            ws.type as ws,
+            en.type as en,
+            es.type as es,
+            nnw.type as nnw,
+            nne.type as nne,
+            ssw.type as ssw,
+            sse.type as sse,
+            wwn.type as wwn,
+            wws.type as wws,
+            een.type as een,
+            ees.type as ees
+
         FROM
             rooms r
         LEFT JOIN rooms s ON r.south = s.anchor AND r.zone = s.zone
@@ -174,6 +188,20 @@ class RoomRepository extends EntityRepository {
         LEFT JOIN rooms nwwn ON nww.north = nwwn.anchor AND r.zone = nwwn.zone
         LEFT JOIN rooms sees ON see.south = sees.anchor AND r.zone = sees.zone
         LEFT JOIN rooms swws ON sww.south = swws.anchor AND r.zone = swws.zone
+
+        LEFT JOIN rooms wn ON w.north = wn.anchor AND r.zone = wn.zone
+        LEFT JOIN rooms ws ON w.south = ws.anchor AND r.zone = ws.zone
+        LEFT JOIN rooms en ON e.north = en.anchor AND r.zone = en.zone
+        LEFT JOIN rooms es ON e.south = es.anchor AND r.zone = es.zone
+        LEFT JOIN rooms nnw ON nn.west = nnw.anchor AND r.zone = nnw.zone
+        LEFT JOIN rooms nne ON nn.east = nne.anchor AND r.zone = nne.zone
+        LEFT JOIN rooms ssw ON ss.west = ssw.anchor AND r.zone = ssw.zone
+        LEFT JOIN rooms sse ON ss.east = sse.anchor AND r.zone = sse.zone
+        LEFT JOIN rooms wwn ON ww.north = wwn.anchor AND r.zone = wwn.zone
+        LEFT JOIN rooms wws ON ww.south = wws.anchor AND r.zone = wws.zone
+        LEFT JOIN rooms een ON ee.north = een.anchor AND r.zone = een.zone
+        LEFT JOIN rooms ees ON ee.south = ees.anchor AND r.zone = ees.zone
+
         WHERE r.anchor = ? AND r.zone = ?';
         $sql = $con->executeQuery($sqlStatement, array($roomAnchor, $zone));
         $result = $sql->fetchAll();
