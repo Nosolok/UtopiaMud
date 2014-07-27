@@ -29,15 +29,20 @@ class WebsocketCommand extends ContainerAwareCommand {
 
         // Циклическое событие
         $loop->addPeriodicTimer(120, function() use ($pusher, $worldService, $dataChannel) {
-            $onlineChars = $dataChannel->getOnlineIds();
+            // Юзеры онлайн
+            $onlineChars = $dataChannel->clients;
+            // Вызов сообщения о погоде
             $worldEventWeather = $worldService->weather($onlineChars);
             if ($worldEventWeather) {
+                $charsOutside = $worldEventWeather["chars"];
+                $weather = $worldEventWeather["weather"];
+
                 $worldEvent = array(
-                    "worldweather" => $worldEventWeather,
+                    "worldweather" => $weather,
                 );
 
                 // Отправка всем сводки о погоде
-                $pusher->sendToAll($worldEvent);
+                $pusher->sendToList($charsOutside, $worldEvent);
             }
 
         });

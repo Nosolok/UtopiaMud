@@ -3,8 +3,9 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Сервис обработки мировых событий
@@ -23,7 +24,14 @@ class WorldService {
         $this->kernel = $kernel;
         $this->dataChannel = $dataChannel;
         $this->counter = 0;
-        $this->roomTypes = 0;
+
+        // парсинг файла списка зон
+        $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/types/roomtypes.yml");
+        if (!is_string($path)) {
+            throw new Exception("Type of $path must be string.");
+        }
+        $this->roomTypes = Yaml::parse(file_get_contents($path));
+        $this->roomTypes = $this->roomTypes["roomtypes"];
     }
 
     /**
@@ -33,7 +41,23 @@ class WorldService {
      */
     public function weather($onlineChars) {
 
-        if (!$onlineChars) { return true; }
+        if (!$onlineChars) {
+            return false;
+        }
+
+        $charsOutside = array();
+        /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $player */
+        foreach ($onlineChars as $player) {
+            $roomType = $player->getRoom()->getType();
+
+            // Проверка находится ли персонаж на улице
+            if (!(array_key_exists($roomType, $this->roomTypes) && array_key_exists("noweather",
+                    $this->roomTypes[$roomType]))
+            ) {
+                $charsOutside[] = $player;
+            }
+
+        }
 
         $weather = array(
             "4:1",
@@ -47,7 +71,11 @@ class WorldService {
         } else {
             $this->counter++;
         }
-        $result = $weather[$this->counter];
+
+        $result = array(
+            "chars"   => $charsOutside,
+            "weather" => $weather[$this->counter],
+        );
 
         return $result;
     }
