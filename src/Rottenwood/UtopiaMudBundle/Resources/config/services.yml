@@ -48,4 +48,4 @@ services:
     # Сервис мировых событий
     worldevent:
         class:  Rottenwood\UtopiaMudBundle\Service\WorldService
-        arguments:  [@doctrine.orm.entity_manager, @datachannel]
+        arguments:  [@doctrine.orm.entity_manager, @datachannel, @kernel]

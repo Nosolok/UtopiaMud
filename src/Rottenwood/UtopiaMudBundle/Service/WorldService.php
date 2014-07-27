@@ -3,6 +3,8 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Сервис обработки мировых событий
@@ -11,13 +13,17 @@ use Doctrine\ORM\EntityManager;
 class WorldService {
 
     protected $em;
+    protected $kernel;
     protected $counter;
     protected $dataChannel;
+    protected $roomTypes;
 
-    public function __construct(EntityManager $em, DataChannelService $dataChannel) {
+    public function __construct(EntityManager $em, DataChannelService $dataChannel, Kernel $kernel) {
         $this->em = $em;
+        $this->kernel = $kernel;
         $this->dataChannel = $dataChannel;
         $this->counter = 0;
+        $this->roomTypes = 0;
     }
 
     /**

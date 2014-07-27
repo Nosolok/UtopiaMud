@@ -24,11 +24,12 @@ class WebsocketCommand extends ContainerAwareCommand {
 
         $loop   = \React\EventLoop\Factory::create();
         $pusher = $this->getContainer()->get('websocket');
+        $worldService = $this->getContainer()->get('worldevent');
         $dataChannel = $this->getContainer()->get('datachannel');
 
         // Циклическое событие
-        $loop->addPeriodicTimer(300, function() use ($pusher) {
-            $worldEventWeather = $this->getContainer()->get('worldevent')->weather();
+        $loop->addPeriodicTimer(3, function() use ($pusher, $worldService) {
+            $worldEventWeather = $worldService->weather();
             $worldEvent = array(
                 "worldweather" => $worldEventWeather,
             );
