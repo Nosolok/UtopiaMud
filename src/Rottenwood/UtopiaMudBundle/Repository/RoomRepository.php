@@ -160,7 +160,15 @@ class RoomRepository extends EntityRepository {
             wwn.type as wwn,
             wws.type as wws,
             een.type as een,
-            ees.type as ees
+            ees.type as ees,
+            wnn.type as wnn,
+            wss.type as wss,
+            enn.type as enn,
+            ess.type as ess,
+            ene.type as ene,
+            ese.type as ese,
+            wnw.type as wnw,
+            wsw.type as wsw
 
         FROM
             rooms r
@@ -201,6 +209,15 @@ class RoomRepository extends EntityRepository {
         LEFT JOIN rooms wws ON ww.south = wws.anchor AND r.zone = wws.zone
         LEFT JOIN rooms een ON ee.north = een.anchor AND r.zone = een.zone
         LEFT JOIN rooms ees ON ee.south = ees.anchor AND r.zone = ees.zone
+        LEFT JOIN rooms wnn ON wn.north = wnn.anchor AND r.zone = wnn.zone
+        LEFT JOIN rooms enn ON en.north = enn.anchor AND r.zone = enn.zone
+        LEFT JOIN rooms wss ON ws.south = wss.anchor AND r.zone = wss.zone
+        LEFT JOIN rooms ess ON es.south = ess.anchor AND r.zone = ess.zone
+
+        LEFT JOIN rooms ene ON en.east = ene.anchor AND r.zone = ene.zone
+        LEFT JOIN rooms ese ON es.east = ese.anchor AND r.zone = ese.zone
+        LEFT JOIN rooms wnw ON wn.west = wnw.anchor AND r.zone = wnw.zone
+        LEFT JOIN rooms wsw ON ws.west = wsw.anchor AND r.zone = wsw.zone
 
         WHERE r.anchor = ? AND r.zone = ?';
         $sql = $con->executeQuery($sqlStatement, array($roomAnchor, $zone));

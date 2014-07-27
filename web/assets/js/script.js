@@ -217,8 +217,71 @@ $(document).ready(function () {
             game.append("<br><span class='plaintext'>" + data['system2'] + "</span><br><br>");
         }
         if (data['minimap']) {
-            console.log(data)
-            var mapdata = data['minimap']
+            console.log(data);
+            var mapdata = data['minimap'];
+            // отбор нужных комнат для отрисовки
+            if (mapdata['wn']) {
+                mapdata['nw'] = mapdata['wn'];
+            }
+            if (mapdata['ws']) {
+                mapdata['sw'] = mapdata['ws'];
+            }
+            if (mapdata['en']) {
+                mapdata['ne'] = mapdata['en'];
+            }
+            if (mapdata['es']) {
+                mapdata['se'] = mapdata['es'];
+            }
+            if (mapdata['nnw']) {
+                mapdata['nwn'] = mapdata['nnw'];
+            }
+            if (mapdata['nne']) {
+                mapdata['nen'] = mapdata['nne'];
+            }
+            if (mapdata['ssw']) {
+                mapdata['sws'] = mapdata['ssw'];
+            }
+            if (mapdata['sse']) {
+                mapdata['ses'] = mapdata['sse'];
+            }
+            if (mapdata['wwn']) {
+                mapdata['nww'] = mapdata['wwn'];
+            }
+            if (mapdata['wws']) {
+                mapdata['sww'] = mapdata['wws'];
+            }
+            if (mapdata['een']) {
+                mapdata['nee'] = mapdata['een'];
+            }
+            if (mapdata['ees']) {
+                mapdata['see'] = mapdata['ees'];
+            }
+            if (mapdata['enn']) {
+                mapdata['nen'] = mapdata['enn'];
+            }
+            if (mapdata['wnn']) {
+                mapdata['nwn'] = mapdata['wnn'];
+            }
+            if (mapdata['ess']) {
+                mapdata['ses'] = mapdata['ess'];
+            }
+            if (mapdata['wss']) {
+                mapdata['sws'] = mapdata['wss'];
+            }
+
+            if (mapdata['ene']) {
+                mapdata['nee'] = mapdata['ene'];
+            }
+            if (mapdata['ese']) {
+                mapdata['see'] = mapdata['ese'];
+            }
+            if (mapdata['wnw']) {
+                mapdata['nww'] = mapdata['wnw'];
+            }
+            if (mapdata['wsw']) {
+                mapdata['sww'] = mapdata['wsw'];
+            }
+
             drawmap(
                 mapdata['nwwn'], mapdata['nwn'], mapdata['nn'], mapdata['nen'], mapdata['neen'],
                 mapdata['nww'], mapdata['nw'], mapdata['n'], mapdata['ne'], mapdata['nee'],
