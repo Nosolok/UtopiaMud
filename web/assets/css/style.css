@@ -67,7 +67,7 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
 #map {
     background-color:#191919;
     position:absolute;
-    padding:10px;
+    padding:5px;
     right:0;
     left:70%;
     top:30px;
@@ -78,6 +78,24 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
     font-family: "Courier New", monospace;
     /*font-family: monospace;*/
     overflow: auto;
+    line-height: 55px;
+}
+
+.minimap div {
+    position: relative;
+    /*background-color: #444444;*/
+    display: inline-block;
+    height: 12%;
+    width: 17%;
+    margin-bottom: 8px;
+    vertical-align: middle;
+    /*line-height: 280%;*/
+}
+
+.minimap img {
+    vertical-align: middle;
+    margin: 0 auto;
+    border: solid black 3px;
 }
 
 #chat {
