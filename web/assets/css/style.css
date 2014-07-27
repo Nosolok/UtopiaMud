@@ -98,6 +98,10 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
     border: solid black 3px;
 }
 
+.minimap div#r {
+    border: solid yellowgreen 4px;
+}
+
 #chat {
 	background-color:black;
 	position:absolute;

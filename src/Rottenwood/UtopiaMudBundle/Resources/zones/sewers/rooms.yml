@@ -8,7 +8,7 @@ rooms:
     sewersenter:
         name: "Спуск в канализацию"
         desc: "Канализационный спуск сделан из грубого камня, покрытого от сырости мхом."
-        type: inside
+        type: dungeon
         exits:
             up: "weststreet1:medievaltown"
             down: sewers
@@ -16,7 +16,7 @@ rooms:
     sewers:
         name: "Канализация"
         desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
-        type: inside
+        type: dungeon
         mobs:
         - rat
         - slime
@@ -30,7 +30,7 @@ rooms:
     sewersn2:
         name: "Канализация"
         desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
-        type: inside
+        type: dungeon
         mobs:
         - slime
         exits:
@@ -39,7 +39,7 @@ rooms:
     sewerss2:
         name: "Канализация"
         desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
-        type: inside
+        type: dungeon
         mobs:
         - slime
         exits:
@@ -48,7 +48,7 @@ rooms:
     sewerse2:
         name: "Канализация"
         desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
-        type: inside
+        type: dungeon
         mobs:
         - slime
         exits:
@@ -57,7 +57,7 @@ rooms:
     sewersw2:
         name: "Канализация"
         desc: "Вокруг только стены из замшелого булыжника и неприятный запах. Северную и южную стены придерживают массивныя плиты. Возможно за ними что-то есть?"
-        type: inside
+        type: dungeon
         exits:
             east: sewers
             north:
@@ -76,7 +76,7 @@ rooms:
     sewersn1:
         name: "Канализация"
         desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
-        type: inside
+        type: dungeon
         exits:
             south:
                 to: sewersw2
@@ -88,7 +88,7 @@ rooms:
     sewerss1:
         name: "Канализация"
         desc: "Вокруг только стены из замшелого булыжника и неприятный запах."
-        type: inside
+        type: dungeon
         exits:
             north:
                 to: sewersw2

@@ -251,6 +251,8 @@ class CommandActionService {
             $result["4rdecho"]["who"] = $charName;
         }
 
+        $result["minimap"] = $this->techMinimap($char); // отрисовка миникарты
+
         return $result;
     }
 
@@ -515,6 +517,7 @@ class CommandActionService {
 
         $result = $this->techLook($room, 0);
         $result["message"] = "1:1"; // вы осмотрелись
+        $result["minimap"] = $this->techMinimap($char); // отрисовка миникарты
 
         return $result;
     }
@@ -879,15 +882,19 @@ class CommandActionService {
         return $result;
     }
 
-    public function test(Player $char) {
-        $result = array();
+    /**
+     * Отрисовка миникарты
+     * @param Player $char
+     * @return array
+     */
+    public function techMinimap(Player $char) {
         $con = $this->container->get('database_connection');
         $room = $char->getRoom();
         $roomAnchor = $room->getAnchor();
         $zone = $room->getZone();
 
         $maptest = $this->roomRepository->getTypesForMap($roomAnchor, $zone, $con);
-        $result["system"] = $maptest;
+        $result = $maptest;
 
         return $result;
     }
