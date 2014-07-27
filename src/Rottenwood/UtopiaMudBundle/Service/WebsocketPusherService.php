@@ -36,7 +36,12 @@ class WebsocketPusherService implements WampServerInterface {
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-        $channel = $topic->getId();
+        if (is_object($topic)) {
+            $channel = $topic->getId();
+        } else {
+            $channel = $topic;
+        }
+
         echo "Подписка на $channel\n";
 
         // Запись канала в список
@@ -49,143 +54,178 @@ class WebsocketPusherService implements WampServerInterface {
 
     public function onOpen(ConnectionInterface $conn) {
         $this->onlineChars->attach($conn);
-        echo "Новое соединение! ({$conn->resourceId})\n";
+
+        echo "Новое соединение!\n";
     }
 
     public function onClose(ConnectionInterface $conn) {
         // Удаление вышедшего клиента из списка юзеров
         $whoQuits = $this->onlineChars->offsetGet($conn);
+
+        $hash = $whoQuits;
+        /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
+        $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
+        $char = $char[0];
+
+        // Сообщение всем о дисконнекте
+        $message = array();
+        $message["message"] = "0:6:2";
+        $message["who"] = $char->getUsername();
+        $this->sendToAll($message);
+
         $this->clients->remove($whoQuits);
         $this->onlineChars->detach($conn);
-        echo "Соединение {$conn->resourceId} разорвано\n";
+        echo "Соединение разорвано.\n";
     }
 
     public function onCall(ConnectionInterface $conn, $id, $topic, array $params) {
-        // In this application if clients send data it's because the user hacked around in console
-        $conn->callError($id, $topic, 'You are not allowed to make calls')->close();
     }
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible) {
-        $channel = $topic->getId();
+        if (is_object($topic)) {
+            $channel = $topic->getId();
+        } else {
+            $channel = $topic;
+        }
+
+//       var_dump($conn);
+//       var_dump($conn, $topic, $event);
 
         // Если сообщение пришло в персональный канал
         if ((substr($channel, 0, 9) == 'personal.')) {
-            $hash = substr($channel, 9);
-            /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
-            $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
-            $char = $char[0];
-            $channel = $char->getUsername();
-
-            // Если передана команда
-            if (array_key_exists("CMD", $event)) {
-                echo "$channel [CMD] ";
-
-                $command = $event["CMD"];
-                $result = $this->container->get('command')->execute($command, $char);
-
-                // Отправка результата связанным участникам
-                if (array_key_exists("3rd", $result)) {
-                    // Список респондентов
-                    $whomToTell = $result["3rd"];
-
-                    // Сообщение для респондентов
-                    $thirdEcho = $result["3rdecho"];
-                    unset($result["3rd"]);
-                    unset($result["3rdecho"]);
-
-                    // Поиск каналов данных нужных респондентов
-                    /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $player */
-                    foreach ($whomToTell as $player) {
-
-                        foreach ($this->onlineChars as $value) {
-                            $obj = $this->onlineChars->current(); // current object
-                            $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
-                            $playerHash = $player->getHash();
-                            $personalChannel = "personal." . $playerHash;
-                            if ($assoc_key == $playerHash) {
-                                $personalTopic = $this->topics[$personalChannel];
-                                /** @var Topic $personalTopic */
-                                $personalTopic->broadcast($thirdEcho);
-
-                            }
-                        }
-                    }
-                }
-
-                if (array_key_exists("4rd", $result)) {
-                    // Список респондентов
-                    $whomToTell = $result["4rd"];
-
-                    // Сообщение для респондентов
-                    $thirdEcho = $result["4rdecho"];
-                    unset($result["4rd"]);
-                    unset($result["4rdecho"]);
-
-                    // Поиск каналов данных нужных респондентов
-                    /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $player */
-                    foreach ($whomToTell as $player) {
-
-                        foreach ($this->onlineChars as $value) {
-                            $obj = $this->onlineChars->current(); // current object
-                            $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
-                            $playerHash = $player->getHash();
-                            $personalChannel = "personal." . $playerHash;
-                            if ($assoc_key == $playerHash) {
-                                $personalTopic = $this->topics[$personalChannel];
-                                /** @var Topic $personalTopic */
-                                $personalTopic->broadcast($thirdEcho);
-
-                            }
-                        }
-                    }
-                }
-
-                // Отправка результата клиенту
-                $topic->broadcast($result);
-            }
+            $this->onPublishPersonal($channel, $event, $topic);
         }
 
         // Если сообщение пришло в системный канал
         if ($channel == 'system.channel') {
-            // Если передан хэш
-            if (array_key_exists("HASH", $event)) {
-                $hash = $event["HASH"];
+            $this->onPublishSystem($conn, $event);
+        }
+    }
+
+    // Публикация в персональный канал
+    public function onPublishPersonal($channel, $event, Topic $topic) {
+
+        $hash = substr($channel, 9);
+        /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
+        $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
+        $char = $char[0];
+        $channel = $char->getUsername();
+
+        // Если передана команда
+        if (array_key_exists("CMD", $event)) {
+            echo "$channel [CMD] ";
+
+            $command = $event["CMD"];
+            $result = $this->container->get('command')->execute($command, $char);
+
+            // Отправка результата связанным участникам
+            if (array_key_exists("3rd", $result)) {
+                // Список респондентов
+                $whomToTell = $result["3rd"];
+
+                // Сообщение для респондентов
+                $thirdEcho = $result["3rdecho"];
+                unset($result["3rd"]);
+                unset($result["3rdecho"]);
+
+                // Поиск каналов данных нужных респондентов
+                /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $player */
+                foreach ($whomToTell as $player) {
+
+                    foreach ($this->onlineChars as $value) {
+                        $this->onlineChars->current(); // current object
+                        $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
+                        $playerHash = $player->getHash();
+                        $personalChannel = "personal." . $playerHash;
+                        if ($assoc_key == $playerHash) {
+                            $personalTopic = $this->topics[$personalChannel];
+                            /** @var Topic $personalTopic */
+                            $personalTopic->broadcast($thirdEcho);
+
+                        }
+                    }
+                }
+            }
+
+            if (array_key_exists("4rd", $result)) {
+                // Список респондентов
+                $whomToTell = $result["4rd"];
+
+                // Сообщение для респондентов
+                $thirdEcho = $result["4rdecho"];
+                unset($result["4rd"]);
+                unset($result["4rdecho"]);
+
+                // Поиск каналов данных нужных респондентов
+                /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $player */
+                foreach ($whomToTell as $player) {
+
+                    foreach ($this->onlineChars as $value) {
+                        $this->onlineChars->current(); // current object
+                        $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
+                        $playerHash = $player->getHash();
+                        $personalChannel = "personal." . $playerHash;
+                        if ($assoc_key == $playerHash) {
+                            $personalTopic = $this->topics[$personalChannel];
+                            /** @var Topic $personalTopic */
+                            $personalTopic->broadcast($thirdEcho);
+
+                        }
+                    }
+                }
+            }
+
+            // Отправка результата клиенту
+            if (is_object($topic)) {
+                $topic->broadcast($result);
+            } else {
+                echo "$topic - не объект.";
+            }
+        }
+    }
+
+    public function onPublishSystem(ConnectionInterface $conn, $event) {
+        // Если передан хэш
+        if (array_key_exists("HASH", $event)) {
+            $hash = $event["HASH"];
+
+            /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
+            $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
+            // Если передан невалидный токен
+            if (!$char) {
+                $conn->close();
+                return;
+            }
+
+            // Соотнесение Websocket Client ID с симфони юзер-токеном
+            $this->onlineChars->attach($conn, $hash);
+
+
+            // Проверка хэша на уникальность
+            if ($this->clients->hashIsUnique($hash)) {
+                // Если хэш уже присутствует
+                echo "Переподключение хэша: \033[0;33m", $hash, "\033[m\n";
+            } else {
+                // Если хэш отсутствует
+                echo "Зарегистрирован новый хэш: \033[1;33m", $hash, "\033[m\n";
 
                 /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
                 $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
-                // Если передан валидный токен
-                if ($char) {
-                    // Соотнесение Websocket Client ID с симфони юзер-токеном
-                    $this->onlineChars->attach($conn, $hash);
-                } else {
-                    $conn->close();
-                }
+                $char = $char[0];
 
-                // Проверка хэша на уникальность
-                if ($this->clients->hashIsUnique($hash)) {
-                    // Если хэш уже присутствует
-                    echo "Переподключение хэша: \033[0;33m", $hash, "\033[m\n";
-                } else {
-                    // Если хэш отсутствует
-                    echo "Зарегистрирован новый хэш: \033[1;33m", $hash, "\033[m\n";
+                // Добавление клиента в список юзеров онлайн
+                $this->clients->add($hash, $char);
 
-                    /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $char */
-                    $char = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player')->getByHash($hash);
-                    $char = $char[0];
-
-                    // Добавление клиента в список юзеров онлайн
-                    $this->clients->add($hash, $char);
-                }
+                // Сообщение всем о новом коннекте
+                $message = array();
+                $message["message"] = "0:6:1";
+                $message["who"] = $char->getUsername();
+                $this->sendToAll($message);
             }
         }
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
-    }
-
-    public function onReboot($incoming) {
-        $data = json_decode($incoming, true);
-        return false;
     }
 
     // Онлайн лист
@@ -197,4 +237,40 @@ class WebsocketPusherService implements WampServerInterface {
 
         return $onlineList;
     }
+
+    /**
+     * Отправка сообщений в нужные дата-каналы
+     * @param array $playersToMessage Players
+     * @param       $broadcast
+     */
+    public function sendToList($playersToMessage, $broadcast) {
+        // Поиск каналов данных нужных респондентов
+        /** @var \Rottenwood\UtopiaMudBundle\Entity\Player $player */
+        foreach ($playersToMessage as $player) {
+
+            foreach ($this->onlineChars as $value) {
+                $this->onlineChars->current(); // current object
+                $assoc_key = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
+                $playerHash = $player->getHash();
+                $personalChannel = "personal." . $playerHash;
+                if ($assoc_key == $playerHash) {
+                    $personalTopic = $this->topics[$personalChannel];
+                    /** @var Topic $personalTopic */
+                    $personalTopic->broadcast($broadcast);
+
+                }
+            }
+        }
+    }
+
+    public function sendToAll($broadcast) {
+        foreach ($this->onlineChars as $value) {
+            $hash = $this->onlineChars->getInfo(); // return, if exists, associated with cur. obj. data; else NULL
+            $personalChannel = "personal." . $hash;
+            $personalTopic = $this->topics[$personalChannel];
+            /** @var Topic $personalTopic */
+            $personalTopic->broadcast($broadcast);
+        }
+    }
+
 }

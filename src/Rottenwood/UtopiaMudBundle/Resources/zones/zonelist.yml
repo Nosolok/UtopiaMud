@@ -5,4 +5,12 @@
 zonelist:
     medievaltown:
         name: "Средневековый город"
-        anchor: mtown
+        url: "https://raw.githubusercontent.com/Rottenwood/UtopiaMud/zones/zones/medievaltown/medievaltown.yml"
+
+    townlake:
+        name: "Озеро у города"
+        # Зона размещена удаленно
+        url: "https://raw.githubusercontent.com/Rottenwood/UtopiaMud/zones/zones/townlake/townlake.yml"
+
+    sewers:
+        name: "Городская канализация"

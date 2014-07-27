@@ -3,7 +3,33 @@
 {% block content %}
     <div id="header"></div>
     {% block mapdiv %}
-        <div id="map"><img src="{{ asset('assets/img/game_map.png') }}"></div>
+        <div id="map" class="minimap">
+            <div id="nwwn"></div>
+            <div id="nwn"></div>
+            <div id="nn"></div>
+            <div id="nen"></div>
+            <div id="neen"></div><br>
+            <div id="nww"></div>
+            <div id="nw"></div>
+            <div id="n"></div>
+            <div id="ne"></div>
+            <div id="nee"></div><br>
+            <div id="ww"></div>
+            <div id="w"></div>
+            <div id="r"></div>
+            <div id="e"></div>
+            <div id="ee"></div><br>
+            <div id="sww"></div>
+            <div id="sw"></div>
+            <div id="s"></div>
+            <div id="se"></div>
+            <div id="see"></div><br>
+            <div id="swws"></div>
+            <div id="sws"></div>
+            <div id="ss"></div>
+            <div id="ses"></div>
+            <div id="sees"></div><br>
+        </div>
     {% endblock mapdiv %}
     <div id="{% block gamedivname %}game{% endblock gamedivname %}">
         {% block game %}

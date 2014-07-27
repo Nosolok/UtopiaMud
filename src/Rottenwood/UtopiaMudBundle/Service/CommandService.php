@@ -44,17 +44,28 @@ class CommandService {
 
         // разбитие строки на команду и аргументы
         $arguments = explode(' ',trim($command));
-        $command = $arguments[0];
+        $command = mb_strtolower($arguments[0], 'UTF-8');
         unset($arguments[0]);
 
         // разбитие команды на символы и их подсчет (хак для русских символов)
         $count = count(preg_split('/(?<!^)(?!$)/u', $command));
 
         $run = $this->recursiveArraySearchSubstr($command, $commands["commands"], $count);
+        $runLang = $this->recursiveArraySearchSubstrValue($command, $commands["commands"], $count);
+        $langCommandFull = $runLang["alias"][1];
 
         // проверка существования команды
         if ($run && (method_exists($this->commandaction, $run) || method_exists($this->commandsystem, $run) )) {
             $commandtype = "command" . $commands["commands"][$run]["type"];
+
+            // если тип команды служебный, проверяется ввод команды целиком
+            if ($commandtype == "commandsystem" && ($command !== $langCommandFull && $command !== $run)) {
+                $result["message"] = "0:5:1"; // просьба ввести команду целиком
+                $result["cmd"] = $run;
+                $result["cmdlang"] = $langCommandFull;
+                return $result;
+            }
+
             // если команда - "выход"
             if ($run == "quit") {
                 if (!($run == $command || $command == "конец")) {
@@ -79,7 +90,7 @@ class CommandService {
     }
 
     /**
-     * Рекурсивный поиск в массиве, используя первые X символов
+     * Рекурсивный поиск в массиве, используя первые X символов, возвращает ключ
      * Входные параметры: иголка, стог сена, количество символо
      * @param $needle
      * @param $haystack
@@ -96,6 +107,30 @@ class CommandService {
                         ($needle, $value, $substr) !== false)
             ) {
                 return $current_key;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Рекурсивный поиск в массиве, используя первые X символов, возвращает значение
+     * Входные параметры: иголка, стог сена, количество символо
+     * @param string $needle
+     * @param $haystack
+     * @param integer $substr
+     * @internal param int $substr
+     * @return string
+     */
+    public function recursiveArraySearchSubstrValue($needle, $haystack, $substr) {
+        foreach ($haystack as $key => $value) {
+            if (is_string($value)) {
+                $value = mb_substr($value, 0, $substr, "utf-8");
+            }
+            $current_value = $value;
+            if ($needle === $value || (is_array($value) && $this->recursiveArraySearchSubstr
+                        ($needle, $value, $substr) !== false)
+            ) {
+                return $current_value;
             }
         }
         return false;

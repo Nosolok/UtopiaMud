@@ -45,6 +45,14 @@ commands:
         - смотреть
         - взглянуть
 
+    # Список игроков онлайн
+    who:
+        type: action
+        alias:
+        - who
+        - кто
+        - онлайн
+
     # Выход из игры
     quit:
         type: system
@@ -60,9 +68,45 @@ commands:
         - импорт
 
     # Чат
+    chat:
+        type: action
+        alias:
+        - chat
+        - ooc
+        - чат
+        - болтать
+        - ооц
     say:
         type: action
         alias:
         - say
         - сказать
         - произнести
+    shout:
+        type: action
+        alias:
+        - shout
+        - yell
+        - кричать
+        - крикнуть
+        - орать
+
+    # открыть
+    open:
+        type: action
+        alias:
+        - open
+        - открыть
+
+    # закрыть
+    close:
+        type: action
+        alias:
+        - close
+        - закрыть
+
+    test:
+        type: action
+        alias:
+        - test
+        - тест

@@ -75,24 +75,4 @@ class DataChannelService {
 
         return $charsIds;
     }
-
-    /**
-     * Возвращает объект Player по токену
-     * @param $hash
-     * @return Player $client
-     */
-    public function getByHash($hash) {
-
-        $client = $this->clients[$hash];
-
-        return $client;
-    }
-
-    public function channelOnline($channel) {
-        if (array_key_exists($channel, $this->channels)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

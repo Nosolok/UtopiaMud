@@ -5,6 +5,16 @@
 $(document).ready(function () {
     var chat = $('#chatinput');
     var game = $('#game');
+
+    var N = 10;
+    var Nc = 0;
+    var command_history = new Array(N);
+    var i;
+
+    for (i = 0; i < N; i++) {
+        command_history[i] = "";
+    }
+
     var conn = new ab.Session('ws://' + serverip + ':6661',
         function () {
             console.log("Соединение установлено");
@@ -29,6 +39,7 @@ $(document).ready(function () {
             $('#chatform').submit(function (event) {
                 event.preventDefault();
                 var lastcommand = chat.val();
+                addCommandToHistory(lastcommand);
 
                 // Очистка чата
                 chat.val('');
@@ -96,18 +107,43 @@ $(document).ready(function () {
         } else if (data['message'] == "0:2:1") {
             game.append("<br><span class='plaintext'>Ты не видишь ничего похожего на &quot;" + data['object'] + "&quot;.</span><br><br>");
         } else if (data['message'] == "0:3") {
-            game.append("<br><span class='plaintext'>Ты не можешь двигаться в данном направлении.</span><br><br>");
+            game.append("<span class='plaintext'>Ты не можешь двигаться в данном направлении.</span><br><br>");
         } else if (data['message'] == "0:4:1") {
             game.append("<br><span class='plaintext'>Что ты хочешь сказать?</span><br><br>");
+        } else if (data['message'] == "0:4:2") {
+            game.append("<br><span class='plaintext'>Что ты хочешь крикнуть?</span><br><br>");
+        } else if (data['message'] == "0:4:3") {
+            game.append("<br><span class='plaintext'>О чем ты хочешь написать в общий чат?</span><br><br>");
         }
 
         //*** ответ от сервера: системные действия
         if (data['message'] == "0:5") {
             var url = "logout";
             $(location).attr('href', url);
-        }
-        if (data['message'] == "0:5:1") {
-            game.append("<br><span class='plaintext'>Для выхода введи команду &quot;конец&quot; (quit) целиком.</span><br><br>");
+        } else if (data['message'] == "0:5:1") {
+            if (data['cmdlang']) {
+                game.append("<br><span class='plaintext'>Введите команду &quot;" + data['cmdlang'] + "&quot; (" + data['cmd'] + ") целиком.</span><br><br>");
+            } else {
+                game.append("<br><span class='plaintext'>Please enter full command &quot;" + data['cmd'] + "&quot;.</span><br><br>");
+
+            }
+        } else if (data['message'] == "0:6:1") {
+            game.append("<span class='plaintext'>" + data['who'] + " вошел в наш мир.</span><br><br>");
+        } else if (data['message'] == "0:6:2") {
+            game.append("<span class='plaintext'>" + data['who'] + " покинул этот мир.</span><br><br>");
+        // закрытая дверь
+        } else if (data['message'] == "0:7:1") {
+            game.append("<span class='plaintext'>" + data['gate'] + " - закрыто.</span><br><br>");
+        } else if (data['message'] == "0:7:2") {
+            game.append("<span class='plaintext'>Что ты хочешь открыть?</span><br><br>");
+        } else if (data['message'] == "0:7:3") {
+            game.append("<span class='plaintext'>Ты открыл " + data['object'] + ".</span><br><br>");
+        } else if (data['message'] == "0:7:4") {
+            game.append("<span class='plaintext'>Ты закрыл " + data['object'] + ".</span><br><br>");
+        } else if (data['message'] == "0:7:5") {
+            game.append("<span class='plaintext'>" + data['object'] + " - уже открыто.</span><br><br>");
+        } else if (data['message'] == "0:7:6") {
+            game.append("<span class='plaintext'>" + data['object'] + " - уже закрыто.</span><br><br>");
         }
 
         //*** ответ от сервера: результаты команд
@@ -115,7 +151,7 @@ $(document).ready(function () {
             game.append("<br><span class='plaintext'>Ты осмотрелся.</span><br><br>");
         } else if (data['message'] == "1:2") {
             game.append("<br><span class='plaintext'>Ты обратил взгляд на " + data['object'] + ".</span><br>" + data['desc'] + "<br><br>");
-        // уходит
+            // уходит
         } else if (data['message'] == "1:3:1") {
             game.append("<span class='plaintext'>" + data['who'] + " ушел на север.</span><br><br>");
         } else if (data['message'] == "1:3:2") {
@@ -128,7 +164,7 @@ $(document).ready(function () {
             game.append("<span class='plaintext'>" + data['who'] + " ушел наверх.</span><br><br>");
         } else if (data['message'] == "1:3:6") {
             game.append("<span class='plaintext'>" + data['who'] + " ушел вниз.</span><br><br>");
-        // приходит
+            // приходит
         } else if (data['message'] == "1:4:1") {
             game.append("<span class='plaintext'>" + data['who'] + " пришел с юга.</span><br><br>");
         } else if (data['message'] == "1:4:2") {
@@ -141,9 +177,22 @@ $(document).ready(function () {
             game.append("<span class='plaintext'>" + data['who'] + " пришел снизу.</span><br><br>");
         } else if (data['message'] == "1:4:6") {
             game.append("<span class='plaintext'>" + data['who'] + " пришел сверху.</span><br><br>");
-        // сказать
+            // сказать
         } else if (data['message'] == "2:1") {
             game.append("<span class='plaintext'>" + data['who'] + " сказал: <span class='chatsayphrase'>" + data['say'] + "</span></span><br><br>");
+            // крикнуть
+        } else if (data['message'] == "2:2") {
+            game.append("<span class='plaintext'>" + data['who'] + " крикнул: <span class='chatshoutphrase'>" + data['shout'] + "</span></span><br><br>");
+            // общий чат
+        } else if (data['message'] == "2:3") {
+            game.append("<span class='plaintext'><span class='chatoocname'>[" + data['who'] + "]</span>: <span class='chatoocphrase'>" + data['ooc'] + "</span></span><br><br>");
+            // who
+        } else if (data['message'] == "3:1") {
+            game.append("<span class='plaintext'>В данный момент в игре находятся:<br></span>");
+            jQuery.each(data['whoonline'], function (name, data) {
+                game.append("<span class='whoonlinelist'>" + data["race"] + " " + name + "</span><br>");
+            });
+            game.append("<br><span class='plaintext'>Всего игроков: " + data["whoonlinecount"] + "</span><br><br>");
         }
 
 
@@ -156,11 +205,27 @@ $(document).ready(function () {
         if (data['players']) {
             showplayers(data['players']);
         }
+        if (data['mobs']) {
+            showmobs(data['mobs']);
+        } else if (data['players']) {
+            game.append("<br>");
+        }
         if (data['system']) {
             game.append("<br><span class='plaintext'>" + data['system'] + "</span><br><br>");
         }
         if (data['system2']) {
             game.append("<br><span class='plaintext'>" + data['system2'] + "</span><br><br>");
+        }
+        if (data['minimap']) {
+            console.log(data)
+            var mapdata = data['minimap']
+            drawmap(
+                mapdata['nwwn'], mapdata['nwn'], mapdata['nn'], mapdata['nen'], mapdata['neen'],
+                mapdata['nww'], mapdata['nw'], mapdata['n'], mapdata['ne'], mapdata['nee'],
+                mapdata['ww'], mapdata['w'], mapdata['r'], mapdata['e'], mapdata['ee'],
+                mapdata['sww'], mapdata['sw'], mapdata['s'], mapdata['se'], mapdata['see'],
+                mapdata['swws'], mapdata['sws'], mapdata['ss'], mapdata['ses'], mapdata['sees']
+            );
         }
 
         scroll();
@@ -187,12 +252,14 @@ $(document).ready(function () {
         if (data['d']) {
             exitways = exitways + "вниз ";
         }
+        if (!data['n'] && !data['s'] && !data['w'] && !data['e'] && !data['u'] && !data['d']) {
+            exitways = exitways + "нет ";
+        }
         game.append("<span class='roomexits'>[ Выходы: " + exitways + "]</span><br><br>");
     }
 
     // Отображение персонажей
     function showplayers(data) {
-
         console.log(data);
         jQuery.each(data, function (name, data) {
             console.log(data);
@@ -200,6 +267,118 @@ $(document).ready(function () {
             return (this != "three"); // will stop running after "three"
         });
 
+    }
+
+    // Отображение мобов
+    function showmobs(data) {
+        console.log(data);
+        jQuery.each(data, function (name, data) {
+            console.log(data);
+            game.append("<span class='mobs'>" + data["short"] + "</span><span class='mobsalias'> [" + data["name"] + "]</span><br>");
+        });
+
         game.append("<br>");
     }
+
+    //######## История команд
+
+    // добавление команды в историю
+    function addCommandToHistory(command) {
+        i = 1;
+        while (command_history[i] != "" && i < N) i++;
+        if (i == N) {
+            for (i = 0; i < N - 1; i++)
+                command_history[i] = command_history[i + 1];
+            command_history[N - 1] = command;
+            Nc = N - 1;
+        }
+        else {
+            command_history[i] = command;
+            Nc = i;
+        }
+    }
+
+    // хоткеи
+    $("body").keydown(function (key) {
+        if (key.which == 38 && Nc > 0) {
+            chat.val(command_history[Nc])
+            Nc--;
+            return false;
+        }
+        if (key.which == 40) {
+            chat.val("");
+            if (command_history[Nc + 1]) {
+                Nc++;
+                chat.val(command_history[Nc])
+                return false;
+            }
+        }
+
+    });
+
+
+    // Селекторы элементов миникарты
+    var map1 = $('#nwwn');
+    var map2 = $('#nwn');
+    var map3 = $('#nn');
+    var map4 = $('#nen');
+    var map5 = $('#neen');
+
+    var map6 = $('#nww');
+    var map7 = $('#nw');
+    var map8 = $('#n');
+    var map9 = $('#ne');
+    var map10 = $('#nee');
+
+    var map11 = $('#ww');
+    var map12 = $('#w');
+    var map13 = $('#r');
+    var map14 = $('#e');
+    var map15 = $('#ee');
+
+    var map16 = $('#sww');
+    var map17 = $('#sw');
+    var map18 = $('#s');
+    var map19 = $('#se');
+    var map20 = $('#see');
+
+    var map21 = $('#swws');
+    var map22 = $('#sws');
+    var map23 = $('#ss');
+    var map24 = $('#ses');
+    var map25 = $('#sees');
+
+    // функции для обработки карт
+    function drawmap(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m13,m14,m15,m16,m17,m18,m19,m20,m21,m22,m23,m24,m25) {
+        map1.html("<img src='assets/img/map/" + m1 + ".png'>");
+        map2.html("<img src='assets/img/map/" + m2 + ".png'>");
+        map3.html("<img src='assets/img/map/" + m3 + ".png'>");
+        map4.html("<img src='assets/img/map/" + m4 + ".png'>");
+        map5.html("<img src='assets/img/map/" + m5 + ".png'>");
+
+        map6.html("<img src='assets/img/map/" + m6 + ".png'>");
+        map7.html("<img src='assets/img/map/" + m7 + ".png'>");
+        map8.html("<img src='assets/img/map/" + m8 + ".png'>");
+        map9.html("<img src='assets/img/map/" + m9 + ".png'>");
+        map10.html("<img src='assets/img/map/" + m10 + ".png'>");
+
+        map11.html("<img src='assets/img/map/" + m11 + ".png'>");
+        map12.html("<img src='assets/img/map/" + m12 + ".png'>");
+        map13.html("<img src='assets/img/map/" + m13 + ".png'>");
+        map14.html("<img src='assets/img/map/" + m14 + ".png'>");
+        map15.html("<img src='assets/img/map/" + m15 + ".png'>");
+
+        map16.html("<img src='assets/img/map/" + m16 + ".png'>");
+        map17.html("<img src='assets/img/map/" + m17 + ".png'>");
+        map18.html("<img src='assets/img/map/" + m18 + ".png'>");
+        map19.html("<img src='assets/img/map/" + m19 + ".png'>");
+        map20.html("<img src='assets/img/map/" + m20 + ".png'>");
+
+        map21.html("<img src='assets/img/map/" + m21 + ".png'>");
+        map22.html("<img src='assets/img/map/" + m22 + ".png'>");
+        map23.html("<img src='assets/img/map/" + m23 + ".png'>");
+        map24.html("<img src='assets/img/map/" + m24 + ".png'>");
+        map25.html("<img src='assets/img/map/" + m25 + ".png'>");
+    }
+
 });
