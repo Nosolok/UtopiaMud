@@ -193,6 +193,15 @@ $(document).ready(function () {
                 game.append("<span class='whoonlinelist'>" + data["race"] + " " + name + "</span><br>");
             });
             game.append("<br><span class='plaintext'>Всего игроков: " + data["whoonlinecount"] + "</span><br><br>");
+            // погода
+        } else if (data['worldweather'] == "4:1") {
+            game.append("<span class='plaintext'>Солнце встает на востоке.</span><br><br>");
+        } else if (data['worldweather'] == "4:2") {
+            game.append("<span class='plaintext'>Пошел дождь.</span><br><br>");
+        } else if (data['worldweather'] == "4:3") {
+            game.append("<span class='plaintext'>Солнце садится на западе. Начинается ночь.</span><br><br>");
+        } else if (data['worldweather'] == "4:4") {
+            game.append("<span class='plaintext'>Ветер усиливается.</span><br><br>");
         }
 
 

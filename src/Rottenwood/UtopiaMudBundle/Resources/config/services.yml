@@ -41,8 +41,11 @@ services:
     datachannel:
         class:  Rottenwood\UtopiaMudBundle\Service\DataChannelService
         arguments:  []
-
     # Сервис вебсокетов
     websocket:
         class:  Rottenwood\UtopiaMudBundle\Service\WebsocketPusherService
         arguments:  [@service_container]
+    # Сервис мировых событий
+    worldevent:
+        class:  Rottenwood\UtopiaMudBundle\Service\WorldService
+        arguments:  [@doctrine.orm.entity_manager, @datachannel]
