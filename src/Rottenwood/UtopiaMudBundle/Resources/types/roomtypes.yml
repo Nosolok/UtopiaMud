@@ -9,12 +9,14 @@ roomtypes:                      # типы комнат в алфавитном 
         desc: "в выжженной пустоши"
     cave:
         desc: "в пещере"
+        noweather: yes
     deadfall:
         desc: "в непроходимом лесу"
     desert:
         desc: "в пустыне"
     dungeon:
         desc: "в подземелье"
+        noweather: yes
     field:
         desc: "на равнине"
     forest:
@@ -27,6 +29,7 @@ roomtypes:                      # типы комнат в алфавитном 
         desc: "среди холмов"
     inside:
         desc: "в помещении"
+        noweather: yes
     mountain:
         desc: "среди гор"
     road:
@@ -41,15 +44,20 @@ roomtypes:                      # типы комнат в алфавитном 
         desc: "в тундре"
     underground:
         desc: "под землей"
+        noweather: yes
     underwater:
         desc: "под водой"
+        noweather: yes
     water:
         desc: "в воде"
 
     # Sci-Fi
     cosmos:
         desc: "в космосе"
+        noweather: yes
     mech:
         desc: "внутри механизма"
+        noweather: yes
     starship:
         desc: "на борту звездолета"
+        noweather: yes
