@@ -63,7 +63,7 @@ class DataChannelService {
      * @param $charIdToIgnore
      * @return array
      */
-    public function getOnlineIds($charIdToIgnore) {
+    public function getOnlineIds($charIdToIgnore = 0) {
         $charsIds = array();
 
         foreach ($this->clients as $user) {

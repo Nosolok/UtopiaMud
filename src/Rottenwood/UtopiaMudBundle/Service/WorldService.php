@@ -28,9 +28,13 @@ class WorldService {
 
     /**
      * Цикл смены погоды в мире
+     * @param array $onlineChars
      * @return mixed
      */
-    public function weather() {
+    public function weather($onlineChars) {
+
+        if (!$onlineChars) { return true; }
+
         $weather = array(
             "4:1",
             "4:2",
