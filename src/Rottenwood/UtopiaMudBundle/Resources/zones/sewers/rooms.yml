@@ -35,7 +35,7 @@ rooms:
         - slime
         exits:
             south: sewers
-            north: "cosmos1:galaxy"
+            north: "dock:starships"
 
     sewerss2:
         name: "Канализация"

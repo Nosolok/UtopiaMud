@@ -9,7 +9,7 @@ roomtypes:                      # типы комнат в алфавитном 
         desc: "в выжженной пустоши"
     cave:
         desc: "в пещере"
-        noweather: yes
+        noweather: yes          # наличие данного флага отключает погоду в комнате
     deadfall:
         desc: "в непроходимом лесу"
     desert:
@@ -60,4 +60,25 @@ roomtypes:                      # типы комнат в алфавитном 
         noweather: yes
     starship:
         desc: "на борту звездолета"
+        noweather: yes
+    stardeck:
+        desc: "на палубе"
+        noweather: yes
+    stardoor:
+        desc: "в шлюзовой"
+        noweather: yes
+    starbar:
+        desc: "в кают-компании"
+        noweather: yes
+    starbridge:
+        desc: "на мостике"
+        noweather: yes
+    starroom:
+        desc: "в каюте"
+        noweather: yes
+    starcargo:
+        desc: "в грузовом трюме"
+        noweather: yes
+    starnav:
+        desc: "у навигационного поста"
         noweather: yes

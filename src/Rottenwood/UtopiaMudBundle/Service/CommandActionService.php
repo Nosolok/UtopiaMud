@@ -896,6 +896,17 @@ class CommandActionService {
         $zone = $room->getZone();
 
         $maptest = $this->roomRepository->getTypesForMap($roomAnchor, $zone, $con);
+
+        // TODO: сделать кастомизацию ограничительных тайлов
+        // Кастомные ограничительные тайлы
+        if (is_array($maptest) && $zone == "starships") {
+        	foreach ($maptest as $dir => $direction) {
+                if (!$direction) {
+                    $maptest[$dir] = "cosmos";
+                }
+            }
+        }
+
         $result = $maptest;
 
         return $result;

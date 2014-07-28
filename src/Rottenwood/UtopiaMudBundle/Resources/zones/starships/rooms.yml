@@ -1,0 +1,68 @@
+#####################################################
+#                                                   #
+#   Список комнат зоны "Космическое пространство"   #
+#                                                   #
+#####################################################
+
+rooms:
+    dock:
+        name: "Звездный док"
+        desc: "Станционный док, к которому пришвартованы различные типы космических кораблей."
+        type: stardeck
+        exits:
+            north: starshipdoor
+            south: "sewersn2:sewers"
+    starshipdoor:
+        name: "Шлюз звездолета"
+        desc: "Шлюзовой отсек звездолета служит единственным входом и выходом корабля."
+        type: stardoor
+        exits:
+            north: bar
+            south: dock
+            east: cargo1
+            west: cargo2
+    bar:
+        name: "Кают-компания"
+        desc: "Основное помещение для отдыха экипажа звездолета. Здесь же принято принимать пищу и проводить совещания."
+        type: starbar
+        exits:
+            north: bridge
+            south: starshipdoor
+            east: cargo3
+            west: starshiproom
+    bridge:
+        name: "Командный пункт"
+        desc: "Капитанский мостик, ходовой пост. Именно отсюда командир звездолета осуществляет управление кораблем."
+        type: starbridge
+        exits:
+            south: bar
+    starshiproom:
+        name: "Каюта капитана"
+        desc: "Жилое помещение капитана корабля."
+        type: starroom
+        exits:
+            south: cargo2
+            east: bar
+    cargo3:
+        name: "Грузовой отсек"
+        desc: "Отсек корабля для хранения грузов."
+        type: starcargo
+        exits:
+            west: bar
+            south: cargo1
+    cargo1:
+        name: "Грузовой отсек"
+        desc: "Отсек корабля для хранения грузов."
+        type: starcargo
+        exits:
+            north: cargo3
+            west: starshipdoor
+    cargo2:
+        name: "Грузовой отсек"
+        desc: "Отсек корабля для хранения грузов."
+        type: starcargo
+        exits:
+            north: starshiproom
+            east: starshipdoor
+
+

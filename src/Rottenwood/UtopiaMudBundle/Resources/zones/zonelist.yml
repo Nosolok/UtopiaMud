@@ -14,5 +14,5 @@ zonelist:
 
     sewers:
         name: "Городская канализация"
-    galaxy:
-        name: "Космическое пространство"
+    starships:
+        name: "Звездолеты"

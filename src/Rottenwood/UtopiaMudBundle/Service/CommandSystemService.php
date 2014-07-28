@@ -151,9 +151,6 @@ class CommandSystemService {
                 }
             }
 
-//            // запись в БД
-//            $this->em->flush();
-
             // цикл создания и записи в базу новых комнат
             foreach ($zone["rooms"] as $anchor => $roomData) {
 
