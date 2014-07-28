@@ -110,3 +110,8 @@ commands:
         alias:
         - test
         - тест
+    jumpto:
+        type: system
+        alias:
+        - jumpto
+        - прыжок

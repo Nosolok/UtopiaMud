@@ -36,7 +36,7 @@ services:
     # Сервис служебных команд
     commandsystem:
         class:  Rottenwood\UtopiaMudBundle\Service\CommandSystemService
-        arguments:  [@kernel, @doctrine.orm.entity_manager]
+        arguments:  [@kernel, @doctrine.orm.entity_manager, @service_container]
     # Сервис игроков, находящихся онлайн
     datachannel:
         class:  Rottenwood\UtopiaMudBundle\Service\DataChannelService

@@ -15,6 +15,7 @@ use Rottenwood\UtopiaMudBundle\Entity\Race;
 use Rottenwood\UtopiaMudBundle\Entity\Room;
 use Rottenwood\UtopiaMudBundle\Repository;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
 
@@ -26,12 +27,14 @@ class CommandSystemService {
 
     private $kernel;
     private $em;
+    private $container;
     private $roomRepository;
     private $mobRepository;
     private $livemobRepository;
 
-    public function __construct(Kernel $kernel, EntityManager $em) {
+    public function __construct(Kernel $kernel, EntityManager $em, Container $container) {
         $this->kernel = $kernel;
+        $this->container = $container;
         $this->em = $em;
         $this->roomRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
         $this->mobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Mob');
@@ -228,7 +231,6 @@ class CommandSystemService {
 
                         $this->em->persist($livemob{$i});
                         $i++;
-                        //                        $this->em->flush();
                     }
                 }
 
@@ -325,6 +327,36 @@ class CommandSystemService {
         $this->em->flush();
 
         return true;
+    }
+
+    public function jumpto(Player $char, $arguments) {
+        $result = array();
+
+        if ($arguments && $arguments[1] && $arguments[2]) {
+            // приведение первого аргумента введенной команды в нижний регистр
+            $room = mb_strtolower($arguments[1], 'UTF-8');
+            $zone = mb_strtolower($arguments[2], 'UTF-8');
+
+
+            $roomExist = $this->roomRepository->findByAnchor($room, $zone);
+            $roomExist = $roomExist[0];
+
+            if (!$roomExist) {
+                $result["system"] = "Комната не найдена. Применение: jumpto [якорь-комнаты] [якорь-зоны]";
+            	return $result;
+            }
+
+            // перемещение
+            $this->container->get('commandaction')->techGotoRoom($char, $roomExist);
+            $roomName = $roomExist->getName();
+            $result["system"] = "Ты прыгнул к '$roomName'.";
+
+        } else {
+            $result["system"] = "Применение: jumpto [якорь-комнаты] [якорь-зоны]";
+        }
+
+
+        return $result;
     }
 
 }
