@@ -128,9 +128,9 @@ $(document).ready(function () {
 
             }
         } else if (data['message'] == "0:6:1") {
-            game.append("<span class='playerenterworldname'>" + data['who'] + "</span><span class='playerenterworld'> вошел в наш мир.</span><br><br>");
+            game.append("<span class='playerenterworld'>" + data['who'] + " вошел в наш мир.</span><br><br>");
         } else if (data['message'] == "0:6:2") {
-            game.append("<span class='plaintext'>" + data['who'] + " покинул этот мир.</span><br><br>");
+            game.append("<span class='playerenterworld'>" + data['who'] + " покинул этот мир.</span><br><br>");
         // закрытая дверь
         } else if (data['message'] == "0:7:1") {
             game.append("<span class='plaintext'>" + data['gate'] + " - закрыто.</span><br><br>");
