@@ -29,6 +29,7 @@ class CommandSystemService {
     private $em;
     private $container;
     private $roomRepository;
+    private $playerRepository;
     private $mobRepository;
     private $livemobRepository;
 
@@ -39,6 +40,7 @@ class CommandSystemService {
         $this->roomRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Room');
         $this->mobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Mob');
         $this->livemobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Livemob');
+        $this->playerRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player');
     }
 
     /**
@@ -72,14 +74,22 @@ class CommandSystemService {
         return $result;
     }
 
-    // конец (выход)
+    /**
+     * Выход из игры
+     * @return array
+     */
     public function quit() {
         $result = array();
         $result["message"] = "0:5"; // выход
         return $result;
     }
 
-    // форматирование списка зон, перевод зон из YAML в БД и наоборот
+
+    /**
+     * форматирование списка зон, перевод зон из YAML в БД и наоборот
+     * @return array
+     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     */
     public function import() {
         $result = array();
 
@@ -123,7 +133,7 @@ class CommandSystemService {
                 $i = 1;
                 foreach ($zone["mobs"] as $mobAnchor => $mob) {
                     $oldMob = $this->mobRepository->findByAnchor($mobAnchor, $zoneanchor);
-                    
+
                     $i++;
                     if ($oldMob) {
                         // если комната уже существовала
@@ -217,7 +227,7 @@ class CommandSystemService {
                         $mobInRoom = $this->mobRepository->findByAnchor($mobInRoomAnchor, $zoneanchor);
                         // TODO: разобраться получше
                         if (!$mobInRoom) {
-                        	continue;
+                            continue;
                         }
                         /** @var Mob $mobInRoom */
                         $mobInRoom = $mobInRoom[0];
@@ -257,7 +267,11 @@ class CommandSystemService {
         return $result;
     }
 
-    // Загрузка списка рас и импорт его в базу данных
+    /**
+     * Загрузка списка рас и импорт его в базу данных
+     * @return bool
+     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     */
     public function setRaces() {
         $raceArchive = array();
         // парсинг файла списка рас
@@ -329,6 +343,12 @@ class CommandSystemService {
         return true;
     }
 
+    /**
+     * Прыжок в комнату по якорю и зоне
+     * @param Player $char
+     * @param        $arguments
+     * @return array
+     */
     public function jumpto(Player $char, $arguments) {
         $result = array();
 
@@ -343,7 +363,7 @@ class CommandSystemService {
 
             if (!$roomExist) {
                 $result["system"] = "Комната не найдена. Применение: jumpto [якорь-комнаты] [якорь-зоны]";
-            	return $result;
+                return $result;
             }
 
             // перемещение
@@ -355,6 +375,58 @@ class CommandSystemService {
             $result["system"] = "Применение: jumpto [якорь-комнаты] [якорь-зоны]";
         }
 
+
+        return $result;
+    }
+
+    /**
+     * Телепортация к персонажу
+     * @param Player $char
+     * @param        $arguments
+     * @return array
+     */
+    public function jumptp(Player $char, $arguments) {
+        $result = array();
+
+        if ($arguments && $arguments[1]) {
+            $charName = $char->getUsername();
+
+            // приведение первого аргумента введенной команды в нижний регистр
+            $targetPlayer = mb_strtolower($arguments[1], 'UTF-8');
+
+            $playersOnlineIds = $this->container->get('datachannel')->getOnlineIds();
+            $playersOnline = $this->playerRepository->findPlayersOnline($playersOnlineIds);
+
+            foreach ($playersOnline as $player) {
+                /** @var Player $player */
+                $playerName = $player->getUsernameCanonical();
+                $playerNameFull = $player->getUsername();
+
+                if (strpos($playerName, $targetPlayer) !== false) {
+                    // если персонаж найден
+                    $result["system"] = "Ты прыгнул к $playerNameFull!";
+
+                    // перемещение
+                    $destinationRoom = $player->getRoom();
+                    $char->setRoom($destinationRoom);
+
+                    $this->em->persist($char);
+                    $this->em->flush();
+
+                    // отправка сообщения адресату
+                    $result["3rd"] = array($player);
+                    $result["3rdecho"] = array(
+                        "system" => "$charName прыгнул к тебе!",
+                    );
+
+                    return $result;
+
+                }
+            }
+
+        } else {
+            $result["system"] = "Персонаж не найден. Применение: jumptp [имя-персонажа]";
+        }
 
         return $result;
     }

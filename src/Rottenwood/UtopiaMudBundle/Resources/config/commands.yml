@@ -115,3 +115,8 @@ commands:
         alias:
         - jumpto
         - прыжок
+    jumptp:
+        type: system
+        alias:
+        - jumptp
+        - телепорт
