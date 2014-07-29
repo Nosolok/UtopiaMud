@@ -21,16 +21,15 @@ class Container {
 
     /**
      * @ORM\ManyToOne(targetEntity="Item")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(name="item")
      **/
     private $item;
 
     /**
      * @ORM\ManyToOne(targetEntity="Inventory")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(name="container")
      **/
     private $container;
-
 
     /**
      * Get id

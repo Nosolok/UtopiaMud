@@ -21,15 +21,21 @@ class Inventory {
 
     /**
      * @ORM\ManyToOne(targetEntity="Player")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(name="player")
      **/
     private $player;
 
     /**
      * @ORM\ManyToOne(targetEntity="Item")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(name="item")
      **/
     private $item;
+
+    /**
+     * @var string
+     * @ORM\Column(name="wear", type="string", nullable=true)
+     */
+    private $wear;
 
     /**
      * Get id
@@ -78,18 +84,16 @@ class Inventory {
     }
 
     /**
-     * @param mixed $itemInContainer
+     * @param string $wear
      */
-    public function setItemInContainer($itemInContainer) {
-        $this->itemInContainer = $itemInContainer;
+    public function setWear($wear) {
+        $this->wear = $wear;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getItemInContainer() {
-        return $this->itemInContainer;
+    public function getWear() {
+        return $this->wear;
     }
-
-
 }

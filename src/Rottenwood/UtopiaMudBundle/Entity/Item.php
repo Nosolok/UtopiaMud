@@ -79,6 +79,11 @@ class Item {
      */
     private $longdesc;
 
+    /**
+     * @var array
+     * @ORM\Column(name="extra", type="array")
+     */
+    private $extra = array();
 
     /**
      * Get id
@@ -277,4 +282,19 @@ class Item {
     public function getLongdesc() {
         return $this->longdesc;
     }
+
+    /**
+     * @param array $extra
+     */
+    public function setExtra($extra) {
+        $this->extra = $extra;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtra() {
+        return $this->extra;
+    }
+
 }
