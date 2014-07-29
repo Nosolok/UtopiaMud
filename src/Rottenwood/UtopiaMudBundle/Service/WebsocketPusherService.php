@@ -82,21 +82,17 @@ class WebsocketPusherService implements WampServerInterface {
     }
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible) {
-        if (is_object($topic)) {
+        if (!is_object($topic)) { return false; }
             $channel = $topic->getId();
-        } else {
-            $channel = $topic;
-        }
+            // Если сообщение пришло в персональный канал
+            if ((substr($channel, 0, 9) == 'personal.')) {
+                $this->onPublishPersonal($channel, $event, $topic);
+            }
 
-        // Если сообщение пришло в персональный канал
-        if ((substr($channel, 0, 9) == 'personal.')) {
-            $this->onPublishPersonal($channel, $event, $topic);
-        }
-
-        // Если сообщение пришло в системный канал
-        if ($channel == 'system.channel') {
-            $this->onPublishSystem($conn, $event);
-        }
+            // Если сообщение пришло в системный канал
+            if ($channel == 'system.channel') {
+                $this->onPublishSystem($conn, $event);
+            }
     }
 
     // Публикация в персональный канал
