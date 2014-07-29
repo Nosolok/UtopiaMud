@@ -52,7 +52,7 @@ class WorldService {
 
             // Проверка находится ли персонаж на улице
             if (!(array_key_exists($roomType, $this->roomTypes) && array_key_exists("noweather",
-                    $this->roomTypes[$roomType]))
+                    $this->roomTypes[$roomType]) && $this->roomTypes[$roomType]["noweather"] == "yes")
             ) {
                 $charsOutside[] = $player;
             }
