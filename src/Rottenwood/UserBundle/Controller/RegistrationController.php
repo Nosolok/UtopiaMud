@@ -16,27 +16,41 @@ namespace Rottenwood\UserBundle\Controller;
  * file that was distributed with this source code.
  */
 
-use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
-use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use FOS\UserBundle\Model\UserInterface;
 
 /**
  * Controller managing the registration
- *
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class RegistrationController extends ContainerAware
-{
-    public function registerAction(Request $request)
-    {
+class RegistrationController extends ContainerAware {
+
+    private function techRegister($form, $request, \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher, \FOS\UserBundle\Model\UserManagerInterface $userManager, $user) {
+        $event = new FormEvent($form, $request);
+            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+
+            $userManager->updateUser($user);
+
+            if (null === $response = $event->getResponse()) {
+                $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
+                $response = new RedirectResponse($url);
+            }
+
+            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+
+            return $response;
+    }
+
+    public function registerAction(Request $request) {
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
         $formFactory = $this->container->get('fos_user.registration.form.factory');
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
@@ -61,23 +75,12 @@ class RegistrationController extends ContainerAware
             $form->bind($request);
 
             if ($form->isValid()) {
-                $event = new FormEvent($form, $request);
-                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-
-                $userManager->updateUser($user);
-
-                if (null === $response = $event->getResponse()) {
-                    $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
-                    $response = new RedirectResponse($url);
-                }
-
-                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-
+                $response = $this->techRegister($form, $request, $dispatcher, $userManager, $user);
                 return $response;
             }
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.' . $this->getEngine(), array(
             'form' => $form->createView(),
         ));
     }
@@ -85,8 +88,7 @@ class RegistrationController extends ContainerAware
     /**
      * Tell the user to check his email provider
      */
-    public function checkEmailAction()
-    {
+    public function checkEmailAction() {
         $email = $this->container->get('session')->get('fos_user_send_confirmation_email/email');
         $this->container->get('session')->remove('fos_user_send_confirmation_email/email');
         $user = $this->container->get('fos_user.user_manager')->findUserByEmail($email);
@@ -95,7 +97,7 @@ class RegistrationController extends ContainerAware
             throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:checkEmail.html.'.$this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:checkEmail.html.' . $this->getEngine(), array(
             'user' => $user,
         ));
     }
@@ -103,8 +105,7 @@ class RegistrationController extends ContainerAware
     /**
      * Receive the confirmation token from user email provider, login the user
      */
-    public function confirmAction(Request $request, $token)
-    {
+    public function confirmAction(Request $request, $token) {
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
         $userManager = $this->container->get('fos_user.user_manager');
 
@@ -138,8 +139,7 @@ class RegistrationController extends ContainerAware
     /**
      * Tell the user his account is now confirmed
      */
-    public function confirmedAction()
-    {
+    public function confirmedAction() {
         $user = $this->container->get('security.context')->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
@@ -175,8 +175,7 @@ class RegistrationController extends ContainerAware
         return $response;
     }
 
-    protected function getEngine()
-    {
+    protected function getEngine() {
         return $this->container->getParameter('fos_user.template.engine');
     }
 }
