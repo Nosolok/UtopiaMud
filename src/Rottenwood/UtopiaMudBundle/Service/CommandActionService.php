@@ -8,6 +8,7 @@ use Rottenwood\UtopiaMudBundle\Entity\Mob;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
 use Rottenwood\UtopiaMudBundle\Entity\Race;
 use Rottenwood\UtopiaMudBundle\Entity\Room;
+use Rottenwood\UtopiaMudBundle\Entity\Roomitem;
 use Rottenwood\UtopiaMudBundle\Repository;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -40,6 +41,8 @@ class CommandActionService {
         $this->mobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Mob');
         /** @var Repository\LivemobRepository */
         $this->livemobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Livemob');
+        /** @var Repository\RoomitemRepository */
+        $this->roomitemRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Roomitem');
     }
 
     /**
@@ -94,21 +97,21 @@ class CommandActionService {
             }
         }
         
-//        // предметы
-//        $itemsInRoom = $this->livemobRepository->findMobsInRoom($room);
-//
-//        if ($itemsInRoom) {
-//            foreach ($itemsInRoom as $mob) {
-//                /** @var Livemob $mob */
-//                $mobName1 = $mob->getMob()->getName1();
-//                $mobName1 = mb_strtolower($mobName1, 'UTF-8');
-//                $mobShort = $mob->getMob()->getShortdesc();
-//                $result["mobs"][] = array(
-//                    "name"  => $mobName1,
-//                    "short" => $mobShort,
-//                );
-//            }
-//        }
+        // предметы
+        $itemsInRoom = $this->roomitemRepository->findItemsInRoom($room);
+
+        if ($itemsInRoom) {
+            foreach ($itemsInRoom as $itemInRoom) {
+                /** @var Roomitem $itemInRoom */
+                $itemName1 = $itemInRoom->getItem()->getName1();
+                $itemName1 = mb_strtolower($itemName1, 'UTF-8');
+                $itemShort = $itemInRoom->getItem()->getShortdesc();
+                $result["items"][] = array(
+                    "item"  => $itemName1,
+                    "short" => $itemShort,
+                );
+            }
+        }
 
         return $result;
     }

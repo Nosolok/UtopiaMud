@@ -35,6 +35,7 @@ class CommandSystemService {
     private $mobRepository;
     private $livemobRepository;
     private $itemRepository;
+    private $roomitemRepository;
 
     public function __construct(Kernel $kernel, EntityManager $em, Container $container) {
         $this->kernel = $kernel;
@@ -45,6 +46,7 @@ class CommandSystemService {
         $this->livemobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Livemob');
         $this->playerRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player');
         $this->itemRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Item');
+        $this->roomitemRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Roomitem');
     }
 
     /**
@@ -97,8 +99,9 @@ class CommandSystemService {
     public function import() {
         $result = array();
 
-        // удаление всех живых монстров
+        // удаление всех живых монстров и лежащих вещей
         $this->livemobRepository->deleteAll();
+        $this->roomitemRepository->deleteAll();
 
         // парсинг файла списка зон
         $path = $this->kernel->locateResource("@RottenwoodUtopiaMudBundle/Resources/zones/zonelist.yml");

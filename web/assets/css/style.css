@@ -171,6 +171,12 @@ body {background-color:white;margin-left:0px;margin-top:0px;margin-right:0px;mar
 	color:#ffa10a;
 }
 
+.itemsinroom {
+    color: #4c50ff;
+}
+
+/*************    Команды    *************/
+
 /* who */
 .whoonlinelist {
     color: #ffdd9d;

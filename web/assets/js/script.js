@@ -216,7 +216,10 @@ $(document).ready(function () {
         }
         if (data['mobs']) {
             showmobs(data['mobs']);
-        } else if (data['players']) {
+        }
+        if (data['items']) {
+            showitems(data['items']);
+        } else if (data['players'] || data['mobs']) {
             game.append("<br>");
         }
         if (data['system']) {
@@ -347,6 +350,15 @@ $(document).ready(function () {
         jQuery.each(data, function (name, data) {
             console.log(data);
             game.append("<span class='mobs'>" + data["short"] + "</span><span class='mobsalias'> [" + data["name"] + "]</span><br>");
+        });
+    }
+
+    // Отображение предметов в комнате
+    function showitems(data) {
+        console.log(data);
+        jQuery.each(data, function (name, data) {
+            console.log(data);
+            game.append("<span class='itemsinroom'>" + data["short"] + "</span><span class='mobsalias'> [" + data["item"] + "]</span><br>");
         });
 
         game.append("<br>");
