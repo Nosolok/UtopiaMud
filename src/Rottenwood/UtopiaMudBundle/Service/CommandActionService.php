@@ -93,6 +93,22 @@ class CommandActionService {
                 );
             }
         }
+        
+//        // предметы
+//        $itemsInRoom = $this->livemobRepository->findMobsInRoom($room);
+//
+//        if ($itemsInRoom) {
+//            foreach ($itemsInRoom as $mob) {
+//                /** @var Livemob $mob */
+//                $mobName1 = $mob->getMob()->getName1();
+//                $mobName1 = mb_strtolower($mobName1, 'UTF-8');
+//                $mobShort = $mob->getMob()->getShortdesc();
+//                $result["mobs"][] = array(
+//                    "name"  => $mobName1,
+//                    "short" => $mobShort,
+//                );
+//            }
+//        }
 
         return $result;
     }
@@ -512,8 +528,7 @@ class CommandActionService {
                     }
                 }
             }
-
-
+            
             return $result;
         }
 
