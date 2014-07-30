@@ -3,6 +3,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\UtopiaMudBundle\Entity\Item;
 use Rottenwood\UtopiaMudBundle\Entity\Livemob;
 use Rottenwood\UtopiaMudBundle\Entity\Mob;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
@@ -492,6 +493,7 @@ class CommandActionService {
             $playersOnline = $this->container->get('datachannel')->getOnlineIds(0);
             $playersInRoom = $this->roomRepository->findPlayersInRoom($roomId, $playersOnline);
             $mobsInRoom = $this->livemobRepository->findMobsInRoom($room);
+            $itemsInRoom = $this->roomitemRepository->findItemsInRoom($room);
 
             $result["message"] = "0:2:1";
             $result["object"] = $argument;
@@ -528,6 +530,26 @@ class CommandActionService {
                         $result["message"] = "1:2";
                         $result["object"] = $mobName4;
                         $result["desc"] = $mobDesc;
+                    }
+                }
+            }
+
+            if ($itemsInRoom) {
+                foreach ($itemsInRoom as $itemInRoom) {
+                    /** @var Roomitem $itemInRoom */
+                    /** @var Item $itemInRoomObject */
+                    $itemInRoomObject = $itemInRoom->getItem();
+                    $itemName = $itemInRoomObject->getName1();
+                    $itemName = mb_strtolower($itemName, 'UTF-8');
+                    // винительный падеж
+                    $itemName4 = $itemInRoomObject->getName4();
+
+                    // проверка наличия предмета
+                    if (strpos($itemName, $argument) !== false) {
+                        $itemDesc = $itemInRoomObject->getLongdesc();
+                        $result["message"] = "1:2";
+                        $result["object"] = $itemName4;
+                        $result["desc"] = $itemDesc;
                     }
                 }
             }
