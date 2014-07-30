@@ -8,6 +8,7 @@
 namespace Rottenwood\UtopiaMudBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\UtopiaMudBundle\Entity\Item;
 use Rottenwood\UtopiaMudBundle\Entity\Livemob;
 use Rottenwood\UtopiaMudBundle\Entity\Mob;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
@@ -32,6 +33,7 @@ class CommandSystemService {
     private $playerRepository;
     private $mobRepository;
     private $livemobRepository;
+    private $itemRepository;
 
     public function __construct(Kernel $kernel, EntityManager $em, Container $container) {
         $this->kernel = $kernel;
@@ -41,6 +43,7 @@ class CommandSystemService {
         $this->mobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Mob');
         $this->livemobRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Livemob');
         $this->playerRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Player');
+        $this->itemRepository = $this->em->getRepository('RottenwoodUtopiaMudBundle:Item');
     }
 
     /**
@@ -86,7 +89,7 @@ class CommandSystemService {
 
 
     /**
-     * форматирование списка зон, перевод зон из YAML в БД и наоборот
+     * форматирование списка зон, перевод зон из YAML в БД
      * @return array
      * @throws \Symfony\Component\Config\Definition\Exception\Exception
      */
@@ -161,6 +164,52 @@ class CommandSystemService {
 
                     // подготовка объекта для записи в БД
                     $this->em->persist($importMob{$i});
+                }
+            }
+
+            if (array_key_exists("items", $zone)) {
+                // цикл создания и записи в базу новых предметов
+                $i = 1;
+                foreach ($zone["items"] as $itemAnchor => $item) {
+                    $oldItem = $this->itemRepository->findByAnchor($itemAnchor, $zoneanchor);
+
+                    $i++;
+                    if ($oldItem) {
+                        // если моб уже существовал
+                        $importItem{$i} = $oldItem;
+                    } else {
+                        // если моба еще нет
+                        $importItem{$i} = new Item();
+                    }
+
+                    $importItem{$i}->setAnchor($itemAnchor);
+                    $importItem{$i}->setType($item["type"]);
+                    $importItem{$i}->setName1($item["name"][0]);
+                    $importItem{$i}->setName2($item["name"][1]);
+                    $importItem{$i}->setName3($item["name"][2]);
+                    $importItem{$i}->setName4($item["name"][3]);
+                    $importItem{$i}->setName5($item["name"][4]);
+                    $importItem{$i}->setName6($item["name"][5]);
+                    $importItem{$i}->setShortdesc($item["short"]);
+                    $importItem{$i}->setLongdesc($item["desc"]);
+                    $importItem{$i}->setZone($zoneanchor);
+
+                    // заполнение полей уникальных для типа
+                    $itemExtra = array();
+
+
+                    switch ($item["type"]) {
+                        case "decor":
+                            $itemExtra["decoration"] = $itemExtra;
+                            break;
+                        case "":
+                            break;
+                    }
+
+                    $importItem{$i}->setExtra($itemExtra);
+
+                    // подготовка объекта для записи в БД
+                    $this->em->persist($importItem{$i});
                 }
             }
 

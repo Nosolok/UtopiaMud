@@ -3,6 +3,7 @@
 namespace Rottenwood\UtopiaMudBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Rottenwood\UtopiaMudBundle\Entity\Item;
 
 /**
  * ItemRepository
@@ -11,4 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class ItemRepository extends EntityRepository {
 
+    /**
+     * Поиск предмета по якорю
+     * @param $anchor
+     * @param $zone
+     * @return Item
+     */
+    public function findByAnchor($anchor, $zone) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT i FROM RottenwoodUtopiaMudBundle:Item i WHERE i.anchor LIKE :anchor AND i.zone
+            LIKE :zone');
+        $query->setParameter('anchor', '%' . $anchor . '%');
+        $query->setParameter('zone', '%' . $zone . '%');
+        $query->setMaxResults(1);
+        $result = $query->getResult();
+
+        if ($result) {
+            $result = $result[0];
+        }
+
+        return $result;
+    }
 }

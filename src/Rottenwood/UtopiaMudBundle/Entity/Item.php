@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Item
  * @ORM\Table(name="items")
- * @ORM\Entity(repositoryClass="Rottenwood\UtopiaMudBundle\Entity\ItemRepository")
+ * @ORM\Entity(repositoryClass="Rottenwood\UtopiaMudBundle\Repository\ItemRepository")
  */
 class Item {
 
@@ -78,6 +78,12 @@ class Item {
      * @ORM\Column(name="longdesc", type="string", length=500)
      */
     private $longdesc;
+
+    /**
+     * @var string
+     * @ORM\Column(name="zone", type="string", length=255)
+     */
+    private $zone;
 
     /**
      * @var array
@@ -295,6 +301,20 @@ class Item {
      */
     public function getExtra() {
         return $this->extra;
+    }
+
+    /**
+     * @param string $zone
+     */
+    public function setZone($zone) {
+        $this->zone = $zone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getZone() {
+        return $this->zone;
     }
 
 }
