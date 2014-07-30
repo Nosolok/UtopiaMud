@@ -22,6 +22,7 @@ rooms:
         - slime
         items:
         - moss
+        - moss
         exits:
             up: sewersenter
             north: sewersn2
