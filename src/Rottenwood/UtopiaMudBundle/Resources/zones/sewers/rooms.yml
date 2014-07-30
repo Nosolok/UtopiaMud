@@ -20,6 +20,8 @@ rooms:
         mobs:
         - rat
         - slime
+        items:
+        - moss
         exits:
             up: sewersenter
             north: sewersn2

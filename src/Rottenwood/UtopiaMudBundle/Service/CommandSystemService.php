@@ -14,6 +14,7 @@ use Rottenwood\UtopiaMudBundle\Entity\Mob;
 use Rottenwood\UtopiaMudBundle\Entity\Player;
 use Rottenwood\UtopiaMudBundle\Entity\Race;
 use Rottenwood\UtopiaMudBundle\Entity\Room;
+use Rottenwood\UtopiaMudBundle\Entity\Roomitem;
 use Rottenwood\UtopiaMudBundle\Repository;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\Container;
@@ -290,6 +291,24 @@ class CommandSystemService {
 
                         $this->em->persist($livemob{$i});
                         $i++;
+                    }
+                }
+
+                // если в комнате указаны предметы
+                if (array_key_exists("items", $roomData)) {
+                    $ii = 1;
+                    foreach ($roomData["items"] as $itemInRoomAnchor) {
+                        $itemInRoom = $this->itemRepository->findByAnchor($itemInRoomAnchor, $zoneanchor);
+                        // TODO: разобраться получше
+                        if (!$itemInRoom) {
+                            continue;
+                        }
+                        $roomitem{$ii} = new Roomitem();
+                        $roomitem{$ii}->setItem($itemInRoom);
+                        $roomitem{$ii}->setRoom($room);
+
+                        $this->em->persist($roomitem{$ii});
+                        $ii++;
                     }
                 }
 
