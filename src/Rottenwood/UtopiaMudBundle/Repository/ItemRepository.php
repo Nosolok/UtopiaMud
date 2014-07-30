@@ -16,7 +16,7 @@ class ItemRepository extends EntityRepository {
      * Поиск предмета по якорю
      * @param $anchor
      * @param $zone
-     * @return Item
+     * @return array|Item
      */
     public function findByAnchor($anchor, $zone) {
         $query = $this->getEntityManager()
